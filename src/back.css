@@ -1,0 +1,115 @@
+.bodybg{
+    -fx-background-image: url('Home_background.jpg');
+    -fx-background-size:100%, 100%;
+}
+.bck{
+    -fx-background-image: url('image/santi-vedri-O5EMzfdxedg-unsplash.jpg');
+    -fx-background-size:100%, 100%;
+}
+.bck2{
+    -fx-background-image: url('image/avel-chuklanov-5iseEuoW7mw-unsplash.jpg');
+    -fx-background-size:100%, 100%;
+}
+.bck3{
+    -fx-background-image: url('image/ivan-aleksic-PDRFeeDniCk-unsplash.jpg');
+    -fx-background-size:100%, 100%;
+}
+
+.Button{
+
+   -fx-background-image: url('logIn.jpg');
+   -fx-background-size:100%, 100%;
+   -fx-background-radius: 20 0 0 20;
+
+   }
+.dashboardVbox{
+-fx-background-radius: 0 30 0 0;
+}
+.dashboardVbox2{
+-fx-background-radius: 20 20 20 20;
+}
+
+.NewStudentButton{
+
+   -fx-background-image: url('image/new_student2.png');
+   -fx-background-size:100%, 100%;
+   -fx-background-radius: 20 20 20 20;
+
+   }
+   .NewStudent1{
+
+      -fx-background-image: url('image/New_student.png');
+      -fx-background-size:100%, 100%;
+      -fx-background-radius: 20 20 20 20;
+
+      }
+   .NewTeacher{
+
+      -fx-background-image: url('image/New_Teacher.jpeg');
+      -fx-background-size:100%, 100%;
+      -fx-background-radius: 20 20 20 20;
+
+      }
+   .Student_Background{
+       -fx-background-image: url('image/Student_Background.jpeg');
+       -fx-background-size:100%, 100%;
+   }
+    .employee_Background{
+          -fx-background-image: url('image/Employee_Background.jpeg');
+          -fx-background-size:100%, 100%;
+      }
+    .Revenue_Background{
+                -fx-background-image: url('image/Revenue_Background.jpeg');
+                -fx-background-size:100%, 100%;
+            }
+    .Student_Score_Background{
+                            -fx-background-image: url('image/Revenue_Background.jpeg');
+                            -fx-background-size:100%, 100%;
+                            -fx-background-radius: 20 20 20 20;
+    }
+
+     .jss1_Background{
+          -fx-background-image: url('image/jss1_classroom.jpg');
+          -fx-background-size:100%, 100%;
+      }
+      .jss2_Background{
+                -fx-background-image: url('image/jss2_Classroom.jpg');
+                -fx-background-size:100%, 100%;
+            }
+       .jss3_Background{
+                     -fx-background-image: url('image/jss3_Classroom.jpg');
+                     -fx-background-size:100%, 100%;
+      }
+        .ss1_Background{
+                           -fx-background-image: url('image/ss1_classroom.jpg');
+                           -fx-background-size:100%, 100%;
+     }
+          .ss2_Background{
+                                -fx-background-image: url('image/ss2_classroom.jpg');
+                                -fx-background-size:100%, 100%;
+          }
+            .ss3_Background{
+                                          -fx-background-image: url('image/ss3_classroom.jpg');
+                                          -fx-background-size:100%, 100%;
+                    }
+        .SessionBackground{
+                -fx-background-image: url('image/Academic.jpg');
+                -fx-background-size:100%, 100%;
+            }
+     .StudentInfoBackGround{
+                -fx-background-image: url('image/schoolback.jpg');
+                -fx-background-size:70%;
+            }
+     .StudentAssessment{
+                     -fx-background-image: url('image/assessment_2.png');
+                     -fx-background-size:100%;
+                 }
+     .Parent{
+                          -fx-background-image: url('image/parent.png');
+                          -fx-background-size:100%;
+                           -fx-background-radius: 20 20 20 20;
+                      }
+
+
+
+

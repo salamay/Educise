@@ -1,0 +1,13 @@
+.bodybg{
+    -fx-background-image: url('Home_background.jpg');
+    -fx-background-size:100%, 100%;
+}
+
+
+
+.NewStudentButton{
+
+   -fx-background-image: url('image/new_student2.png');
+   -fx-background-size:100%, 100%;
+   -fx-background-radius: 20 20 20 20;
+}

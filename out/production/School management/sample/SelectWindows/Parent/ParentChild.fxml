@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="267.0" prefWidth="400.0" styleClass="bck2" stylesheets="@../../../back.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.SelectWindows.Parent.ParentChildController">
+    <children>
+        <VBox fx:id="vbox" alignment="CENTER" layoutX="80.0" layoutY="60.0" prefHeight="177.0" prefWidth="260.0" spacing="20.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="80.0" AnchorPane.rightAnchor="60.0" AnchorPane.topAnchor="60.0">
+            <children>
+            <ProgressIndicator />
+            <JFXComboBox fx:id="Clas" prefHeight="25.0" prefWidth="213.0" />
+            </children>
+            <padding>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+            </padding>
+        </VBox>
+    </children>
+</AnchorPane>

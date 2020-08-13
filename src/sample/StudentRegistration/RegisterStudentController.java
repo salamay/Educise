@@ -376,7 +376,6 @@ public class RegisterStudentController implements Initializable {
                 // Registration Thread
                 new RegisterStudentThread(studentname,age,fathername,mothername,nextofkin,address,PhoneNo,
                         NickName,Hobbies,TurnOn,TurnOff,Club,RoleModel,FutureAmbition,Gender,clas,file,FatherImageFile,MotherImageFile).start();
-
             }
 
 

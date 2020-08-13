@@ -12,6 +12,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import sample.DashBoard.DashboardController;
+import sample.StudentRegistration.LoadingWindow;
 
 import java.io.IOException;
 import java.net.URL;
@@ -46,24 +47,18 @@ goToDashBoard();
         String email = usernameTextField.getText();
         String passwd = passwordTextField.getText();
         if (loginmodel.loginQuery(email, passwd)) {
-
             Parent root;
             root = FXMLLoader.load(getClass().getResource("DB.fxml"));
             window2 = new Stage();
-           window2.initModality(Modality.APPLICATION_MODAL);
+            window2.initModality(Modality.APPLICATION_MODAL);
             window2.setTitle("welcome to management Board");
             window2.setMaximized(true);
             window2.setMinWidth(800);
             window2.setMinHeight(700);
             Scene scene = new Scene(root,1200,720);
             DashboardController dashboardController=new DashboardController();
-
             window2.setScene(scene);
-
             window2.show();
-
-
-
 
         } else {
             loginError.setVisible(true);

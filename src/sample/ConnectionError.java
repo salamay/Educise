@@ -38,13 +38,13 @@ public class ConnectionError {
             });
             VBox vbox = new VBox();
             vbox.setAlignment(Pos.CENTER);
-            vbox.setPadding(new Insets(0,0,0,0));
+            vbox.setPadding(new Insets(10,10,10,10));
             vbox.setSpacing(10);
             button.setMinWidth(100);
             String style="-fx-background-radius: 20 20 20 20;-fx-background-color=##0066CB";
             button.setStyle(style);
             vbox.getChildren().addAll(label, button);
-            Scene scene = new Scene(vbox, 200, 80);
+            Scene scene = new Scene(vbox, 400, 80);
             window.initStyle(StageStyle.UNDECORATED);
             window.setScene(scene);
             window.centerOnScreen();

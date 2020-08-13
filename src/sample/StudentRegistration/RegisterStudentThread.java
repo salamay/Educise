@@ -1,24 +1,9 @@
 package sample.StudentRegistration;
 
-import com.jfoenix.controls.JFXProgressBar;
-import javafx.application.Platform;
-import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressIndicator;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import sample.ConnectionError;
-import sample.SelectWindows.Information.StudentSelectClassInfo;
-import sample.SqlConnection;
 
+import javafx.application.Platform;
+import sample.ConnectionError;
+import sample.SqlConnection;
 import java.io.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -51,8 +36,6 @@ public class RegisterStudentThread extends  Thread {
     private double counter=0.0;
     private boolean result;
     private int a;
-    public static Stage window;
-    private Parent root;
 
     public RegisterStudentThread(){
 
@@ -110,19 +93,11 @@ public class RegisterStudentThread extends  Thread {
         System.out.println("[RegisterStudentThread]: Creating Query" );
         String SaveNameQuery="INSERT INTO "+Clas+"(Studentname,Phoneno,nickname,hobbies,turnon,turnoff,club,rolemodel,futureambition,age,fathername,mothername,nextofkin,address,Gender,Picture,Parentpicture,Motherpicture) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         Platform.runLater(()->{
-
-            window=new Stage();
             try {
-                root= FXMLLoader.load(getClass().getResource("LoadingDialog.fxml"));
+                new LoadingWindow();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            Scene scene=new Scene(root,400,200);
-            window.initModality(Modality.APPLICATION_MODAL);
-            window.initStyle(StageStyle.UNDECORATED);
-            window.setScene(scene);
-            window.centerOnScreen();
-            window.show();
         });
         System.out.println("[RegisterStudentThread]: Executing Query" );
         Connection conn= SqlConnection.connector();
@@ -220,7 +195,7 @@ public class RegisterStudentThread extends  Thread {
                     a=preparedStatement.executeUpdate();
                     //check if query is executed and close loading window
                     if(a==1){
-                        window.close();
+                        LoadingWindow.window.close();
                     }
                     System.out.println("[RegisterStudentThread]: Query Executed");
                 }
@@ -241,11 +216,9 @@ public class RegisterStudentThread extends  Thread {
                         conn.close();
                     }
                     Platform.runLater(()->{
-                        window.close();
+                        LoadingWindow.window.close();
                         RegisterationWindow.window.close();
                     });
-
-
 
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -259,7 +232,7 @@ public class RegisterStudentThread extends  Thread {
             Platform.runLater(()->{
                 boolean result=new ConnectionError().Connection(conn);
                 if (result==true){
-                    window.close();
+                    LoadingWindow.window.close();
                 }
             });
 

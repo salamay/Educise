@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="615.0" prefWidth="1011.0" style="-fx-background-color: #FEFEFE;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.DashBoard.DashboardController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="615.0" prefWidth="1011.0" style="-fx-background-color: #FEFEFE;" styleClass="bck2" stylesheets="@../back.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.DashBoard.DashboardController">
     <children>
         <VBox fx:id="vbox" alignment="BASELINE_LEFT" layoutX="8.0" layoutY="87.0" prefHeight="517.0" prefWidth="171.0" spacing="10.0" style="-fx-background-color: #1E306E;" AnchorPane.bottomAnchor="21.0" AnchorPane.leftAnchor="-2.0" AnchorPane.topAnchor="77.0">
             <padding>

@@ -16,7 +16,7 @@ public class LoadingDialogController implements Initializable {
     public  JFXButton cancelbutton;
     public void cancelButtonOnclicked(){
         //this close the window and the connection in the thread
-      RegisterStudentThread.window.close();
+      LoadingWindow.window.close();
         try {
             RegisterStudentThread.conn.close();
         } catch (SQLException e) {

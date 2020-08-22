@@ -7,9 +7,9 @@ public class SqlConnection {
 
     public static Connection connector(){
         try{
-            Class.forName("com.mysql.jdbc.Driver");
-            String url=String.format("jdbc:mysql://35.232.230.189:3306/_mystudentdb");
-            Connection conn= DriverManager.getConnection(url,"salam1","oluwole");
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            String url=String.format("jdbc:mysql://127.0.0.1:3306/my_spring_user");
+            Connection conn= DriverManager.getConnection(url,"root","salamay");
             System.out.println("connecting");
 
             return conn;

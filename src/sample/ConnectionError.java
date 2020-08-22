@@ -41,7 +41,7 @@ public class ConnectionError {
             vbox.setPadding(new Insets(10,10,10,10));
             vbox.setSpacing(10);
             button.setMinWidth(100);
-            String style="-fx-background-radius: 20 20 20 20;-fx-background-color=##0066CB";
+            String style="-fx-background-radius: 20 20 20 20; -fx-background-color=#0066CB;";
             button.setStyle(style);
             vbox.getChildren().addAll(label, button);
             Scene scene = new Scene(vbox, 400, 80);

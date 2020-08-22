@@ -5,9 +5,12 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
 import sample.ConnectionError;
 import sample.SqlConnection;
-import sample.StudentInformation.InformationWindow;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -88,162 +91,19 @@ public class ClassInformationThread extends  Thread {
         }
         @Override
         public void run() {
-            conn= SqlConnection.connector();
-            String Query="Select * from "+classname+" where studentname=?";
-            if (conn==null){
-                Platform.runLater(()->{
-                    boolean result=new ConnectionError().Connection(conn);
-                    if (result==true){
-                        InformationWindow.window1.close();
-                    }
-                });
-            }else {
-                try {
-                    PreparedStatement preparedStatement=conn.prepareStatement(Query);
-                    preparedStatement.setString(1,studentName);
-                    ResultSet resultSet=preparedStatement.executeQuery();
-                    while (resultSet.next()){
-                        name=resultSet.getString("StudentName");
-                        age=resultSet.getString("Age");
-                        phono=resultSet.getFloat("Phoneno");
-                        fathername=resultSet.getString("fathername");
-                        mothername=resultSet.getString("mothername");
-                        address=resultSet.getString("Address");
-                        nextofkin=resultSet.getString("NextOfKin");
-                        gender=resultSet.getString("Gender");
-                        club=resultSet.getString("club");
-                        rolemodel=resultSet.getString("RoleModel");
-                        blob=resultSet.getBlob("picture");
-                        blob2=resultSet.getBlob("Parentpicture");
-                        blob3=resultSet.getBlob("Motherpicture");
+            OkHttpClient client=new OkHttpClient();
 
-                        //Directory path
-
-                        Path path= Paths.get("C:\\users/Dell/AppData/Local/VXSchool/images/");
-                        System.out.println("[ClassInformationThread]:Path Initiated");
-                        //Geting Images//////////////////////////////////////
-
-                        if (Files.exists(path)){
-                            //Student image
-                            if (blob!=null){
-                                byte[] b;
-                                b=blob.getBytes(1,(int) blob.length());
-                                File imagefile=new File("C:\\users/Default/Pictures/imag.png");
-                                FileOutputStream fos=new FileOutputStream(imagefile);
-                                fos.write(b);
-                                bufferedImage=ImageIO.read(imagefile);
-                            }
-                        }else {
-                            System.out.println("[ClassInformationThread]: Directory not Exists");
-                        }
-
-
-
-                        //Checking Directory
-                        System.out.println("[ClassInformationThread]:Checking Directory");
-                        try{
-                            if (!Files.exists(path)){
-                                Files.createDirectories(path);
-
-                            }else {
-                                System.out.println("[ClassInformationThread]:Directory Exists");
-                            }
-                        }catch (IOException e){
-                            e.printStackTrace();
-                        }
-
-                        if (Files.exists(path)){
-                            System.out.println("[ClassInformationThread]: Directory Exists");
-                            File FatherImage=new File("C:\\users/Dell/AppData/Local/VXSchool/images/fatherimage.jpg");
-                           if (blob2!=null){
-                               //Father image
-                               byte[] b2;
-                               b2=blob2.getBytes(1,(int) blob2.length());
-                               try{
-                                   FileOutputStream fos2=new FileOutputStream(FatherImage);
-                                   fos2.write(b2);
-                               }catch (FileNotFoundException e){
-                                   e.printStackTrace();
-                               }
-
-                               bufferedImage2=ImageIO.read(FatherImage);
-                           }
-
-                        }else{
-                            System.out.println("[ClassInformationThread]: Directory not Exists");
-                        }
-                        //Mother Image Processing
-
-                        if (Files.exists(path)){
-                            System.out.println("[ClassInformationThread]: Directory Exists");
-                            File MotherImage=new File("C:\\users/Dell/AppData/Local/VXSchool/images/fatherimage.jpg");
-                        if (blob3!=null){
-                            //Father image
-                            byte[] b3;
-                            b3=blob2.getBytes(1,(int) blob2.length());
-                            try{
-                                FileOutputStream fos3=new FileOutputStream(MotherImage);
-                                fos3.write(b3);
-                            }catch (FileNotFoundException e){
-                                e.printStackTrace();
-                            }
-
-                            bufferedImage3=ImageIO.read(MotherImage);
-                        }
-
-                        }else {
-                            System.out.println("[ClassInformationThread]: Directory not Exists");
-                        }
-
-
-
-
-
-
-                    }
-                    Platform.runLater(()->{
-                        System.out.println(age);
-                        System.out.println("[ClassInformationThread]: Runlater-> Setting Layout");
-                        namelabel.setText(name);
-                        ageLabel.setText(age);
-                        phoneNoLabel.setText(String.valueOf(phono));
-                        fatherNameLabel.setText(fathername);
-                        FatherName.setText(fathername);
-                        motherNameLabel.setText(mothername);
-                        MotherName.setText(mothername);
-                        addressLabel.setText(address);
-                        nextOfKinLabel.setText(nextofkin);
-                        genderLabel.setText(gender);
-                        clubLabel.setText(club);
-                        rOleModelLabel.setText(rolemodel);
-                        if (blob!=null){
-                            Image image=SwingFXUtils.toFXImage(bufferedImage,null);
-                            imageView.setImage(image);
-                        }
-                       if (blob2!=null){
-                           Image image2=SwingFXUtils.toFXImage(bufferedImage2,null);
-                           FatherImageView.setImage(image2);
-                       }
-                       if (blob3!=null){
-                           Image image3=SwingFXUtils.toFXImage(bufferedImage3,null);
-                           MotherImageView.setImage(image3);
-                       }
-                    });
-
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-                catch (IOException e) {
-                    e.printStackTrace();
-                }finally {
-                    try {
-                        conn.close();
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                }
+            Request request=new Request.Builder()
+                    .url("http://localhost:8080/retrievestudentinformation")
+                    .addHeader("Authorization","Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzYWxhbWF5IiwiaWF0IjoxNTk4MDc2MzgyLCJleHAiOjE1OTgxMTIzODJ9.OJrRife0Z7GLD-kg-GR2qmkLBLaSNhom0gHFXaHFDV8")
+                    .build();
+            try {
+                Response response=client.newCall(request).execute();
+                System.out.println(response.body().toString());
+            } catch (IOException e) {
+                System.out.println("[ClassInformationThread]: Request failed");
+                e.printStackTrace();
             }
-
 
         }
 

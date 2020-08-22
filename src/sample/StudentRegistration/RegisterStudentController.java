@@ -363,7 +363,7 @@ public class RegisterStudentController implements Initializable {
 
         }else{
 
-            if(!StudentName.getText().isEmpty() && !Age.getText().isEmpty() && !FatherName.getText().isEmpty()
+            if(!StudentName.getText().isEmpty() && !Age.getText().isEmpty()  && !FatherName.getText().isEmpty()
                     && !MotherName.getText().isEmpty()&& !NextOfKin.getText().isEmpty()&& !Address.getText().isEmpty()
                     &&!PhoneNumberTextField.getText().isEmpty() && !NickNameTextField.getText().isEmpty()&&
                     !HobbiesTextField.getText().isEmpty() && !TurnOnTextField.getText().isEmpty()

@@ -38,7 +38,7 @@ public boolean loginQuery(String email,String passwd){
 
         PreparedStatement preparedStatement=null;
         ResultSet resultSet=null;
-        String query="SELECT * FROM studentinfo where username= ? and password= ?";
+        String query="SELECT * FROM auth where username= ? and password= ?";
     try {
         preparedStatement=conn.prepareStatement(query);
         preparedStatement.setString(1,email);

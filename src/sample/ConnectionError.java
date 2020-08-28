@@ -4,31 +4,34 @@ import com.jfoenix.controls.JFXButton;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-import java.sql.Connection;
 
 
 public class ConnectionError {
     boolean IsPresed;
     Stage window;
-    public boolean Connection(Connection conn){
+    public boolean Connection(String message){
         JFXButton button = new JFXButton("OK");
-        if(conn==null) {
-
             button.setAlignment(Pos.CENTER);
             window = new Stage();
             Label label = new Label();
-            label.setText("No internet connection or Server failure");
+            if (message=="SUCCESS"){
+                label.setStyle("-fx-text-fill:#1ABD1A;");
+            }else {
+                label.setStyle("-fx-text-fill:#FD5B6A;");
+            }
+            label.setFont(Font.font(13));
+            label.setText(message);
             label.setAlignment(Pos.CENTER);
+            window.initStyle(StageStyle.UNDECORATED);
             window.initModality(Modality.APPLICATION_MODAL);
             window.setResizable(false);
-            window.setTitle("Connection Failed");
             window.setOnCloseRequest(event -> {
                 event.consume();
             });
@@ -41,16 +44,14 @@ public class ConnectionError {
             vbox.setPadding(new Insets(10,10,10,10));
             vbox.setSpacing(10);
             button.setMinWidth(100);
-            String style="-fx-background-radius: 20 20 20 20; -fx-background-color=#0066CB;";
+            String style="-fx-background-radius: 20 20 20 20; -fx-background-color:#0066CB;";
             button.setStyle(style);
             vbox.getChildren().addAll(label, button);
-            Scene scene = new Scene(vbox, 400, 80);
+            Scene scene = new Scene(vbox, 600, 80);
             window.initStyle(StageStyle.UNDECORATED);
             window.setScene(scene);
             window.centerOnScreen();
             window.showAndWait();
-
-        }
 
         return IsPresed;
     }

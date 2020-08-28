@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="660.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.LoginPage.DashBoard.SelectWindows.AcademicSession.AcademicSessionController">
+   <children>
+      <AnchorPane prefHeight="700.0" prefWidth="600.0" style="-fx-background-color: #D5D5D5;">
+         <children>
+            <Label alignment="CENTER" layoutX="6.0" prefHeight="28.0" prefWidth="573.0" text="Shekinah College, Inisa.">
+               <font>
+                  <Font name="Courier New Bold" size="24.0" />
+               </font>
+            </Label>
+            <VBox layoutX="14.0" layoutY="34.0" prefHeight="259.0" prefWidth="566.0" styleClass="SessionBackground" stylesheets="@../../../../../back.css" />
+            <VBox alignment="CENTER" layoutX="34.0" layoutY="319.0" prefHeight="401.0" prefWidth="517.0" spacing="10.0">
+               <children>
+                  <VBox alignment="CENTER" prefHeight="68.0" prefWidth="517.0">
+                     <children>
+                        <Label prefHeight="22.0" prefWidth="117.0" text="Create New Session:" VBox.vgrow="ALWAYS">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
+                        <Label text="Note that you have to create session for each class" VBox.vgrow="ALWAYS" />
+                        <Label prefHeight="17.0" prefWidth="175.0" text="Format : jss1_year e.g jss12018  " VBox.vgrow="ALWAYS" />
+                     </children>
+                  </VBox>
+                  <HBox prefHeight="17.0" prefWidth="549.0">
+                     <children>
+                        <Label text="Jss1 Session name:" HBox.hgrow="ALWAYS">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="jss1SessionTextField" prefHeight="9.0" prefWidth="399.0" promptText="Enter Session Name" HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="17.0" prefWidth="549.0">
+                     <children>
+                        <Label text="Jss2 Session name:" HBox.hgrow="ALWAYS">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="jss2SessionTextField" prefHeight="9.0" prefWidth="399.0" promptText="Enter Session Name" HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
+                  <HBox layoutX="10.0" layoutY="10.0" prefHeight="17.0" prefWidth="549.0">
+                     <children>
+                        <Label text="Jss3 Session name:" HBox.hgrow="ALWAYS">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="jss3SessionTextField" prefHeight="9.0" prefWidth="399.0" promptText="Enter Session Name" HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
+                  <HBox layoutX="10.0" layoutY="35.0" prefHeight="17.0" prefWidth="549.0">
+                     <children>
+                        <Label text="Ss1  Session name:" HBox.hgrow="ALWAYS">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="ss1SessionTextField" prefHeight="9.0" prefWidth="399.0" promptText="Enter Session Name" HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
+                  <HBox layoutX="10.0" layoutY="85.0" prefHeight="17.0" prefWidth="549.0">
+                     <children>
+                        <Label text="Ss2  Session name:" HBox.hgrow="ALWAYS">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="ss2SessionTextField" prefHeight="9.0" prefWidth="399.0" promptText="Enter Session Name" HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
+                  <HBox layoutX="10.0" layoutY="110.0" prefHeight="17.0" prefWidth="549.0">
+                     <children>
+                        <Label text="Ss3  Session name:" HBox.hgrow="ALWAYS">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="ss3SessionTextField" prefHeight="4.0" prefWidth="411.0" promptText="Enter Session Name" HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
+                  <Label fx:id="Error" alignment="CENTER" prefHeight="17.0" prefWidth="238.0" text="check your input" textFill="#f50e0e" visible="false" VBox.vgrow="ALWAYS">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Button mnemonicParsing="false" onAction="#CreateSessionClicked" prefHeight="34.0" prefWidth="94.0" text="Create Session" />
+                  <JFXSpinner fx:id="LoadingSpinner" />
+               </children>
+            </VBox>
+         </children>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+      </AnchorPane>
+   </children>
+</AnchorPane>

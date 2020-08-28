@@ -7,7 +7,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="bodybg" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="bodybg" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.LoginPage.Controller">
    <children>
       <VBox alignment="CENTER" layoutX="151.0" layoutY="185.0" prefHeight="146.0" prefWidth="361.0" spacing="10.0" AnchorPane.bottomAnchor="79.0" AnchorPane.leftAnchor="141.0" AnchorPane.rightAnchor="98.0" AnchorPane.topAnchor="175.0">
          <padding>

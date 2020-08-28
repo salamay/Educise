@@ -12,5 +12,6 @@
     <orderEntry type="library" name="gson-2.8.2" level="project" />
     <orderEntry type="library" name="mysql-connector-java-8.0.20-sources" level="project" />
     <orderEntry type="library" name="annotations-13.0" level="project" />
+    <orderEntry type="library" name="jackson-annotations-2.11.1" level="project" />
   </component>
 </module>

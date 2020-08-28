@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane styleClass="bck" stylesheets="@../../../../../back.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.LoginPage.DashBoard.SelectWindows.Information.SelectInformationSessionController">
+   <children>
+      <VBox fx:id="vbox" alignment="CENTER" layoutX="95.0" layoutY="65.0" prefHeight="136.0" prefWidth="232.0" spacing="20.0" stylesheets="@../../../back.css" AnchorPane.bottomAnchor="65.0" AnchorPane.leftAnchor="95.0" AnchorPane.rightAnchor="73.0" AnchorPane.topAnchor="65.0">
+         <children>
+            <ProgressIndicator fx:id="ProgressBar" prefHeight="58.0" prefWidth="192.0" />
+            <JFXComboBox fx:id="Clas" focusColor="#e8b4d2" labelFloat="true" prefHeight="25.0" prefWidth="161.0" promptText="select class" unFocusColor="#f8f8f8" />
+         </children>
+
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </padding>
+      </VBox>
+   </children>
+</AnchorPane>

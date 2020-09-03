@@ -30,7 +30,9 @@ public class PrinterManager extends Thread{
         System.out.println("[Printer manager]: Starting to print");
         System.out.println("[Printer manager]: Preparing file");
         if (pdfdocumentbytes!=null){
+            System.out.println("[Printer manager]: Preparing file");
             try {
+
                 FileOutputStream fileOutputStream=new FileOutputStream(pdffile);
                 fileOutputStream.write(pdfdocumentbytes);
                 fileOutputStream.close();
@@ -60,28 +62,39 @@ public class PrinterManager extends Thread{
                             @Override
                             public void printDataTransferCompleted(PrintJobEvent pje) {
                                 System.out.println("[Printer manager]: Status: "+pje.getPrintEventType()+": Data Transfer completed");
-                                textArea.appendText(pje.getPrintEventType()+": Data Transfer completed\n");
+                                Platform.runLater(()->{
+                                    textArea.appendText(pje.getPrintEventType()+": Data Transfer completed\n");
+                                });
+
                                 closeL();
                             }
 
                             @Override
                             public void printJobCompleted(PrintJobEvent pje) {
                                 System.out.println("[Printer manager]: Status: "+pje.getPrintEventType()+": print Job completed");
-                                textArea.appendText(pje.getPrintEventType()+": Print job completed\n");
+                                Platform.runLater(()->{
+                                    textArea.appendText(pje.getPrintEventType()+": Print job completed\n");
+                                });
+
                                 closeL();
                             }
 
                             @Override
                             public void printJobFailed(PrintJobEvent pje) {
                                 System.out.println("[Printer manager]: Status: "+pje.getPrintEventType()+": Print job failed");
-                                textArea.appendText(pje.getPrintEventType()+": Print job failed\n");
+                                Platform.runLater(()->{
+                                    textArea.appendText(pje.getPrintEventType()+": Print job failed\n");
+
+                                });
                                 closeL();
                             }
 
                             @Override
                             public void printJobCanceled(PrintJobEvent pje) {
                                 System.out.println("[Printer manager]: Status: "+pje.getPrintEventType()+": Print job cancel");
-                                textArea.appendText(pje.getPrintEventType()+": Print job cancelled\n");
+                                Platform.runLater(()->{
+                                    textArea.appendText(pje.getPrintEventType()+": Print job cancelled\n");
+                                });
                                 closeL();
                             }
 
@@ -109,73 +122,19 @@ public class PrinterManager extends Thread{
 
                 }else {
                     System.out.println("[Printer manager]: Printers: Selecting printer");
-                    PrintService service=ServiceUI.printDialog(null,200,200,printers,defaultprinter,flavor,asset);
-                    if (service!=null){
-                        Platform.runLater(()->{
+                    Platform.runLater(()->{
+                        PrintService service=ServiceUI.printDialog(null,200,200,printers,defaultprinter,flavor,asset);
+                        if (service!=null){
                             try {
-                                new LoadingWindow();
-                            } catch (IOException e) {
+                                Continue(service,flavor,asset);
+                            } catch (FileNotFoundException e) {
                                 e.printStackTrace();
                             }
-                        });
-                        Doc doc=new SimpleDoc(new FileInputStream(pdffile),flavor,null);
-                        try {
-                            DocPrintJob job1=service.createPrintJob();
-                            if (job1!=null){
-                                job1.addPrintJobListener(new PrintJobListener() {
-                                    @Override
-                                    public void printDataTransferCompleted(PrintJobEvent pje) {
-                                        System.out.println("[Printer manager]: Status: "+pje.getPrintEventType()+": Data Transfer completed");
-                                        textArea.setText(pje.getPrintEventType()+": Data Transfer completed\n");
-                                        closeL();
-                                    }
-
-                                    @Override
-                                    public void printJobCompleted(PrintJobEvent pje) {
-                                        System.out.println("[Printer manager]: Status: "+pje.getPrintEventType()+": print Job completed");
-                                        textArea.setText(pje.getPrintEventType()+": Print job completed\n");
-                                        closeL();
-                                    }
-
-                                    @Override
-                                    public void printJobFailed(PrintJobEvent pje) {
-                                        System.out.println("[Printer manager]: Status: "+pje.getPrintEventType()+": Print job failed");
-                                        textArea.setText(pje.getPrintEventType()+": Print job failed\n");
-                                        closeL();
-                                    }
-
-                                    @Override
-                                    public void printJobCanceled(PrintJobEvent pje) {
-                                        System.out.println("[Printer manager]: Status: "+pje.getPrintEventType()+": Print job cancel");
-                                        textArea.setText(pje.getPrintEventType()+": Print job cancelled\n");
-                                        closeL();
-                                    }
-
-                                    @Override
-                                    public void printJobNoMoreEvents(PrintJobEvent pje) {
-                                        closeL();
-                                    }
-
-                                    @Override
-                                    public void printJobRequiresAttention(PrintJobEvent pje) {
-                                        closeL();
-                                    }
-                                });
-                                job1.print(doc,asset);
-                                closeL();
-                            }else {
-                                return;
-                            }
-
-                        } catch (PrintException e) {
+                        }else {
                             closeL();
-                            e.printStackTrace();
+                            new ConnectionError().Connection("Printing cancelled");
                         }
-                        System.out.println("[SchoolFeeWindowController]: Printed");
-                    }else {
-                        closeL();
-                        new ConnectionError().Connection("Printing cancelled");
-                    }
+                    });
                 }
             } catch (FileNotFoundException e) {
                 closeL();
@@ -191,7 +150,9 @@ public class PrinterManager extends Thread{
 
         }else {
             closeL();
-            new ConnectionError().Connection("Document not available");
+            Platform.runLater(()->{
+                new ConnectionError().Connection("Document not available");
+            });
         }
 
     }
@@ -199,5 +160,75 @@ public class PrinterManager extends Thread{
         Platform.runLater(()->{
             LoadingWindow.window.close();
         });
+    }
+    public void Continue(PrintService service,DocFlavor flavor,PrintRequestAttributeSet asset) throws FileNotFoundException {
+        Platform.runLater(()->{
+            try {
+                new LoadingWindow();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+        Doc doc=new SimpleDoc(new FileInputStream(pdffile),flavor,null);
+        try {
+            DocPrintJob job1=service.createPrintJob();
+            if (job1!=null){
+                job1.addPrintJobListener(new PrintJobListener() {
+                    @Override
+                    public void printDataTransferCompleted(PrintJobEvent pje) {
+                        System.out.println("[Printer manager]: Status: "+pje.getPrintEventType()+": Data Transfer completed");
+                        Platform.runLater(()->{
+                            textArea.setText(pje.getPrintEventType()+": Data Transfer completed\n");
+                        });
+                        closeL();
+                    }
+
+                    @Override
+                    public void printJobCompleted(PrintJobEvent pje) {
+                        System.out.println("[Printer manager]: Status: "+pje.getPrintEventType()+": print Job completed");
+                        textArea.setText(pje.getPrintEventType()+": Print job completed\n");
+                        closeL();
+                    }
+
+                    @Override
+                    public void printJobFailed(PrintJobEvent pje) {
+                        System.out.println("[Printer manager]: Status: "+pje.getPrintEventType()+": Print job failed");
+
+                        Platform.runLater(()->{
+                            textArea.setText(pje.getPrintEventType()+": Print job failed\n");
+                        });
+                        closeL();
+                    }
+
+                    @Override
+                    public void printJobCanceled(PrintJobEvent pje) {
+                        System.out.println("[Printer manager]: Status: "+pje.getPrintEventType()+": Print job cancel");
+                        Platform.runLater(()->{
+                            textArea.setText(pje.getPrintEventType()+": Print job cancelled\n");
+                        });
+                        closeL();
+                    }
+
+                    @Override
+                    public void printJobNoMoreEvents(PrintJobEvent pje) {
+                        closeL();
+                    }
+
+                    @Override
+                    public void printJobRequiresAttention(PrintJobEvent pje) {
+                        closeL();
+                    }
+                });
+                job1.print(doc,asset);
+                closeL();
+            }else {
+                return;
+            }
+
+        } catch (PrintException e) {
+            closeL();
+            e.printStackTrace();
+        }
+        System.out.println("[SchoolFeeWindowController]: Printed");
     }
 }

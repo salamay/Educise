@@ -1,6 +1,7 @@
 package sample.LoginPage.DashBoard.Admin.BookStore;
 
 import com.jfoenix.controls.*;
+import javafx.animation.ScaleTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
@@ -8,6 +9,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.HBox;
+import javafx.util.Duration;
 import javafx.util.converter.IntegerStringConverter;
 import sample.ConnectionError;
 import sample.LoginPage.DashBoard.Admin.SchoolFee.Fee;
@@ -81,10 +83,53 @@ public class BookStoreWindowController implements Initializable {
     public JFXDatePicker datePicker;
     public Label dateselected;
     public Label totalamount;
+    public JFXButton addbookbutton;
+    public JFXButton deletebookbutton;
+    public JFXButton sellbutton;
+    public JFXButton printhistorybutton;
+    public JFXButton searchbook1;
+    public JFXButton searchbook2;
     public static byte[] pdfdocumentbytes;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        addbookbutton.setOnMouseEntered(event -> {
+            ScaleTrans(addbookbutton);
+        });
+        addbookbutton.setOnMouseExited(event -> {
+            RestoreScale(addbookbutton);
+        });
+        deletebookbutton.setOnMouseEntered(event -> {
+            ScaleTrans(deletebookbutton);
+        });
+        deletebookbutton.setOnMouseExited(event -> {
+            RestoreScale(deletebookbutton);
+        });
+        sellbutton.setOnMouseEntered(event -> {
+            ScaleTrans(sellbutton);
+        });
+        sellbutton.setOnMouseExited(event -> {
+            RestoreScale(sellbutton);
+        });
+        printhistorybutton.setOnMouseEntered(event -> {
+            ScaleTrans(printhistorybutton);
+        });
+        printhistorybutton.setOnMouseExited(event -> {
+            RestoreScale(printhistorybutton);
+        });
+        searchbook1.setOnMouseEntered(event -> {
+            ScaleTrans(searchbook1);
+        });
+        searchbook1.setOnMouseExited(event -> {
+            RestoreScale(searchbook1);
+        });
+        searchbook2.setOnMouseEntered(event -> {
+            ScaleTrans(searchbook2);
+        });
+        searchbook2.setOnMouseExited(event -> {
+            RestoreScale(searchbook2);
+        });
+
         sellbookDatePicker = new JFXDatePicker();
         sellbookDatePicker.setStyle("-fx-background-color:#D5D5D5;");
         Label todaysdate = new Label("Select today's date:");
@@ -460,4 +505,25 @@ public class BookStoreWindowController implements Initializable {
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////History tab view End/////////////////////////////////////////////////////////////////
+
+    public void ScaleTrans(Button button){
+        ScaleTransition scaleTransition=new ScaleTransition(new Duration(100));
+        scaleTransition.setNode(button);
+        scaleTransition.setFromX(1);
+        scaleTransition.setToX(1.2);
+        scaleTransition.setFromY(1);
+        scaleTransition.setToY(1.2);
+        scaleTransition.play();
+
+    }
+    public void RestoreScale(Button button){
+        ScaleTransition scaleTransition=new ScaleTransition(new Duration(100));
+        scaleTransition.setNode(button);
+        scaleTransition.setFromX(1.2);
+        scaleTransition.setToX(1);
+        scaleTransition.setFromY(1.2);
+        scaleTransition.setToY(1);
+        scaleTransition.play();
+
+    }
 }

@@ -9,7 +9,7 @@
 
 <TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1200.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.LoginPage.DashBoard.Admin.BookStore.BookStoreWindowController">
   <tabs>
-    <Tab text="Book">
+    <Tab text="Add Book">
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="750.0" prefWidth="1200.0" style="-fx-background-color: #181D30;">
                <children>
@@ -65,7 +65,7 @@
                               <JFXComboBox fx:id="addbooktermcombobox" labelFloat="true" layoutX="20.0" layoutY="290.0" prefHeight="25.0" prefWidth="133.0" promptText="Select tem" style="-fx-background-color: #D5D5D5;" />
                               <HBox alignment="CENTER" prefHeight="76.0" prefWidth="1170.0">
                                  <children>
-                                    <JFXButton buttonType="RAISED" onAction="#addbookbuttonClicked" prefHeight="81.0" prefWidth="75.0" ripplerFill="#082ce1" styleClass="fetch" stylesheets="@../../../../../back.css" text=" " />
+                                    <JFXButton fx:id="addbookbutton" buttonType="RAISED" onAction="#addbookbuttonClicked" prefHeight="81.0" prefWidth="75.0" ripplerFill="#082ce1" styleClass="fetch" stylesheets="@../../../../../back.css" text=" " />
                                  </children>
                               </HBox>
                            </children>
@@ -88,7 +88,7 @@
                </children></AnchorPane>
       </content>
     </Tab>
-    <Tab text="Sell">
+    <Tab text="Sell Book">
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="750.0" prefWidth="1200.0" style="-fx-background-color: #181D30;">
                <children>
@@ -121,7 +121,7 @@
                                     <Font name="System Italic" size="12.0" />
                                  </font>
                               </JFXTextField>
-                              <JFXButton onAction="#sellbookGoButtonClicked" prefHeight="51.0" prefWidth="187.0" style="-fx-background-color: #0066CB; -fx-background-radius: 20 5 5 20;" text="Search book" textFill="WHITE">
+                              <JFXButton fx:id="searchbook1" onAction="#sellbookGoButtonClicked" prefHeight="51.0" prefWidth="187.0" style="-fx-background-color: #0066CB; -fx-background-radius: 20 5 5 20;" text="Search book" textFill="WHITE">
                                  <font>
                                     <Font name="System Bold" size="24.0" />
                                  </font>
@@ -161,7 +161,7 @@
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                            <children>
-                              <JFXButton fx:id="soldbutton" buttonType="RAISED" onAction="#sellbookbuttonClicked" prefHeight="71.0" prefWidth="77.0" styleClass="fetch" stylesheets="@../../../../../back.css" text=" " />
+                              <JFXButton fx:id="sellbutton" buttonType="RAISED" onAction="#sellbookbuttonClicked" prefHeight="71.0" prefWidth="77.0" styleClass="fetch" stylesheets="@../../../../../back.css" text=" " />
                            </children>
                         </HBox>
                      </children>
@@ -200,7 +200,7 @@
                         <HBox layoutX="20.0" layoutY="20.0" prefHeight="46.0" prefWidth="1180.0" spacing="10.0">
                            <children>
                               <JFXTextField fx:id="editbooktitletextfield" focusColor="#edeef2" labelFloat="true" prefHeight="25.0" prefWidth="452.0" promptText="Book title" style="-fx-background-color: #FFFFFF;" />
-                              <JFXButton onAction="#editbooksearchbuttonClicked" prefHeight="39.0" prefWidth="132.0" style="-fx-background-color: #0066CB; -fx-background-radius: 10 10 10 10;" text="Search Book" textFill="#f5e4e4" wrapText="true">
+                              <JFXButton fx:id="searchbook2" onAction="#editbooksearchbuttonClicked" prefHeight="39.0" prefWidth="132.0" style="-fx-background-color: #0066CB; -fx-background-radius: 10 10 10 10;" text="Search Book" textFill="#f5e4e4" wrapText="true">
                                  <font>
                                     <Font name="System Bold" size="18.0" />
                                  </font>
@@ -242,12 +242,12 @@
                               </TableView>
                            </children>
                         </JFXScrollPane>
-                        <JFXButton onAction="#editBookDeletButtonClicked" prefHeight="72.0" prefWidth="74.0" styleClass="delete" stylesheets="@../../../../../back.css" text=" " />
+                        <JFXButton fx:id="deletebookbutton" onAction="#editBookDeletButtonClicked" prefHeight="72.0" prefWidth="74.0" styleClass="delete" stylesheets="@../../../../../back.css" text=" " />
                      </children></VBox>
                </children></AnchorPane>
          </content>
       </Tab>
-      <Tab text="History">
+      <Tab text="book sold history">
          <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="720.0" prefWidth="1200.0" style="-fx-background-color: #181D30;">
                <children>
@@ -285,7 +285,7 @@
                            </children>
                         </JFXScrollPane>
                         <JFXTextArea fx:id="bookhistorytextarea" prefHeight="71.0" prefWidth="1180.0" />
-                        <JFXButton onAction="#printHistory" prefHeight="103.0" prefWidth="75.0" styleClass="print" stylesheets="@../../../../../back.css" text="  " />
+                        <JFXButton fx:id="printhistorybutton" onAction="#printHistory" prefHeight="103.0" prefWidth="75.0" styleClass="print" stylesheets="@../../../../../back.css" text="  " />
                         <HBox alignment="CENTER" prefHeight="39.0" prefWidth="1180.0">
                            <children>
                               <Label text="Total Book sold:" textFill="#17d72d">

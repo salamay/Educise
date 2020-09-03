@@ -6,6 +6,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import sample.ConnectionError;
+import sample.LoginPage.DashBoard.SelectWindows.Registeration.LoadingWindow;
 import sample.LoginPage.LogInModel;
 
 import java.io.IOException;
@@ -75,6 +76,16 @@ public class InsertSubjectThread extends Thread {
                     boolean error=new ConnectionError().Connection("server return error "+response.code()+": Bad request,check field for invalid characters");
                     if (error){
                         System.out.println("[InsertSubjectThread]--> server error,bad request");
+                    }
+                });
+                response.close();
+            }
+            if (response.code()==403){
+                //Display alert dialog
+                Platform.runLater(()->{
+                    boolean error=new ConnectionError().Connection("server return error "+response.code()+": Access denied");
+                    if (error){
+                        System.out.println("Access denied");
                     }
                 });
                 response.close();

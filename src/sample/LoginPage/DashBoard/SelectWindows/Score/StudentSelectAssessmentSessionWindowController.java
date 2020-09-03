@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextArea;
+import javafx.animation.ScaleTransition;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
@@ -17,6 +18,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.util.Duration;
 import javafx.util.converter.DoubleStringConverter;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -450,6 +452,12 @@ public class StudentSelectAssessmentSessionWindowController implements Initializ
                 printbutton.setStyle("-fx-background-image: url('icon/drawable-xxxhdpi/ic_print_light_blue_700_18dp.png');-fx-background-size:100%, 100%;");
                 printbutton.setMinHeight(60);
                 printbutton.setMinWidth(60);
+                printbutton.setOnMouseEntered(event -> {
+                    ScaleTrans(printbutton);
+                });
+                printbutton.setOnMouseExited(event -> {
+                    RestoreScale(printbutton);
+                });
                 printbutton.setOnAction((print)->{
                     Path path= Paths.get(System.getProperty("user.dir")+"/MyChildSchool");
                     File pdffile=new File(path+"/studentscores.pdf");
@@ -492,6 +500,26 @@ public class StudentSelectAssessmentSessionWindowController implements Initializ
         ////////////////////////////////////List view stop Here//////////////////////////////////////////////
     }
 
+    public void ScaleTrans(Button button){
+        ScaleTransition scaleTransition=new ScaleTransition(new Duration(100));
+        scaleTransition.setNode(button);
+        scaleTransition.setFromX(1);
+        scaleTransition.setToX(1.2);
+        scaleTransition.setFromY(1);
+        scaleTransition.setToY(1.2);
+        scaleTransition.play();
+
+    }
+    public void RestoreScale(Button button){
+        ScaleTransition scaleTransition=new ScaleTransition(new Duration(100));
+        scaleTransition.setNode(button);
+        scaleTransition.setFromX(1.2);
+        scaleTransition.setToX(1);
+        scaleTransition.setFromY(1.2);
+        scaleTransition.setToY(1);
+        scaleTransition.play();
+
+    }
 
     //////////This class get the information sessions and set the value gotten to the Combobox passed in from the parent class
     //the progressbar indicate the progress

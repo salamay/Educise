@@ -195,14 +195,7 @@ public class EditingLayoutController implements Initializable {
             e.getRowValue().setGender(e.getNewValue());
             tableView.refresh();
         });
-
         studentclasscolumn.setCellValueFactory(new PropertyValueFactory<>("clas"));
-        studentclasscolumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        studentclasscolumn.setOnEditCommit((e)->{
-            editColumn(studentclasscolumn,e);
-            e.getRowValue().setClas(e.getNewValue());
-            tableView.refresh();
-        });
 
         tagcolumn.setCellValueFactory(new PropertyValueFactory<>("tag"));
         new RetrieveInformationThread().start();
@@ -435,6 +428,18 @@ public class EditingLayoutController implements Initializable {
                             response.close();
                         }
                     });
+                }
+                if (response.code()==403){
+                    //Display alert dialog
+                    Platform.runLater(()->{
+                        boolean error=new ConnectionError().Connection("server return error "+response.code()+": Access denied");
+                        if (error){
+                            LoadingWindow.window.close();
+                            EditstudentInformationWindow.StudentWindow.close();
+                            System.out.println("[CreatingSessionThread]--> Access denied");
+                        }
+                    });
+                    response.close();
                 }
             } catch (IOException e) {
                 //Display an Alert dialog

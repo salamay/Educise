@@ -7,6 +7,7 @@ import okhttp3.*;
 import sample.ConnectionError;
 import sample.LoginPage.DashBoard.Admin.SchoolFee.Fee;
 import sample.LoginPage.DashBoard.Admin.SchoolFee.SchoolFeeWindowController;
+import sample.LoginPage.DashBoard.SelectWindows.Registeration.LoadingWindow;
 import sample.LoginPage.LogInModel;
 
 
@@ -78,6 +79,16 @@ public class insertTerm extends Thread{
                     boolean error=new ConnectionError().Connection("server return error "+response.code()+": Server cannot process your request,check fields for invalid character");
                     if (error){
                         System.out.println("[InsertTerm]--> Connection error");
+                    }
+                });
+                response.close();
+            }
+            if (response.code()==403){
+                //Display alert dialog
+                Platform.runLater(()->{
+                    boolean error=new ConnectionError().Connection("server return error "+response.code()+": Access denied");
+                    if (error){
+                        System.out.println("Access denied");
                     }
                 });
                 response.close();

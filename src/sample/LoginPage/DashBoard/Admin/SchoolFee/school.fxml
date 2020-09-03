@@ -57,7 +57,7 @@
                   <Font name="System Italic" size="12.0" />
                </font>
             </Label>
-            <JFXButton onAction="#getSchoolfeeWithoutTerm" style="-fx-background-color: #499954; -fx-background-radius: 20 20 20 20;" text="Get school fee" textFill="#e4e4e8">
+            <JFXButton fx:id="getschoolfeeWithoutTermButton" onAction="#getSchoolfeeWithoutTerm" style="-fx-background-color: #499954; -fx-background-radius: 20 20 20 20;" text="Get school fee" textFill="#e4e4e8">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
@@ -95,15 +95,15 @@
             <children>
             <Label text="Minimum amount:" textFill="#e41515" />
             <TextField fx:id="minimumamount" prefHeight="0.0" prefWidth="118.0" />
-                <JFXButton buttonType="RAISED" onAction="#fetchDebtors" prefHeight="43.0" prefWidth="43.0" styleClass="fetch" stylesheets="@../../../../../back.css" text=" " />
+                <JFXButton fx:id="getdebtorsbutton" buttonType="RAISED" onAction="#fetchDebtors" prefHeight="43.0" prefWidth="43.0" styleClass="fetch" stylesheets="@../../../../../back.css" text=" " />
                 <Label prefHeight="32.0" prefWidth="118.0" text="Fetch out dabtors" textAlignment="CENTER" textFill="#d70d0d">
                     <font>
                         <Font name="System Bold" size="14.0" />
                     </font>
                 </Label>
             <JFXTextArea fx:id="printingTextArea" />
-            <JFXButton buttonType="RAISED" onAction="#printButtonClicked" prefHeight="57.0" prefWidth="57.0" styleClass="print" stylesheets="@../../../../../back.css" text=" " />
-                <JFXButton buttonType="RAISED" onAction="#deleteButtonClicked" prefHeight="76.0" prefWidth="77.0" styleClass="delete" stylesheets="@../../../../../back.css" text=" " />
+            <JFXButton fx:id="printbutton" buttonType="RAISED" onAction="#printButtonClicked" prefHeight="57.0" prefWidth="57.0" styleClass="print" stylesheets="@../../../../../back.css" text=" " />
+                <JFXButton fx:id="deleteschoolfeebutton" buttonType="RAISED" onAction="#deleteButtonClicked" prefHeight="76.0" prefWidth="77.0" styleClass="delete" stylesheets="@../../../../../back.css" text=" " />
             </children>
         </VBox>
     </right>

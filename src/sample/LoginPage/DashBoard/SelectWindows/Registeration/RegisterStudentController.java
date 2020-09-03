@@ -111,7 +111,7 @@ public class RegisterStudentController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        classCombobox.getItems().addAll("JSS 1","JSS 2","JSS 3","SS 1","SS 2","SS 3");
+        classCombobox.getItems().addAll("Nursery 1","Nursery 2","Primary 1","Primary 2","Primary 3","Primary 4","Primary 5","JSS 1","JSS 2","JSS 3","SS 1","SS 2","SS 3");
         tagComboBox.getItems().addAll("DAY","BOARDER");
         ProgressIndicator progressIndicator=new ProgressIndicator();
         new ClassThread(SessionComboBox,progressIndicator).start();
@@ -357,7 +357,9 @@ public class RegisterStudentController implements Initializable {
         else{
             FutureAmbitionError.setVisible(false);
         }
-
+        if (file==null){
+            new ConnectionError().Connection("Please select student image");
+        }
 ///////////////Checked//////////////////////////////////////////////////////////////////////////////////////
 
             if(!StudentName.getText().isEmpty() && !Age.getText().isEmpty()  && !FatherName.getText().isEmpty()

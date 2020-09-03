@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.shape.*?>
 <?import javafx.geometry.*?>
 <?import com.jfoenix.controls.*?>
 <?import java.lang.*?>
@@ -7,6 +8,7 @@
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Circle?>
 
 <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="208.0" prefWidth="600.0" style="-fx-background-color: #F0F0F0;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.LoginPage.DashBoard.SelectWindows.Registeration.LoadingDialogController">
    <children>
@@ -15,10 +17,14 @@
          <children>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                <children>
-                  <ProgressIndicator fx:id="progressindicator" prefHeight="118.0" prefWidth="600.0">
-                     <padding>
-                        <Insets bottom="5.0" top="5.0" />
-                     </padding></ProgressIndicator>
+                  <StackPane fx:id="stackpane" prefHeight="93.0" prefWidth="201.0">
+                     <children>
+                        <Circle fx:id="c1" fill="#f0f0f0" radius="65.0" stroke="#1a0dd6" strokeType="INSIDE" strokeWidth="2.0" style="-fx-stroke-dash-array: 40;" />
+                        <Circle fx:id="c2" fill="#d8d9d3" radius="52.0" stroke="#04ff3a" strokeType="INSIDE" strokeWidth="2.0" style="-fx-stroke-dash-array: 30;" />
+                        <Circle fx:id="c3" fill="#f0f0f0" layoutX="111.0" layoutY="50.0" radius="38.0" stroke="#9e6464" strokeType="INSIDE" strokeWidth="2.0" style="-fx-stroke-dash-array: 20;" />
+                        <Circle fx:id="c4" fill="#d8d9d3" layoutX="111.0" layoutY="50.0" radius="15.0" stroke="#ff05a1" strokeType="INSIDE" strokeWidth="2.0" style="-fx-stroke-dash-array: 10;" />
+                     </children>
+                  </StackPane>
                   <Label alignment="CENTER" prefHeight="17.0" prefWidth="645.0" text="Please wait......" textAlignment="CENTER">
                      <VBox.margin>
                         <Insets bottom="5.0" />

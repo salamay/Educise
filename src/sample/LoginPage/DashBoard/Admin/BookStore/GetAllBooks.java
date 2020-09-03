@@ -81,6 +81,17 @@ public class GetAllBooks extends Thread {
                 }
                 response.close();
             }
+            if (response.code()==403){
+                //Display alert dialog
+                Platform.runLater(()->{
+                    LoadingWindow.window.close();
+                    boolean error=new ConnectionError().Connection("server return error "+response.code()+": Access denied");
+                    if (error){
+                        System.out.println("Access denied");
+                    }
+                });
+                response.close();
+            }
         } catch (IOException e) {
             Platform.runLater(()->{
                 LoadingWindow.window.close();

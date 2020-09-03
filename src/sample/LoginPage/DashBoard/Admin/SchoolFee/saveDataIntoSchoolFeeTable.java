@@ -68,7 +68,6 @@ public class saveDataIntoSchoolFeeTable extends Thread{
             if (response.code()==400){
                 //Display alert dialog
                 Platform.runLater(()->{
-                    LoadingWindow.window.close();
                     boolean error=new ConnectionError().Connection("server return error "+response.code()+": unable to save school fee");
                     if (error){
                         System.out.println("[saveDataIntoSchoolFeetable]--> unable to save school fee on the server");
@@ -79,10 +78,19 @@ public class saveDataIntoSchoolFeeTable extends Thread{
             if (response.code()==422){
                 //Display alert dialog
                 Platform.runLater(()->{
-                    LoadingWindow.window.close();
                     boolean error=new ConnectionError().Connection("server return error "+response.code()+": Server cannot process your request,check fields for invalid character");
                     if (error){
                         System.out.println("[saveDataIntoSchoolFeetable]--> Connection error");
+                    }
+                });
+                response.close();
+            }
+            if (response.code()==403){
+                //Display alert dialog
+                Platform.runLater(()->{
+                    boolean error=new ConnectionError().Connection("server return error "+response.code()+": Access denied");
+                    if (error){
+                        System.out.println("Access denied");
                     }
                 });
                 response.close();

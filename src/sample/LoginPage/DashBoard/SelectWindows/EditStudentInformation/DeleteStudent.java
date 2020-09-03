@@ -56,13 +56,27 @@ public class DeleteStudent extends Thread {
                 });
                 response.close();
             }
-            if (response.code()==422){
-                LoadingWindow.window.close();
-                boolean error=new ConnectionError().Connection("Cannot process your request");
-                if (error){
-                    System.out.println("[DeleteStudent]--> Cannot process your request");
-                }
+            if (response.code()==403){
+                //Display alert dialog
+                Platform.runLater(()->{
+                    boolean error=new ConnectionError().Connection("server return error "+response.code()+": Access denied");
+                    if (error){
+                        LoadingWindow.window.close();
+                        System.out.println("[CreatingSessionThread]--> Access denied");
+                    }
+                });
                 response.close();
+            }
+            if (response.code()==422){
+                Platform.runLater(()->{
+                    LoadingWindow.window.close();
+                    boolean error=new ConnectionError().Connection("Cannot process your request");
+                    if (error){
+                        System.out.println("[DeleteStudent]--> Cannot process your request");
+                    }
+                    response.close();
+                });
+
             }
         } catch (IOException e) {
             Platform.runLater(()->{

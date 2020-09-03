@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.shape.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Circle?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="splashscreen" stylesheets="@../back.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.SplashScreenController">
+   <children>
+      <VBox alignment="CENTER" layoutX="183.0" layoutY="40.0" prefHeight="250.0" prefWidth="255.0" AnchorPane.bottomAnchor="110.0" AnchorPane.leftAnchor="183.0" AnchorPane.rightAnchor="162.0" AnchorPane.topAnchor="40.0">
+         <children>
+             <StackPane fx:id="stackpane" prefHeight="159.0" prefWidth="201.0">
+                 <children>
+                     <Circle fx:id="c1" fill="#ebe7ec" radius="76.0" stroke="#1a0dd6" strokeType="INSIDE" strokeWidth="2.0" style="-fx-stroke-dash-array: 40;" />
+                     <Circle fx:id="c2" fill="#e1dce2" radius="57.0" stroke="#04ff3a" strokeType="INSIDE" strokeWidth="2.0" style="-fx-stroke-dash-array: 30;" />
+                     <Circle fx:id="c3" fill="#ebe7ec" layoutX="111.0" layoutY="50.0" radius="38.0" stroke="#9e6464" strokeType="INSIDE" strokeWidth="2.0" style="-fx-stroke-dash-array: 20;" />
+                     <Circle fx:id="c4" fill="#e1dce2" layoutX="111.0" layoutY="50.0" radius="15.0" stroke="#ff05a1" strokeType="INSIDE" strokeWidth="2.0" style="-fx-stroke-dash-array: 10;" />
+                 </children>
+             </StackPane>
+            <HBox alignment="CENTER" prefHeight="91.0" prefWidth="255.0" styleClass="p" stylesheets="@../back.css">
+               <children>
+                  <Label fx:id="edulabel" prefHeight="75.0" prefWidth="70.0" text="Edu" textFill="#cc1f8f" wrapText="true">
+                     <font>
+                        <Font name="Gigi" size="48.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="ciselabel" prefHeight="53.0" prefWidth="76.0" text="CISE" textFill="#184abf">
+                     <font>
+                        <Font name="System Bold Italic" size="36.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <Label fx:id="managemyschoollabel" prefHeight="20.0" prefWidth="191.0" text="Manage my school perfectly.">
+               <font>
+                  <Font name="System Italic" size="14.0" />
+               </font>
+            </Label>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

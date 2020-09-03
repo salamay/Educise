@@ -16,6 +16,8 @@ public class RetrieveResponseEntity {
     private String rolemodel;
     private String futureambition;
     private String gender;
+    private String tag;
+    private String clas;
     private byte[] student;
     private byte[] father;
     private byte[] mother;
@@ -165,5 +167,21 @@ public class RetrieveResponseEntity {
 
     public void setMother(byte[] mother) {
         this.mother = mother;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
+
+    public String getClas() {
+        return clas;
+    }
+
+    public void setClas(String clas) {
+        this.clas = clas;
     }
 }

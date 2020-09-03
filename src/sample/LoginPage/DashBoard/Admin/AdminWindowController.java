@@ -1,5 +1,6 @@
 package sample.LoginPage.DashBoard.Admin;
 
+import sample.ConnectionError;
 import sample.LoginPage.DashBoard.Admin.BookStore.BookStoreWindow;
 import sample.LoginPage.DashBoard.Admin.SchoolFee.SchoolFeeWindow;
 
@@ -14,7 +15,7 @@ public class AdminWindowController {
         new BookStoreWindow();
     }
     public void ExamButtonClicked(){
-
+        new ConnectionError().Connection("Not available right now");
     }
 
 }

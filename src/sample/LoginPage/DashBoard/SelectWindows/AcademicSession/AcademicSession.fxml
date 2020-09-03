@@ -17,90 +17,169 @@
                </font>
             </Label>
             <VBox layoutX="14.0" layoutY="34.0" prefHeight="259.0" prefWidth="566.0" styleClass="SessionBackground" stylesheets="@../../../../../back.css" />
-            <VBox alignment="CENTER" layoutX="34.0" layoutY="319.0" prefHeight="361.0" prefWidth="517.0" spacing="10.0">
+            <HBox layoutX="13.0" layoutY="369.0" prefHeight="249.0" prefWidth="566.0" spacing="5.0" AnchorPane.bottomAnchor="72.0" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="11.0" AnchorPane.topAnchor="369.0">
                <children>
-                  <VBox alignment="CENTER" prefHeight="68.0" prefWidth="517.0">
+                  <VBox alignment="CENTER" prefHeight="278.0" prefWidth="517.0" spacing="10.0">
                      <children>
-                        <Label prefHeight="22.0" prefWidth="117.0" text="Create New Session:" textFill="#0a861d" VBox.vgrow="ALWAYS">
-                           <font>
-                              <Font name="System Bold" size="12.0" />
-                           </font>
-                        </Label>
-                        <Label text="Note: You have to create session for each class at the end of each session with the format below" textFill="#ff3f3f" VBox.vgrow="ALWAYS">
-                           <font>
-                              <Font name="System Bold Italic" size="12.0" />
-                           </font></Label>
-                        <Label prefHeight="17.0" prefWidth="327.0" text="Format : jss1_starting year_end year e.g jss1_2018_2019 " textAlignment="CENTER" textFill="#008009" wrapText="true" VBox.vgrow="ALWAYS" />
+                        <HBox prefHeight="17.0" prefWidth="549.0">
+                           <children>
+                              <Label text="Jss1 Session:" HBox.hgrow="ALWAYS">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="jss1SessionTextField" prefHeight="25.0" prefWidth="174.0" promptText="Enter Session Name" HBox.hgrow="ALWAYS" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="17.0" prefWidth="549.0">
+                           <children>
+                              <Label text="Jss2 Session:" HBox.hgrow="ALWAYS">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="jss2SessionTextField" prefHeight="25.0" prefWidth="181.0" promptText="Enter Session Name" HBox.hgrow="ALWAYS" />
+                           </children>
+                        </HBox>
+                        <HBox layoutX="10.0" layoutY="10.0" prefHeight="17.0" prefWidth="549.0">
+                           <children>
+                              <Label prefHeight="17.0" prefWidth="98.0" text="Jss3 Session:" HBox.hgrow="ALWAYS">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="jss3SessionTextField" prefHeight="25.0" prefWidth="226.0" promptText="Enter Session Name" HBox.hgrow="ALWAYS" />
+                           </children>
+                        </HBox>
+                        <HBox layoutX="10.0" layoutY="35.0" prefHeight="17.0" prefWidth="549.0">
+                           <children>
+                              <Label prefHeight="17.0" prefWidth="86.0" text="Ss1  Session:" HBox.hgrow="ALWAYS">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="ss1SessionTextField" prefHeight="25.0" prefWidth="213.0" promptText="Enter Session Name" HBox.hgrow="ALWAYS" />
+                           </children>
+                        </HBox>
+                        <HBox layoutX="10.0" layoutY="85.0" prefHeight="17.0" prefWidth="549.0">
+                           <children>
+                              <Label prefHeight="17.0" prefWidth="85.0" text="Ss2  Session:" HBox.hgrow="ALWAYS">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="ss2SessionTextField" prefHeight="25.0" prefWidth="209.0" promptText="Enter Session Name" HBox.hgrow="ALWAYS" />
+                           </children>
+                        </HBox>
+                        <HBox layoutX="10.0" layoutY="110.0" prefHeight="17.0" prefWidth="549.0">
+                           <children>
+                              <Label text="Ss3  Session:" HBox.hgrow="ALWAYS">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="ss3SessionTextField" prefHeight="25.0" prefWidth="191.0" promptText="Enter Session Name" HBox.hgrow="ALWAYS" />
+                           </children>
+                        </HBox>
                      </children>
                   </VBox>
-                  <HBox prefHeight="17.0" prefWidth="549.0">
+                  <VBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="278.0" prefWidth="517.0" spacing="10.0">
                      <children>
-                        <Label text="Jss1 Session name:" HBox.hgrow="ALWAYS">
-                           <font>
-                              <Font name="System Bold" size="12.0" />
-                           </font>
-                        </Label>
-                        <TextField fx:id="jss1SessionTextField" prefHeight="9.0" prefWidth="399.0" promptText="Enter Session Name" HBox.hgrow="ALWAYS" />
+                        <HBox prefHeight="17.0" prefWidth="549.0">
+                           <children>
+                              <Label prefHeight="17.0" prefWidth="93.0" text="Pry 1 Session:" HBox.hgrow="ALWAYS">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="pr1SessionTextField" prefHeight="25.0" prefWidth="202.0" promptText="Enter Session Name" HBox.hgrow="ALWAYS" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="17.0" prefWidth="549.0">
+                           <children>
+                              <Label prefHeight="17.0" prefWidth="101.0" text="Pry 2 Session:" HBox.hgrow="ALWAYS">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="pr2SessionTextField" prefHeight="25.0" prefWidth="207.0" promptText="Enter Session Name" HBox.hgrow="ALWAYS" />
+                           </children>
+                        </HBox>
+                        <HBox layoutX="10.0" layoutY="10.0" prefHeight="17.0" prefWidth="549.0">
+                           <children>
+                              <Label prefHeight="17.0" prefWidth="103.0" text="Pry 3 Session:" HBox.hgrow="ALWAYS">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="pr3SessionTextField" prefHeight="25.0" prefWidth="209.0" promptText="Enter Session Name" HBox.hgrow="ALWAYS" />
+                           </children>
+                        </HBox>
+                        <HBox layoutX="10.0" layoutY="35.0" prefHeight="17.0" prefWidth="549.0">
+                           <children>
+                              <Label prefHeight="17.0" prefWidth="103.0" text="Pry 4  Session:" HBox.hgrow="ALWAYS">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="pr4SessionTextField" prefHeight="25.0" prefWidth="207.0" promptText="Enter Session Name" HBox.hgrow="ALWAYS" />
+                           </children>
+                        </HBox>
+                        <HBox layoutX="10.0" layoutY="85.0" prefHeight="17.0" prefWidth="549.0">
+                           <children>
+                              <Label prefHeight="17.0" prefWidth="86.0" text="Pry 5  Session:" HBox.hgrow="ALWAYS">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="pr5SessionTextField" prefHeight="25.0" prefWidth="190.0" promptText="Enter Session Name" HBox.hgrow="ALWAYS" />
+                           </children>
+                        </HBox>
+                        <HBox layoutX="10.0" layoutY="110.0" prefHeight="17.0" prefWidth="549.0">
+                           <children>
+                              <Label prefHeight="17.0" prefWidth="105.0" text="Nur 1  Session:" HBox.hgrow="ALWAYS">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="nur1SessionTextField" prefHeight="25.0" prefWidth="207.0" promptText="Enter Session Name" HBox.hgrow="ALWAYS" />
+                           </children>
+                        </HBox>
+                        <HBox layoutX="10.0" layoutY="185.0" prefHeight="17.0" prefWidth="549.0">
+                           <children>
+                              <Label prefHeight="17.0" prefWidth="105.0" text="Nur 2  Session:" HBox.hgrow="ALWAYS">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="nur2SessionTextField" prefHeight="25.0" prefWidth="205.0" promptText="Enter Session Name" HBox.hgrow="ALWAYS" />
+                           </children>
+                        </HBox>
                      </children>
-                  </HBox>
-                  <HBox prefHeight="17.0" prefWidth="549.0">
-                     <children>
-                        <Label text="Jss2 Session name:" HBox.hgrow="ALWAYS">
-                           <font>
-                              <Font name="System Bold" size="12.0" />
-                           </font>
-                        </Label>
-                        <TextField fx:id="jss2SessionTextField" prefHeight="9.0" prefWidth="399.0" promptText="Enter Session Name" HBox.hgrow="ALWAYS" />
-                     </children>
-                  </HBox>
-                  <HBox layoutX="10.0" layoutY="10.0" prefHeight="17.0" prefWidth="549.0">
-                     <children>
-                        <Label text="Jss3 Session name:" HBox.hgrow="ALWAYS">
-                           <font>
-                              <Font name="System Bold" size="12.0" />
-                           </font>
-                        </Label>
-                        <TextField fx:id="jss3SessionTextField" prefHeight="9.0" prefWidth="399.0" promptText="Enter Session Name" HBox.hgrow="ALWAYS" />
-                     </children>
-                  </HBox>
-                  <HBox layoutX="10.0" layoutY="35.0" prefHeight="17.0" prefWidth="549.0">
-                     <children>
-                        <Label text="Ss1  Session name:" HBox.hgrow="ALWAYS">
-                           <font>
-                              <Font name="System Bold" size="12.0" />
-                           </font>
-                        </Label>
-                        <TextField fx:id="ss1SessionTextField" prefHeight="9.0" prefWidth="399.0" promptText="Enter Session Name" HBox.hgrow="ALWAYS" />
-                     </children>
-                  </HBox>
-                  <HBox layoutX="10.0" layoutY="85.0" prefHeight="17.0" prefWidth="549.0">
-                     <children>
-                        <Label text="Ss2  Session name:" HBox.hgrow="ALWAYS">
-                           <font>
-                              <Font name="System Bold" size="12.0" />
-                           </font>
-                        </Label>
-                        <TextField fx:id="ss2SessionTextField" prefHeight="9.0" prefWidth="399.0" promptText="Enter Session Name" HBox.hgrow="ALWAYS" />
-                     </children>
-                  </HBox>
-                  <HBox layoutX="10.0" layoutY="110.0" prefHeight="17.0" prefWidth="549.0">
-                     <children>
-                        <Label text="Ss3  Session name:" HBox.hgrow="ALWAYS">
-                           <font>
-                              <Font name="System Bold" size="12.0" />
-                           </font>
-                        </Label>
-                        <TextField fx:id="ss3SessionTextField" prefHeight="4.0" prefWidth="411.0" promptText="Enter Session Name" HBox.hgrow="ALWAYS" />
-                     </children>
-                  </HBox>
-                  <Label fx:id="Error" alignment="CENTER" prefHeight="17.0" prefWidth="238.0" text="check your input" textFill="#f50e0e" visible="false" VBox.vgrow="ALWAYS">
+                  </VBox>
+               </children>
+            </HBox>
+            <VBox alignment="CENTER" layoutX="13.0" layoutY="304.0" prefHeight="53.0" prefWidth="566.0">
+               <children>
+                  <Label prefHeight="22.0" prefWidth="117.0" text="Create New Session:" textFill="#0a861d" VBox.vgrow="ALWAYS">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>
                   </Label>
-                  <Button mnemonicParsing="false" onAction="#CreateSessionClicked" prefHeight="34.0" prefWidth="94.0" text="Create Session" />
+                  <Label prefHeight="32.0" prefWidth="538.0" text="Note: You have to create session for each class at the end of each session with the format below" textFill="#ff3f3f" wrapText="true" VBox.vgrow="ALWAYS">
+                     <font>
+                        <Font name="System Bold Italic" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label prefHeight="17.0" prefWidth="327.0" text="Format : jss1_starting year_end year e.g jss1_2018_2019 " textAlignment="CENTER" textFill="#008009" wrapText="true" VBox.vgrow="ALWAYS" />
                </children>
             </VBox>
+            <Button layoutX="254.0" layoutY="654.0" mnemonicParsing="false" onAction="#CreateSessionClicked" prefHeight="28.0" prefWidth="117.0" text="Create Session" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="244.0" AnchorPane.rightAnchor="229.0" AnchorPane.topAnchor="654.0" />
+            <Label fx:id="Error" alignment="CENTER" layoutX="193.0" layoutY="618.0" prefHeight="17.0" prefWidth="238.0" text="check your input" textFill="#f50e0e" visible="false" wrapText="true">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
          </children>
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

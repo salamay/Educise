@@ -7,6 +7,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import sample.ConnectionError;
+import sample.LoginPage.DashBoard.SelectWindows.Registeration.LoadingWindow;
 import sample.LoginPage.LogInModel;
 
 import java.io.IOException;
@@ -76,6 +77,7 @@ public class getScoreSessionThread extends Thread {
                     }
                 });
             }
+
         } catch (IOException e) {
             //Display an Alert dialog
             Platform.runLater(()->{

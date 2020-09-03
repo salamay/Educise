@@ -19,19 +19,40 @@ public class CreatingSessionThread  extends Thread{
     private  String ss1sessionName;
     private String ss2sessionName;
     private String ss3sessionName;
-    public CreatingSessionThread(String jss1Name, String jss2Name, String jss3Name, String ss1Name, String ss2Name, String ss3Name){
+    private String pr1sessionName;
+    private String pr2sessionName;
+    private  String pr3sessionName;
+    private String pr4sessionName;
+    private String pr5sessionName;
+    private String nur1sessionName;
+    private String nur2sessionName;
+    public CreatingSessionThread(String jss1Name, String jss2Name, String jss3Name, String ss1Name, String ss2Name, String ss3Name, String pr1sessionName, String pr2sessionName, String pr3sessionName, String pr4sessionName, String pr5sessionName, String nur1sessionName, String nur2sessionName){
         this.jss1sessionName=jss1Name;
         this.jss2sessionName=jss2Name;
         this.jss3sessionName=jss3Name;
         this.ss1sessionName=ss1Name;
         this.ss2sessionName=ss2Name;
         this.ss3sessionName=ss3Name;
+        this.pr1sessionName=pr1sessionName;
+        this.pr2sessionName=pr2sessionName;
+        this.pr3sessionName=pr3sessionName;
+        this.pr4sessionName=pr4sessionName;
+        this.pr5sessionName=pr5sessionName;
+        this.nur1sessionName=nur1sessionName;
+        this.nur2sessionName=nur2sessionName;
         System.out.println("[CreatingSessionThread]"+jss1sessionName);
         System.out.println("[CreatingSessionThread]"+jss2sessionName);
         System.out.println("[CreatingSessionThread]"+jss3sessionName);
         System.out.println("[CreatingSessionThread]"+ss1sessionName);
         System.out.println("[CreatingSessionThread]"+ss2sessionName);
         System.out.println("[CreatingSessionThread]"+ss3sessionName);
+        System.out.println("[CreatingSessionThread]"+this.pr1sessionName);
+        System.out.println("[CreatingSessionThread]"+this.pr2sessionName);
+        System.out.println("[CreatingSessionThread]"+this.pr3sessionName);
+        System.out.println("[CreatingSessionThread]"+this.pr4sessionName);
+        System.out.println("[CreatingSessionThread]"+this.pr5sessionName);
+        System.out.println("[CreatingSessionThread]"+this.nur1sessionName);
+        System.out.println("[CreatingSessionThread]"+this.nur2sessionName);
     }
     @Override
     public void run() {
@@ -42,6 +63,13 @@ public class CreatingSessionThread  extends Thread{
         createSessionRequestEntity.setSs1(ss1sessionName);
         createSessionRequestEntity.setSs2(ss2sessionName);
         createSessionRequestEntity.setSs3(ss3sessionName);
+        createSessionRequestEntity.setPr1(pr1sessionName);
+        createSessionRequestEntity.setPr2(pr2sessionName);
+        createSessionRequestEntity.setPr3(pr3sessionName);
+        createSessionRequestEntity.setPr4(pr4sessionName);
+        createSessionRequestEntity.setPr5(pr5sessionName);
+        createSessionRequestEntity.setNur1(nur1sessionName);
+        createSessionRequestEntity.setNur2(nur2sessionName);
         System.out.println("[CreatingSessionThread]: Preparing JSON body");
         GsonBuilder builder=new GsonBuilder();
         builder.setPrettyPrinting();
@@ -82,7 +110,19 @@ public class CreatingSessionThread  extends Thread{
                 Platform.runLater(()->{
                     boolean error=new ConnectionError().Connection("server return error "+response.code()+": Server cannot process your request,Contact the developer to fix the error");
                     if (error){
+                        LoadingWindow.window.close();
                         System.out.println("[CreatingSessionThread]--> Server error ,server cannot process request");
+                    }
+                });
+                response.close();
+            }
+            if (response.code()==403){
+                //Display alert dialog
+                Platform.runLater(()->{
+                    boolean error=new ConnectionError().Connection("server return error "+response.code()+": Access denied");
+                    if (error){
+                        LoadingWindow.window.close();
+                        System.out.println("[CreatingSessionThread]--> Access denied");
                     }
                 });
                 response.close();
@@ -92,6 +132,7 @@ public class CreatingSessionThread  extends Thread{
                 Platform.runLater(()->{
                     boolean error=new ConnectionError().Connection("server return error "+response.code()+": Bad request,check field for invalid characters");
                     if (error){
+                        LoadingWindow.window.close();
                         System.out.println("[CreatingSessionThread]--> server error,bad request");
                     }
                 });

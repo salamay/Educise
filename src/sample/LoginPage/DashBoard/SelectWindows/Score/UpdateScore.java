@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import javafx.application.Platform;
 import okhttp3.*;
 import sample.ConnectionError;
+import sample.LoginPage.DashBoard.SelectWindows.Registeration.LoadingWindow;
 import sample.LoginPage.LogInModel;
 
 import java.io.IOException;
@@ -91,6 +92,16 @@ public class UpdateScore extends Thread {
                     boolean error=new ConnectionError().Connection("server return error "+response.code()+": Bad request,check field for invalid characters");
                     if (error){
                         System.out.println("[GetScoreThread]--> server error,bad request");
+                    }
+                });
+                response.close();
+            }
+            if (response.code()==403){
+                //Display alert dialog
+                Platform.runLater(()->{
+                    boolean error=new ConnectionError().Connection("server return error "+response.code()+": Access denied");
+                    if (error){
+                        System.out.println("Access denied");
                     }
                 });
                 response.close();

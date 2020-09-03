@@ -93,7 +93,7 @@ public class InformationWindow {
         VBox infocontainer=new VBox();
         String infoStyle="-fx-background-color:#1A162B;";
         infocontainer.setStyle(infoStyle);
-        infocontainer.setSpacing(10);
+        infocontainer.setSpacing(5);
         infocontainer.setPadding(new Insets(5,5,5,5));
         infocontainer.setMinWidth(Control.USE_COMPUTED_SIZE);
         infocontainer.setMinHeight(Control.USE_COMPUTED_SIZE);
@@ -115,8 +115,13 @@ public class InformationWindow {
         ClubLabel.setStyle(labelstyle);
         Label ROleModelLabel=new Label("RoleModel: ");
         ROleModelLabel.setStyle(labelstyle);
-
-        infocontainer.getChildren().addAll(AgeLabel,PhoneNoLabel,FatherNameLabel,MotherNameLabel,AddressLabel,NextOfKinLabel,GenderLabel,ClubLabel,ROleModelLabel);
+        Label Class=new Label("Class: ");
+        Class.setStyle(labelstyle);
+        Label Tag=new Label("Type: ");
+        Tag.setStyle(labelstyle);
+        Label ambition=new Label("Ambition: ");
+        ambition.setStyle(labelstyle);
+        infocontainer.getChildren().addAll(AgeLabel,PhoneNoLabel,FatherNameLabel,MotherNameLabel,AddressLabel,NextOfKinLabel,GenderLabel,ClubLabel,ROleModelLabel,Class,Tag,ambition);
         bdp.setLeft(infocontainer);
 
         //Vbox containing node
@@ -124,29 +129,47 @@ public class InformationWindow {
         infocontainer2.setStyle(infoStyle);
         infocontainer2.setMinHeight(Control.USE_COMPUTED_SIZE);
         infocontainer2.setMinWidth(Control.USE_COMPUTED_SIZE);
-        infocontainer2.setSpacing(10);
+        infocontainer2.setSpacing(5);
         infocontainer2.setPadding(new Insets(5,5,5,5));
 
         Label ageLabel=new Label();
         ageLabel.setStyle(labelstyle);
+        ageLabel.setWrapText(true);
         Label phoneNoLabel=new Label();
         phoneNoLabel.setStyle(labelstyle);
+        PhoneNoLabel.setWrapText(true);
         Label fatherNameLabel=new Label();
         fatherNameLabel.setStyle(labelstyle);
+        fatherNameLabel.setWrapText(true);
         Label motherNameLabel=new Label();
         motherNameLabel.setStyle(labelstyle);
+        motherNameLabel.setWrapText(true);
         Label addressLabel=new Label();
         addressLabel.setStyle(labelstyle);
+        addressLabel.setWrapText(true);
         Label nextOfKinLabel=new Label();
         nextOfKinLabel.setStyle(labelstyle);
+        nextOfKinLabel.setWrapText(true);
         Label genderLabel=new Label();
         genderLabel.setStyle(labelstyle);
+        genderLabel.setWrapText(true);
         Label clubLabel=new Label();
         clubLabel.setStyle(labelstyle);
+        clubLabel.setWrapText(true);
         Label rOleModelLabel=new Label();
         rOleModelLabel.setStyle(labelstyle);
+        rOleModelLabel.setWrapText(true);
+        Label Class2=new Label();
+        Class2.setStyle(labelstyle);
+        Class2.setWrapText(true);
+        Label Tag2=new Label();
+        Tag2.setStyle(labelstyle);
+        Tag2.setWrapText(true);
+        Label ambition2=new Label();
+        ambition2.setStyle(labelstyle);
+        ambition2.setWrapText(true);
         infocontainer2.getChildren().addAll(ageLabel,phoneNoLabel,fatherNameLabel,motherNameLabel,addressLabel,
-                nextOfKinLabel,genderLabel,clubLabel,rOleModelLabel);
+                nextOfKinLabel,genderLabel,clubLabel,rOleModelLabel,Class2,Tag2,ambition2);
         bdp.setCenter(infocontainer2);
         borderPane.setBottom(bdp);
         window1.initModality(Modality.APPLICATION_MODAL);
@@ -162,7 +185,7 @@ public class InformationWindow {
         SelectInformationSesssionWindow.StudentWindow.close();
         //this get the student information,the clas and new value is the class and the student name respectively
         new ClassInformationThread(clas,NewValue,NameLabel,ageLabel,phoneNoLabel,fatherNameLabel,motherNameLabel,
-                addressLabel,nextOfKinLabel,genderLabel,clubLabel,rOleModelLabel,image,FatherImage,MotherImage,FatherName,MotherName).start();
+                addressLabel,nextOfKinLabel,genderLabel,clubLabel,rOleModelLabel,image,FatherImage,MotherImage,FatherName,MotherName,Class2,Tag2,ambition2).start();
     }
 
 }

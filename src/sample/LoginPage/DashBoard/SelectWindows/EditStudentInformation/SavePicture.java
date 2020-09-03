@@ -86,6 +86,17 @@ public class SavePicture extends Thread{
                     }
                 });
             }
+            if (response.code()==403){
+                //Display alert dialog
+                Platform.runLater(()->{
+                    boolean error=new ConnectionError().Connection("server return error "+response.code()+": Access denied");
+                    if (error){
+                        LoadingWindow.window.close();
+                        System.out.println("[CreatingSessionThread]--> Access denied");
+                    }
+                });
+                response.close();
+            }
         } catch (IOException e) {
             //Display an Alert dialog
             Platform.runLater(()->{

@@ -45,11 +45,10 @@ public class EditBookThread extends Thread {
             System.out.println("[EditBook]:"+response.body());
             if (response.code()==200||response.code()==201||response.code()==212||response.code()==202){
                 Platform.runLater(()->{
-                    LoadingWindow.window.close();
+
                 });
             }else {
                 Platform.runLater(()->{
-                    LoadingWindow.window.close();
                     e.getTableColumn().onEditCancelProperty();
                     boolean error=new ConnectionError().Connection("server:error "+response.code()+" Unable to Edit book books");
                     if (error){
@@ -60,7 +59,6 @@ public class EditBookThread extends Thread {
             if (response.code()==404){
                 //Display alert dialog
                 Platform.runLater(()->{
-                    LoadingWindow.window.close();
                     boolean error=new ConnectionError().Connection("server return error "+response.code()+": Unable to edit book");
                     if (error){
                         System.out.println("[EditBook]--> unable to save school fee on the server");
@@ -71,7 +69,6 @@ public class EditBookThread extends Thread {
             if (response.code()==422){
                 //Display alert dialog
                 Platform.runLater(()->{
-                    LoadingWindow.window.close();
                     boolean error=new ConnectionError().Connection("server return error "+response.code()+": Server cannot process your request,check fields for invalid character");
                     if (error){
                         System.out.println("[EditBook]--> Connection error");
@@ -79,9 +76,18 @@ public class EditBookThread extends Thread {
                 });
                 response.close();
             }
+            if (response.code()==403){
+                //Display alert dialog
+                Platform.runLater(()->{
+                    boolean error=new ConnectionError().Connection("server return error "+response.code()+": Access denied");
+                    if (error){
+                        System.out.println("Access denied");
+                    }
+                });
+                response.close();
+            }
         } catch (IOException e) {
             Platform.runLater(()->{
-                LoadingWindow.window.close();
                 boolean error=new ConnectionError().Connection("Unable to establish connection,CHECK INTERNET CONNECTION");
                 if (error){
                     System.out.println("[EditBook]--> Connection Error,Window close");

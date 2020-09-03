@@ -4,12 +4,14 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextArea;
 
+import javafx.animation.ScaleTransition;
 import javafx.application.Platform;
 import javafx.fxml.Initializable;
 
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.util.Duration;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -58,12 +60,6 @@ public class SchoolFeeWindowController implements Initializable {
     private String term;
     private String session;
     private String tag;
-    private String modeofpayment;
-    private String studentname;
-    private String amount;
-    private String date;
-    private String depositor;
-    private String transactionid;
     public static byte[] pdf;
     public TableColumn<Fee,String> namecolumn;
     public TableColumn<Fee,String> amountcolumn;
@@ -76,8 +72,44 @@ public class SchoolFeeWindowController implements Initializable {
     public TableColumn<Fee,String> transactionidcolumn;
     public TableColumn<Fee,String> termcolumn;
     public JFXTextArea printingTextArea;
+    public JFXButton getschoolfeeWithoutTermButton;
+    public JFXButton getdebtorsbutton;
+    public JFXButton deleteschoolfeebutton;
+    public JFXButton printbutton;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        fetchbutton.setOnMouseEntered(event -> {
+            ScaleTrans(fetchbutton);
+        });
+        fetchbutton.setOnMouseExited(event -> {
+            RestoreScale(fetchbutton);
+        });
+        getschoolfeeWithoutTermButton.setOnMouseEntered(event -> {
+            ScaleTrans(getschoolfeeWithoutTermButton);
+        });
+        getschoolfeeWithoutTermButton.setOnMouseExited(event -> {
+            RestoreScale(getschoolfeeWithoutTermButton);
+        });
+        getdebtorsbutton.setOnMouseEntered(event -> {
+            ScaleTrans(getdebtorsbutton);
+        });
+        getdebtorsbutton.setOnMouseExited(event -> {
+            RestoreScale(getdebtorsbutton);
+        });
+        printbutton.setOnMouseEntered(event -> {
+            ScaleTrans(printbutton);
+        });
+        printbutton.setOnMouseExited(event -> {
+            RestoreScale(printbutton);
+        });
+        deleteschoolfeebutton.setOnMouseEntered(event -> {
+            ScaleTrans(deleteschoolfeebutton);
+        });
+        deleteschoolfeebutton.setOnMouseExited(event -> {
+            RestoreScale(deleteschoolfeebutton);
+        });
+
         classcombobox.getItems().addAll("Nursery 1","Nursery 2","Primary 1","Primary 2","Primary 3","Primary 4","Primary 5","Jss 1","Jss 2","Jss 3","SS 1","SS 2","SS 3");
         tagcombobox.getItems().addAll("DAY","BOARDER");
         new ClassThread(sessioncombobox,null).start();
@@ -624,6 +656,27 @@ public class SchoolFeeWindowController implements Initializable {
         }
     }
 
+
+    public void ScaleTrans(Button button){
+        ScaleTransition scaleTransition=new ScaleTransition(new Duration(100));
+        scaleTransition.setNode(button);
+        scaleTransition.setFromX(1);
+        scaleTransition.setToX(1.2);
+        scaleTransition.setFromY(1);
+        scaleTransition.setToY(1.2);
+        scaleTransition.play();
+
+    }
+    public void RestoreScale(Button button){
+        ScaleTransition scaleTransition=new ScaleTransition(new Duration(100));
+        scaleTransition.setNode(button);
+        scaleTransition.setFromX(1.2);
+        scaleTransition.setToX(1);
+        scaleTransition.setFromY(1.2);
+        scaleTransition.setToY(1);
+        scaleTransition.play();
+
+    }
     //////////This class get the information sessions and set the value gotten to the Combobox passed in from the parent class
     //the progressbar indicate the progress
     public class ClassThread extends Thread {

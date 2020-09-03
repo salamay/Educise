@@ -40,7 +40,9 @@ public class ClassInformationThread extends  Thread {
     private Label namelabel;
     private Label MotherName;
     private Label FatherName;
-
+    private Label class2;
+    private Label tag2;
+    private Label ambition2;
     private ImageView imageView;
     private ImageView FatherImageView;
     private ImageView MotherImageView;
@@ -52,7 +54,7 @@ public class ClassInformationThread extends  Thread {
         public ClassInformationThread(String clas, String name, Label namelabel, Label ageLabel, Label phoneNoLabel, Label fatherNameLabel,
                                       Label motherNameLabel, Label addressLabel, Label nextOfKinLabel, Label genderLabel,
                                       Label clubLabel, Label rOleModelLabel, ImageView image, ImageView Father,
-                                      ImageView Mother, Label FatherName, Label MotherName){
+                                      ImageView Mother, Label FatherName, Label MotherName, Label class2, Label tag2, Label ambition2){
             this.studentName=name;
             this.classname=clas;
             this.namelabel=namelabel;
@@ -71,6 +73,9 @@ public class ClassInformationThread extends  Thread {
             this.MotherImageView=Mother;
             this.FatherName=FatherName;
             this.MotherName=MotherName;
+            this.class2=class2;
+            this.tag2=tag2;
+            this.ambition2=ambition2;
             System.out.println(" [ClassInformationThread]:"+studentName);
             System.out.println("[ClassInformationThread]:"+classname);
         }
@@ -196,6 +201,9 @@ public class ClassInformationThread extends  Thread {
                           clubLabel.setText(retrieveResponseEntity.getClub());
                           rOleModelLabel.setText(retrieveResponseEntity.getRolemodel());
                           namelabel.setText(retrieveResponseEntity.getStudentname());
+                          tag2.setText(retrieveResponseEntity.getTag());
+                          class2.setText(retrieveResponseEntity.getClas());
+                          ambition2.setText(retrieveResponseEntity.getFutureambition());
                       });
 
 

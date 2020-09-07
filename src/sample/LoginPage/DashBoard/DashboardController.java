@@ -2,6 +2,7 @@ package sample.LoginPage.DashBoard;
 
 
 import javafx.fxml.Initializable;
+import sample.LoginPage.DashBoard.Admin.AdminWindow;
 import sample.LoginPage.DashBoard.SelectWindows.AcademicSession.SelectAcademicSession;
 import sample.LoginPage.DashBoard.SelectWindows.Information.SelectInformationSesssionWindow;
 import sample.LoginPage.DashBoard.SelectWindows.Parent.SelectParent;
@@ -47,8 +48,9 @@ public class DashboardController implements Initializable {
 
     public void ParentPortalClicked() throws IOException {
         new SelectParent();
-
-
+    }
+    public void AdminButtonClicked() throws IOException {
+        new AdminWindow();
     }
 
 

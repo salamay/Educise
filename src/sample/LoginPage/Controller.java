@@ -53,6 +53,7 @@ goToDashBoard();
             window2.initModality(Modality.APPLICATION_MODAL);
             window2.setTitle("welcome to management Board");
             window2.setMaximized(true);
+            window2.setResizable(false);
             window2.setMinWidth(800);
             window2.setMinHeight(700);
             Scene scene = new Scene(root,1200,720);

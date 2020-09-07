@@ -71,6 +71,15 @@
                   </ImageView>
                </graphic>
             </JFXButton>
+            <JFXButton alignment="TOP_LEFT" layoutX="15.0" layoutY="249.0" onAction="#AdminButtonClicked" prefHeight="36.0" prefWidth="174.0" ripplerFill="#e00b0b" text="Admin" textFill="#f2f2f2">
+               <graphic>
+                  <ImageView fitHeight="28.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../icon/drawable-hdpi/ic_school_indigo_a400_48dp.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </JFXButton>
             </children>
         </VBox>
         <HBox layoutX="-2.0" prefHeight="58.0" prefWidth="695.0" style="-fx-background-color: #1E306E;" AnchorPane.leftAnchor="-2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="0.0" />
@@ -149,7 +158,7 @@
                 <Region prefHeight="102.0" prefWidth="70.0" />
             <JFXButton onAction="#NewStudentButtonClicked" prefHeight="102.0" prefWidth="120.0" ripplerFill="#1e36d0" styleClass="NewStudentButton" stylesheets="@../../../back.css" text=" " />
                 <Region layoutX="20.0" layoutY="20.0" prefHeight="102.0" prefWidth="85.0" />
-            <JFXButton onAction="#StudentAssessmentButtonClicked" prefHeight="102.0" prefWidth="120.0" ripplerFill="#1c37d0" styleClass="StudentAssessment" stylesheets="@../../../back.css" text=" " />
+            <JFXButton buttonType="RAISED" onAction="#StudentAssessmentButtonClicked" prefHeight="102.0" prefWidth="120.0" ripplerFill="#1c37d0" styleClass="StudentAssessment" stylesheets="@../../../back.css" text=" " />
                 <Region layoutX="234.0" layoutY="20.0" prefHeight="102.0" prefWidth="85.0" />
             <JFXButton layoutX="95.0" layoutY="20.0" onAction="#ParentPortalClicked" prefHeight="102.0" prefWidth="120.0" ripplerFill="#1d39d7" styleClass="Parent" stylesheets="@../../../back.css" text=" " />
             </children>

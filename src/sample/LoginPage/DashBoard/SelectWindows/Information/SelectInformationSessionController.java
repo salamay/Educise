@@ -85,10 +85,10 @@ public class SelectInformationSessionController implements Initializable {
 
         @Override
         public void run() {
-            System.out.println("[SaveScoreThread]: setting up okhttp client");
+            System.out.println("[ClassThread]: setting up okhttp client");
             OkHttpClient client=new OkHttpClient();
 
-            System.out.println("[SaveScoreThread]: setting up okhttp client request");
+            System.out.println("[ClassThread]: setting up okhttp client request");
             Request request=new Request.Builder()
                     .url("http://localhost:8080/retrieveinformationsession")
                     .addHeader("Authorization","Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzYWxhbWF5IiwiaWF0IjoxNTk4NTA4NTczLCJleHAiOjE1OTg2ODg1NzN9.9nK-QCA6cxUmsU1qBiE8CEhiAMoBqfLuSehQQA9yJbU")
@@ -96,10 +96,10 @@ public class SelectInformationSessionController implements Initializable {
 
             try {
                 Response response = client.newCall(request).execute();
-                System.out.println("[SaveScoreThread]: "+response);
+                System.out.println("[ClassThread]: "+response);
                 if (response.code()==200|| response.code()==212||response.code()==201){
 
-                    System.out.println("[SaveScoreThread]: session retrieved");
+                    System.out.println("[ClassThread]: session retrieved");
                     ResponseBody body=response.body();
                     try {
                         byte [] bytes=body.bytes();
@@ -121,10 +121,10 @@ public class SelectInformationSessionController implements Initializable {
                 }else {
                     //Display an Alert dialog
                     Platform.runLater(()->{
-                        boolean error=new ConnectionError().Connection("server:error "+response.code()+" Unable to save Subject,CHECK INTERNET CONNECTION");
+                        boolean error=new ConnectionError().Connection("server:error "+response.code()+" Unable to get session,CHECK INTERNET CONNECTION");
                         if (error){
                             SelectInformationSesssionWindow.StudentWindow.close();
-                            System.out.println("[SaveScoreThread]--> Connection Error,Window close");
+                            System.out.println("[ClassThread]--> Connection Error,Window close");
                         }
                     });
                 }
@@ -134,10 +134,10 @@ public class SelectInformationSessionController implements Initializable {
                     boolean error=new ConnectionError().Connection("Unable to establish connection,CHECK INTERNET CONNECTION");
                     if (error){
                         SelectInformationSesssionWindow.StudentWindow.close();
-                        System.out.println("[SelectClassThread]--> Connection Error,Window close");
+                        System.out.println("[ClassThread]--> Connection Error,Window close");
                     }
                 });
-                System.out.println("[Retrieving session]: Unable to get session information from server");
+                System.out.println("[ClassThread]: Unable to get session information from server");
                 e.printStackTrace();
             }
 

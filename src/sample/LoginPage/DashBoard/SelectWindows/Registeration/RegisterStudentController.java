@@ -1,6 +1,7 @@
 package sample.LoginPage.DashBoard.SelectWindows.Registeration;
 
 
+import com.jfoenix.controls.JFXComboBox;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
@@ -34,9 +35,11 @@ public class RegisterStudentController implements Initializable {
     private File MotherImageFile;
     private File FatherImageFile;
     private String studentname;
+    private String session;
     private String clas;
     private int age;
     private String fathername;
+    private String tag;
     private String mothername;
     private String nextofkin;
     private String address;
@@ -51,7 +54,9 @@ public class RegisterStudentController implements Initializable {
     private String FutureAmbition;
     public  Button RegButton;
     public TextField StudentName;
-    public ComboBox<String> ClassComboBox;
+    public ComboBox<String> SessionComboBox;
+    public JFXComboBox<String> classCombobox;
+    public JFXComboBox<String> tagComboBox;
     public TextField Age;
     public TextField FatherName;
     public TextField MotherName;
@@ -76,7 +81,9 @@ public class RegisterStudentController implements Initializable {
     public Label nextofkinerror;
     public Label addresserror;
     public Label gendererror;
+    public Label SessionError;
     public Label classerror;
+    public Label tagerror;
     public Label PhoneNoError;
     public Label NickNameError;
     public Label HobbiesError;
@@ -98,6 +105,8 @@ public class RegisterStudentController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        classCombobox.getItems().addAll("JSS 1","JSS 2","JSS 3","SS 1","SS 2","SS 3");
+        tagComboBox.getItems().addAll("DAY ","BOARDER");
         conn= SqlConnection.connector();
         if(conn!=null){
             String QUERY= "Select * from SessionTable";
@@ -109,7 +118,7 @@ public class RegisterStudentController implements Initializable {
                     sessionlist= FXCollections.observableArrayList();
                     System.out.println("[looping]"+ sessionlist);
                     sessionlist.addAll(resultSet.getString("sessionname"));
-                    ClassComboBox.getItems().addAll(sessionlist);
+                    SessionComboBox.getItems().addAll(sessionlist);
 
                 }
             } catch (SQLException e) {
@@ -145,7 +154,7 @@ public class RegisterStudentController implements Initializable {
         bufferedImage=null;
         try {
             bufferedImage= ImageIO.read(file);
-           Image image= SwingFXUtils.toFXImage(bufferedImage,null);
+            Image image= SwingFXUtils.toFXImage(bufferedImage,null);
            StudentPhoto.setImage(image);
 
         } catch (IOException e) {
@@ -247,12 +256,24 @@ public class RegisterStudentController implements Initializable {
         else{
             addresserror.setVisible(false);
         }
-        System.out.println("[RegButtonClick()]: Getting Class Combo value");
-        clas=ClassComboBox.getValue();
+        System.out.println("[RegButtonClick()]: Getting session Combo value");
+        session=SessionComboBox.getValue();
+        if(clas==null){
+            SessionError.setVisible(true);
+        }else {
+            SessionError.setVisible(false);
+        }
+        clas=classCombobox.getValue();
         if(clas==null){
             classerror.setVisible(true);
         }else {
             classerror.setVisible(false);
+        }
+        tag=tagComboBox.getValue();
+        if(tag==null){
+            tagerror.setVisible(true);
+        }else {
+            tagerror.setVisible(false);
         }
 
         if (Female.isSelected()){
@@ -369,12 +390,12 @@ public class RegisterStudentController implements Initializable {
                     && !TurnOffTextField.getText().isEmpty() && !ClubTextField.getText().isEmpty()
                     && !RoleModelTextField.getText().isEmpty() && !FutureAmbitionTextField.getText().isEmpty() &&
                     !Age.getText().matches("^[a-zA-Z]*$") &&  !PhoneNumberTextField.getText().matches("^[a-zA-Z]*$")
-                    && !clas.isEmpty() && Female.isSelected() || Male.isSelected() || file!=null
+                    && !clas.isEmpty() && Female.isSelected() || Male.isSelected() || file!=null &&tag!=null && clas!=null
             )  {
 
                 // Registration Thread
                 new RegisterStudentThread(studentname,age,fathername,mothername,nextofkin,address,PhoneNo,
-                        NickName,Hobbies,TurnOn,TurnOff,Club,RoleModel,FutureAmbition,Gender,clas,file,FatherImageFile,MotherImageFile).start();
+                        NickName,Hobbies,TurnOn,TurnOff,Club,RoleModel,FutureAmbition,Gender,session,file,FatherImageFile,MotherImageFile,clas,tag).start();
             }
 
 

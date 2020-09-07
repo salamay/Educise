@@ -57,7 +57,7 @@ public class CreatingSessionThread  extends Thread{
         RequestBody requestBody=RequestBody.create(MediaType.parse("application/json"),rawjson);
         System.out.println("[CreatingSessionThread]: Sending Request");
         Request request=new Request.Builder()
-                .addHeader("Authorization","Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzYWxhbWF5IiwiaWF0IjoxNTk4NTA4NTczLCJleHAiOjE1OTg2ODg1NzN9.9nK-QCA6cxUmsU1qBiE8CEhiAMoBqfLuSehQQA9yJbU")
+                .addHeader("Authorization","Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzYWxhbWF5IiwiaWF0IjoxNTk4OTU1ODM2LCJleHAiOjE1OTkxMzU4MzZ9.VhM5uk9VMifPBoFz0yhZGGzYP3CTN4lNbMeJiJ2PVAM")
                 .url("http://localhost:8080/createsession")
                 .post(requestBody)
                 .build();

@@ -26,14 +26,14 @@
         <rowConstraints>
             <RowConstraints maxHeight="113.0" minHeight="10.0" prefHeight="26.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="113.0" minHeight="0.0" prefHeight="34.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="113.0" minHeight="10.0" prefHeight="22.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="113.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="113.0" minHeight="0.0" prefHeight="25.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="240.0" minHeight="0.0" prefHeight="21.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="315.0" minHeight="0.0" prefHeight="16.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="315.0" minHeight="0.0" prefHeight="24.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="315.0" minHeight="0.0" prefHeight="21.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="315.0" minHeight="3.0" prefHeight="142.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="113.0" minHeight="10.0" prefHeight="26.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="113.0" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="113.0" minHeight="0.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="240.0" minHeight="0.0" prefHeight="34.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="315.0" minHeight="0.0" prefHeight="17.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="315.0" minHeight="0.0" prefHeight="42.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="315.0" minHeight="0.0" prefHeight="27.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="315.0" minHeight="3.0" prefHeight="80.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="315.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="315.0" minHeight="0.0" prefHeight="29.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="315.0" minHeight="0.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -43,7 +43,7 @@
         </rowConstraints>
          <children>
             <Label prefHeight="17.0" prefWidth="92.0" text="Student name: " GridPane.rowIndex="1" />
-            <Label layoutX="10.0" layoutY="24.0" prefHeight="17.0" prefWidth="92.0" text="Class:  " GridPane.columnIndex="3" GridPane.rowIndex="1" />
+            <Label layoutX="10.0" layoutY="24.0" prefHeight="17.0" prefWidth="92.0" text="Session" GridPane.columnIndex="3" GridPane.rowIndex="1" />
             <Label layoutX="10.0" layoutY="24.0" prefHeight="17.0" prefWidth="92.0" text="Age: " GridPane.rowIndex="3" />
             <Label layoutX="10.0" layoutY="216.0" prefHeight="17.0" prefWidth="92.0" text="Father's name: " GridPane.rowIndex="5" />
             <Label layoutX="10.0" layoutY="269.0" prefHeight="17.0" prefWidth="92.0" text="Mother's name:" GridPane.rowIndex="7" />
@@ -114,7 +114,7 @@
             <Label text="Club:" GridPane.columnIndex="3" GridPane.rowIndex="13" />
             <Label text="Role Model:" GridPane.columnIndex="5" GridPane.rowIndex="1" />
             <Label text="Future Ambition:" GridPane.columnIndex="5" GridPane.rowIndex="3" />
-            <Label fx:id="ClassError" text="Select class" textFill="#ff0707" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="2">
+            <Label fx:id="SessionError" text="Select session" textFill="#ff0707" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="2">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
@@ -159,8 +159,8 @@
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
-            <ImageView fx:id="StudentPhoto" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="6" GridPane.rowIndex="9" />
-            <ImageView fx:id="StudentPhoto" fitHeight="131.0" fitWidth="166.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="6" GridPane.rowIndex="9" />
+            <ImageView fx:id="StudentPhoto" fitHeight="150.0" fitWidth="169.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="6" GridPane.rowIndex="9" />
+            <ImageView fx:id="StudentPhoto" fitHeight="91.0" fitWidth="166.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="6" GridPane.rowIndex="9" />
             <ImageView fx:id="FatherPicture" fitHeight="99.0" fitWidth="169.0" layoutX="859.0" layoutY="241.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="6" GridPane.rowIndex="12" GridPane.rowSpan="3" />
             <ImageView fx:id="MotherPicture" fitHeight="106.0" fitWidth="139.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="8" GridPane.rowIndex="3" GridPane.rowSpan="2">
                <GridPane.margin>
@@ -175,7 +175,7 @@
             <JFXTextField fx:id="Address" labelFloat="true" promptText="Address" GridPane.columnIndex="1" GridPane.rowIndex="13" />
             <JFXRadioButton fx:id="Male" text="Male" GridPane.columnIndex="1" GridPane.rowIndex="9" />
             <JFXRadioButton fx:id="Female" text="Female" GridPane.columnIndex="2" GridPane.rowIndex="9" />
-            <JFXComboBox fx:id="ClassComboBox" labelFloat="true" prefHeight="25.0" prefWidth="216.0" promptText="Select class" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+            <JFXComboBox fx:id="SessionComboBox" labelFloat="true" prefHeight="25.0" prefWidth="216.0" promptText="Select session" GridPane.columnIndex="4" GridPane.rowIndex="1" />
             <JFXTextField fx:id="PhoneNumberTextField" labelFloat="true" promptText="Phone number" GridPane.columnIndex="4" GridPane.rowIndex="3" />
             <JFXTextField fx:id="NickNameTextField" labelFloat="true" promptText="Nickname" GridPane.columnIndex="4" GridPane.rowIndex="5" />
             <JFXTextField fx:id="HobbiesTextField" labelFloat="true" promptText="Hobbies" GridPane.columnIndex="4" GridPane.rowIndex="7" />
@@ -187,7 +187,13 @@
             <JFXButton onAction="#StudentPhotoButtonClicked" text="Select Student Image" GridPane.columnIndex="6" GridPane.rowIndex="7" />
             <JFXButton onAction="#fatherPhotoButtonClicked" text="Select Father Image" GridPane.columnIndex="6" GridPane.rowIndex="11" />
             <JFXButton onAction="#MotherPictureButtonClicked" prefHeight="25.0" prefWidth="139.0" text="Select Mother Image" GridPane.columnIndex="8" GridPane.rowIndex="1" />
-            <JFXButton onAction="#RegButtonClicked" prefHeight="95.0" prefWidth="84.0" styleClass="NewStudentButton" stylesheets="@../../../../back.css" text=" " GridPane.columnIndex="3" GridPane.columnSpan="4" GridPane.rowIndex="15" />
+            <JFXButton buttonType="RAISED" onAction="#RegButtonClicked" prefHeight="95.0" prefWidth="84.0" styleClass="NewStudentButton" stylesheets="@../../../../../back.css" text=" " GridPane.columnIndex="3" GridPane.columnSpan="4" GridPane.rowIndex="15" />
+            <Label text="Class:" GridPane.columnIndex="8" GridPane.rowIndex="7" />
+            <JFXComboBox fx:id="classCombobox" prefHeight="25.0" prefWidth="144.0" promptText="Select Class" GridPane.columnIndex="8" GridPane.rowIndex="8" />
+            <Label fx:id="classerror" text="select class" textFill="#f51010" visible="false" GridPane.columnIndex="8" GridPane.rowIndex="9" />
+            <JFXComboBox fx:id="tagComboBox" layoutX="1013.0" layoutY="266.0" prefHeight="25.0" prefWidth="144.0" promptText="Select Tag" GridPane.columnIndex="8" GridPane.rowIndex="12" />
+            <Label fx:id="tagerror" layoutX="1013.0" layoutY="324.0" text="select class" textFill="#f51010" visible="false" GridPane.columnIndex="8" GridPane.rowIndex="13" />
+            <Label text="Tag:" GridPane.columnIndex="8" GridPane.rowIndex="11" />
          </children>
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

@@ -42,7 +42,7 @@ public class saveDataIntoSchoolFeeTable extends Thread{
 
         Request request=new Request.Builder()
                 .url("http://localhost:8080/savedatatoschoolfeetable/"+term+"/"+studentname+"/"+clas+"/"+session+"/"+tag+"/"+column+"/"+entity)
-                .addHeader("Authorization","Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzYWxhbWF5IiwiaWF0IjoxNTk5MzAzNjk4LCJleHAiOjE1OTk0ODM2OTh9.PhAyaBtsbOAVrBevhjAYLD3B7ZoqXYhsB_CCp_LakyA")
+                .addHeader("Authorization","Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzYWxhbWF5IiwiaWF0IjoxNTk5NTQyOTk2LCJleHAiOjE1OTk3MjI5OTZ9.eUhS_MVfQXsqY_Lo_aVgFsJoBjqmRBNi2ybckYXyEVM")
                 .build();
         try {
             Response response=client.newCall(request).execute();

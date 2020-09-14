@@ -1,4 +1,4 @@
-package sample.LoginPage.DashBoard.Admin.SchoolFee.getSchoolFees;
+package sample.LoginPage.DashBoard.Admin.SchoolFee.getSchoolFees.debtors;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -7,53 +7,58 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.TextFieldTableCell;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 import sample.ConnectionError;
 import sample.LoginPage.DashBoard.Admin.SchoolFee.Fee;
-import sample.LoginPage.DashBoard.Admin.SchoolFee.SchoolFeeWindowController;
 import sample.LoginPage.DashBoard.SelectWindows.Registeration.LoadingWindow;
-import sample.LoginPage.DashBoard.SelectWindows.Registeration.RegisterationWindow;
 
 import java.io.IOException;
 import java.util.List;
 
-public class getSchoolFeeWithoutTermThread extends Thread {
+public class getDebtorsthread extends Thread{
     private String clas;
-    private String year;
+    private String session;
     private String tag;
-    private TableView<Fee> tableView;
-    public getSchoolFeeWithoutTermThread(String clas, String year,String tag, TableView<Fee> tableview) {
+    private String term;
+    private int minimum;
+    private TableView<Fee> tableview;
 
+    public getDebtorsthread(String clas, String session, String tag, String term, int minimum, TableView<Fee> tableview) {
         this.clas=clas;
-        this.year=year;
-        this.tableView=tableview;
+        this.session=session;
         this.tag=tag;
+        this.term=term;
+        this.minimum=minimum;
+        this.tableview=tableview;
+        System.out.println("[getschoolfee]: Class: "+clas);
+        System.out.println("[getschoolfee]: term: "+term);
+        System.out.println("[getschoolfee]: year: "+session);
+        System.out.println("[getschoolfee]: minimum: "+minimum);
+        System.out.println("[getschoolfee]: tag: "+tag);
     }
 
     @Override
     public void run() {
-
-        System.out.println("[getSchoolFeeWithoutTermThread]: Setting up client ");
+        System.out.print("[GetDebtorsThread]: Setting up client");
         OkHttpClient client=new OkHttpClient();
-
+        System.out.print("[GetDebtorsThread]: Setting up Request");
         Request request=new Request.Builder()
-                .url("http://localhost:8080/getschoolfeewithoutterm/"+clas+"/"+year+"/"+tag)
-                .addHeader("Authorization","Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzYWxhbWF5IiwiaWF0IjoxNTk5Nzk5OTY2LCJleHAiOjE2MDAxNTk5NjZ9.qwompSN9WRoyHTixemTubuVvPGZL9iN07ER0jpY-Ikc")
+                .addHeader("Authorization","Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzYWxhbWF5IiwiaWF0IjoxNTk5NTQyOTk2LCJleHAiOjE1OTk3MjI5OTZ9.eUhS_MVfQXsqY_Lo_aVgFsJoBjqmRBNi2ybckYXyEVM")
+                .url("http://localhost:8080/getdebtors/"+clas+"/"+term+"/"+session+"/"+minimum+"/"+tag)
                 .build();
         try {
+            System.out.print("[GetDebtorsThread]: Retrieving response");
             Response response=client.newCall(request).execute();
-            System.out.println("[getSchoolFeeWithoutTermThread]: Retrieving response ");
-            System.out.println("[getSchoolFeeWithoutTermThread]:"+response);
-            System.out.println("[getSchoolFeeWithoutTermThread]:"+response.body());
+            System.out.print("[GetDebtorsThread]: Retrieving response-->"+response);
             if (response.code()==200||response.code()==201||response.code()==212||response.code()==202){
-
-                byte [] rawbytes = response.body().bytes();
-                String rawBody=new String(rawbytes,"UTF-8");
-                System.out.println("[getSchoolFeeWithoutTermThread]: "+rawBody);
-                System.out.println("[getSchoolFeeWithoutTermThread]: Processing response Body");
+                ResponseBody responseBody =response.body();
+                byte[] bytes=responseBody.bytes();
+                String json=new String(bytes,"UTF-8");
+                System.out.print("[GetDebtorsThread]: -->"+json);
+                System.out.println("[GetDebtorsThread]: Processing response Body");
                 GsonBuilder builder=new GsonBuilder();
                 builder.setPrettyPrinting();
                 builder.serializeNulls();
@@ -61,19 +66,19 @@ public class getSchoolFeeWithoutTermThread extends Thread {
                 //This parse the list of json to a list of  fee class with the help of type token
                 //we cant specify directly to convert the json to fee because rawBody variable contains
                 //a list of json
-                List<Fee> schoolfees=gson.fromJson(rawBody,new TypeToken<List<Fee>>(){}.getType());
+                List<Fee> schoolfees=gson.fromJson(json,new TypeToken<List<Fee>>(){}.getType());
                 //Since table view accept observable list,we need to convert it to Observable list
                 ObservableList<Fee> tableList= FXCollections.observableList(schoolfees);
                 Platform.runLater(()->{
                     LoadingWindow.window.close();
-                    tableView.setItems(tableList);
+                    tableview.setItems(tableList);
                 });
             }else {
                 Platform.runLater(()->{
                     LoadingWindow.window.close();
-                    boolean error=new ConnectionError().Connection("server:error "+response.code()+" Unable to get School fee");
+                    boolean error=new ConnectionError().Connection("server:error "+response.code()+" Unable to get debtors");
                     if (error){
-                        System.out.println("[getSchoolFeeWithoutTermThread]--> Connection Error");
+                        System.out.println("[GetDebtorsThread]--> Connection Error");
                     }
                 });
             }

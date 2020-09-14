@@ -84,7 +84,7 @@ public class SelectParent {
             Label Label = new Label("Search parent name");
             hBox.getChildren().addAll(Label, ParentSearch);
             ListView<String> Parentlist = new ListView<>();
-
+            Parentlist.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 /////////////////  parent name list view On Mouse Clicked//////////////
             //the newValue variable is a static global variable that will be later reference in the studentParentController class
             //to get the value of the class selected

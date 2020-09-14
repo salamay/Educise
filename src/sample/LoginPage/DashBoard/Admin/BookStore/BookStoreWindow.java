@@ -1,4 +1,4 @@
-package sample.LoginPage.DashBoard.Admin;
+package sample.LoginPage.DashBoard.Admin.BookStore;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -8,16 +8,15 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class AdminWindow {
-
-    public AdminWindow() throws IOException {
+public class BookStoreWindow {
+    public BookStoreWindow() throws IOException {
         Stage window=new Stage();
-        window.setTitle("ADMIN DASHBOARD");
-        Parent root= FXMLLoader.load(getClass().getResource("admindashBoard.fxml"));
+        window.setTitle("BOOK STORE");
+        Parent root= FXMLLoader.load(getClass().getResource("bookstore.fxml"));
         Scene scene=new Scene(root);
-        window.setResizable(true);
         window.initModality(Modality.APPLICATION_MODAL);
         window.setMaximized(true);
+        window.setResizable(true);
         window.initModality(Modality.APPLICATION_MODAL);
         window.setScene(scene);
         window.show();

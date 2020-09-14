@@ -13,7 +13,7 @@ public class SchoolFeeWindow {
     public SchoolFeeWindow() throws IOException {
         window=new Stage();
         window.setTitle("ADMIN DASHBOARD");
-        Parent root= FXMLLoader.load(getClass().getResource("schoolfee.fxml"));
+        Parent root= FXMLLoader.load(getClass().getResource("school.fxml"));
         Scene scene=new Scene(root);
         window.setResizable(false);
         window.initModality(Modality.APPLICATION_MODAL);

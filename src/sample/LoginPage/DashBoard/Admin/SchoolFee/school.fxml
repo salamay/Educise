@@ -122,16 +122,18 @@
         </ScrollPane>
     </center>
     <right>
-        <VBox prefHeight="424.0" prefWidth="118.0" spacing="5.0" BorderPane.alignment="TOP_CENTER">
+        <VBox prefHeight="424.0" prefWidth="118.0" spacing="10.0" BorderPane.alignment="BOTTOM_CENTER">
             <children>
-                <JFXButton buttonType="RAISED" prefHeight="89.0" prefWidth="57.0" styleClass="fetch" stylesheets="@../../../../../back.css" text=" " />
-                <Label prefHeight="31.0" prefWidth="128.0" text="Fetch out dabtors" textAlignment="CENTER" textFill="#d70d0d">
+            <Label text="Minimum amount:" textFill="#e41515" />
+            <TextField fx:id="minimumamount" prefHeight="0.0" prefWidth="118.0" />
+                <JFXButton buttonType="RAISED" onAction="#fetchDebtors" prefHeight="43.0" prefWidth="43.0" styleClass="fetch" stylesheets="@../../../../../back.css" text=" " />
+                <Label prefHeight="32.0" prefWidth="118.0" text="Fetch out dabtors" textAlignment="CENTER" textFill="#d70d0d">
                     <font>
                         <Font name="System Bold" size="14.0" />
                     </font>
                 </Label>
-            <Region prefHeight="279.0" prefWidth="118.0" VBox.vgrow="ALWAYS" />
-            <JFXButton buttonType="RAISED" onAction="#deleteButtonClicked" prefHeight="114.0" prefWidth="77.0" styleClass="delete" stylesheets="@../../../../../back.css" text=" " />
+                <Region prefHeight="153.0" prefWidth="118.0" VBox.vgrow="NEVER" />
+                <JFXButton buttonType="RAISED" onAction="#deleteButtonClicked" prefHeight="76.0" prefWidth="77.0" styleClass="delete" stylesheets="@../../../../../back.css" text=" " />
             </children>
         </VBox>
     </right>

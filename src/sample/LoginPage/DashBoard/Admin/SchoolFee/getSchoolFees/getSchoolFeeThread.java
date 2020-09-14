@@ -11,7 +11,6 @@ import okhttp3.*;
 import sample.ConnectionError;
 import sample.LoginPage.DashBoard.Admin.SchoolFee.Fee;
 import sample.LoginPage.DashBoard.SelectWindows.Registeration.LoadingWindow;
-import sample.LoginPage.DashBoard.SelectWindows.Registeration.RegisterationWindow;
 import java.io.IOException;
 import java.util.List;
 
@@ -38,7 +37,7 @@ public class getSchoolFeeThread extends Thread {
 
         Request request=new Request.Builder()
                 .url("http://localhost:8080/getschoolfee/"+clas+"/"+term+"/"+year)
-                .addHeader("Authorization","Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzYWxhbWF5IiwiaWF0IjoxNTk4OTU1ODM2LCJleHAiOjE1OTkxMzU4MzZ9.VhM5uk9VMifPBoFz0yhZGGzYP3CTN4lNbMeJiJ2PVAM")
+                .addHeader("Authorization","Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzYWxhbWF5IiwiaWF0IjoxNTk5Nzk5OTY2LCJleHAiOjE2MDAxNTk5NjZ9.qwompSN9WRoyHTixemTubuVvPGZL9iN07ER0jpY-Ikc")
                 .build();
         try {
             Response response=client.newCall(request).execute();

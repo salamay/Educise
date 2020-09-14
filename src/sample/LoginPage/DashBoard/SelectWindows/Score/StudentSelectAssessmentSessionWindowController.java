@@ -56,6 +56,7 @@ public class StudentSelectAssessmentSessionWindowController implements Initializ
             ////////////////////////////////////LIST VIEW START HERE//////////////////////////////////////////////
             ////////////////////////////////////List view Load Here//////////////////////////////////////////////
             JFXListView<String> listvie=new JFXListView<>();
+            listvie.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
             clas=Clas.getSelectionModel().getSelectedItem();
             System.out.println("[ClassThread]: ClassThreadFinished");
             //Creating Window
@@ -355,6 +356,7 @@ public class StudentSelectAssessmentSessionWindowController implements Initializ
 
                 //////////////////////////////////////////////////
                // tableview.setItems(GetScores());
+                tableview.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
                 tableview.getColumns().addAll(SubjectColumn,FirstCaColumn,SecondCaColumn,ThirdCaColumn,FourthCaColumn,
                         FifthCaColumn,SixthCaColumn,SeventhCaColumn,EightCaColumn,NinethCaColumn,TenthCaColumn,
                         ExamColumn,CummulativeColumn);

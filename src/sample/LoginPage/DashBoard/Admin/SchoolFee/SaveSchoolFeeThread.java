@@ -55,7 +55,7 @@ public class SaveSchoolFeeThread extends Thread {
             }else {
                 Platform.runLater(()->{
                     LoadingWindow.window.close();
-                    boolean error=new ConnectionError().Connection("server:error "+response.code()+" Unable to Register Student,CHECK INTERNET CONNECTION");
+                    boolean error=new ConnectionError().Connection("server:error "+response.code()+" Unable to save book");
                     if (error){
                         tableView.getItems().clear();
                         System.out.println("[SchoolFeeThread]--> Connection Error");

@@ -7,10 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressIndicator;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -48,6 +45,7 @@ public class SelectInformationSessionController implements Initializable {
             ScrollPane layout = new ScrollPane();
             layout.setPannable(true);
             listview = new JFXListView<>();
+            listview.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
             listview.getSelectionModel().selectedItemProperty().addListener((v, OldValue,NewValue)->{
                 new InformationWindow(clas,NewValue);
             });

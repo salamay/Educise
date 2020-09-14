@@ -4,21 +4,17 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.util.StringConverter;
-import javafx.util.converter.DoubleStringConverter;
-import javafx.util.converter.IntegerStringConverter;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import sample.ConnectionError;
 import sample.LoginPage.DashBoard.Admin.SchoolFee.getSchoolFees.DeleteSchoolFee.DeleteSchoolFee;
+import sample.LoginPage.DashBoard.Admin.SchoolFee.getSchoolFees.debtors.getDebtorsthread;
 import sample.LoginPage.DashBoard.Admin.SchoolFee.getSchoolFees.getSchoolFeeThread;
 import sample.LoginPage.DashBoard.Admin.SchoolFee.getSchoolFees.getSchoolFeeWithoutTermThread;
 import sample.LoginPage.DashBoard.Admin.SchoolFee.getSchoolFees.insertTerm;
@@ -43,6 +39,7 @@ public class SchoolFeeWindowController implements Initializable {
     public JFXTextField datefield;
     public JFXTextField depositorname;
     public JFXTextField transactionidfield;
+    public TextField minimumamount;
     public JFXButton savebutton;
     public JFXButton fetchbutton;
     public TableView<Fee> tableview;
@@ -442,6 +439,54 @@ public class SchoolFeeWindowController implements Initializable {
             new getSchoolFeeWithoutTermThread(clas,session,tag,tableview).start();
         }
     }
+    public void fetchDebtors() throws IOException {
+        //Getting input
+        System.out.println("SchoolFeeWindowController:Fetch Button pressed--> getting input");
+        int minimum=0;
+        try {
+            minimum=Integer.parseInt(minimumamount.getText());
+        }catch (NumberFormatException e){
+            new ConnectionError().Connection("Invalid input,check your input");
+        }
+        clas=classcombobox.getValue();
+        session=sessioncombobox.getValue();
+        term=termcombobox.getValue();
+        tag=tagcombobox.getValue();
+        //Checking input for error
+        //Checking class combobox
+        if (clas!=null){
+            classerror.setVisible(false);
+        }
+        else {
+            classerror.setVisible(true);
+        }
+        //Checking term combobox
+        if (term!=null){
+            termerror.setVisible(false);
+        }
+        else {
+            termerror.setVisible(false);
+        }
+        //Checking year combobox
+        if (session!=null){
+            yearerror.setVisible(false);
+            session=sessioncombobox.getSelectionModel().getSelectedItem();
+        }
+        else {
+            yearerror.setVisible(true);
+        }
+        if (tag!=null||tag.isEmpty()){
+            tagerror.setVisible(true);
+        }
+        if (minimum==0){
+            new ConnectionError().Connection("Please provide minimum amount");
+        }
+        if (clas!=null && session!=null &&tag!=null && term!=null&&minimum!=0){
+            new LoadingWindow();
+            System.out.println("SchoolFeeWindowController:Feth debtors button pressed--> getting debtors");
+            new getDebtorsthread(clas,session,tag,term,minimum,tableview).start();
+        }
+    }
     public void deleteButtonClicked() throws IOException {
         ///this method will delete the data in the selected column and leave the name Column
         //getting value
@@ -523,7 +568,7 @@ public class SchoolFeeWindowController implements Initializable {
             System.out.println("[ClassThread]: setting up okhttp client request");
             Request request=new Request.Builder()
                     .url("http://localhost:8080/retrieveinformationsession")
-                    .addHeader("Authorization","Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzYWxhbWF5IiwiaWF0IjoxNTk5MzAzNjk4LCJleHAiOjE1OTk0ODM2OTh9.PhAyaBtsbOAVrBevhjAYLD3B7ZoqXYhsB_CCp_LakyA")
+                    .addHeader("Authorization","Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzYWxhbWF5IiwiaWF0IjoxNTk5Nzk5OTY2LCJleHAiOjE2MDAxNTk5NjZ9.qwompSN9WRoyHTixemTubuVvPGZL9iN07ER0jpY-Ikc")
                     .build();
 
             try {

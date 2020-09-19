@@ -7,6 +7,8 @@ import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import sample.ConnectionError;
+import sample.LoginPage.LogInModel;
+
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -26,7 +28,7 @@ public class getScoreSessionThread extends Thread {
         System.out.println("[Retrieving information session]: setting up okhttp client request");
         Request request=new Request.Builder()
                 .url("http://localhost:8080/retrievescoresession")
-                .addHeader("Authorization","Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzYWxhbWF5IiwiaWF0IjoxNTk4NTA5MDU2LCJleHAiOjE1OTg2ODkwNTZ9.rJnYfPefYX8tapQkTmyKuv15tprmJEyYl6FHvB21AZg")
+                .addHeader("Authorization","Bearer "+ LogInModel.token)
                 .build();
 
         try {
@@ -58,6 +60,16 @@ public class getScoreSessionThread extends Thread {
                 //Display an Alert dialog
                 Platform.runLater(()->{
                     boolean error=new ConnectionError().Connection("Server:error"+response.code()+",Unable to retrieve session");
+                    if (error){
+                        StudentSelectAssessmentSessionWindow.window.close();
+                        System.out.println("[SelectClassThread]--> Connection Error,Window close");
+                    }
+                });
+            }
+            if (response.code()==404){
+                //Display an Alert dialog
+                Platform.runLater(()->{
+                    boolean error=new ConnectionError().Connection("Server:error"+response.code()+": session not found");
                     if (error){
                         StudentSelectAssessmentSessionWindow.window.close();
                         System.out.println("[SelectClassThread]--> Connection Error,Window close");

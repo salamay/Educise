@@ -14,6 +14,7 @@ import okhttp3.ResponseBody;
 import sample.ConnectionError;
 import sample.LoginPage.DashBoard.Admin.SchoolFee.Fee;
 import sample.LoginPage.DashBoard.SelectWindows.Registeration.LoadingWindow;
+import sample.LoginPage.LogInModel;
 
 import java.io.IOException;
 import java.util.List;
@@ -46,7 +47,7 @@ public class getDebtorsthread extends Thread{
         OkHttpClient client=new OkHttpClient();
         System.out.print("[GetDebtorsThread]: Setting up Request");
         Request request=new Request.Builder()
-                .addHeader("Authorization","Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzYWxhbWF5IiwiaWF0IjoxNTk5NTQyOTk2LCJleHAiOjE1OTk3MjI5OTZ9.eUhS_MVfQXsqY_Lo_aVgFsJoBjqmRBNi2ybckYXyEVM")
+                .addHeader("Authorization","Bearer "+ LogInModel.token)
                 .url("http://localhost:8080/getdebtors/"+clas+"/"+term+"/"+session+"/"+minimum+"/"+tag)
                 .build();
         try {
@@ -73,6 +74,7 @@ public class getDebtorsthread extends Thread{
                     LoadingWindow.window.close();
                     tableview.setItems(tableList);
                 });
+                response.close();
             }else {
                 Platform.runLater(()->{
                     LoadingWindow.window.close();
@@ -81,13 +83,36 @@ public class getDebtorsthread extends Thread{
                         System.out.println("[GetDebtorsThread]--> Connection Error");
                     }
                 });
+                response.close();
+            }
+            if (response.code()==404){
+                //Display alert dialog
+                Platform.runLater(()->{
+                    LoadingWindow.window.close();
+                    boolean error=new ConnectionError().Connection("server return error "+response.code()+": unable to get debtors");
+                    if (error){
+                        System.out.println("[GetDebtorsThread]--> unable to get debtors on the server");
+                    }
+                });
+                response.close();
+            }
+            if (response.code()==422){
+                //Display alert dialog
+                Platform.runLater(()->{
+                    LoadingWindow.window.close();
+                    boolean error=new ConnectionError().Connection("server return error "+response.code()+": Server cannot process your request,check fields for invalid character");
+                    if (error){
+                        System.out.println("[GetDebtorsThread]--> Connection error");
+                    }
+                });
+                response.close();
             }
         } catch (IOException e) {
             Platform.runLater(()->{
                 LoadingWindow.window.close();
                 boolean error=new ConnectionError().Connection("Unable to establish connection,CHECK INTERNET CONNECTION");
                 if (error){
-                    System.out.println("[getSchoolFeeWithoutTermThread]--> Connection Error,Window close");
+                    System.out.println("[GetDebtorsThread]--> Connection error");
                 }
             });
             e.printStackTrace();

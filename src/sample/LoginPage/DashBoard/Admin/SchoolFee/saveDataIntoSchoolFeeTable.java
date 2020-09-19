@@ -7,7 +7,11 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import sample.ConnectionError;
+import sample.LoginPage.DashBoard.SelectWindows.Registeration.LoadingWindow;
+import sample.LoginPage.LogInModel;
+
 import java.io.IOException;
+
 
 public class saveDataIntoSchoolFeeTable extends Thread{
 
@@ -42,7 +46,7 @@ public class saveDataIntoSchoolFeeTable extends Thread{
 
         Request request=new Request.Builder()
                 .url("http://localhost:8080/savedatatoschoolfeetable/"+term+"/"+studentname+"/"+clas+"/"+session+"/"+tag+"/"+column+"/"+entity)
-                .addHeader("Authorization","Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzYWxhbWF5IiwiaWF0IjoxNTk5NTQyOTk2LCJleHAiOjE1OTk3MjI5OTZ9.eUhS_MVfQXsqY_Lo_aVgFsJoBjqmRBNi2ybckYXyEVM")
+                .addHeader("Authorization","Bearer "+ LogInModel.token)
                 .build();
         try {
             Response response=client.newCall(request).execute();
@@ -50,7 +54,7 @@ public class saveDataIntoSchoolFeeTable extends Thread{
             System.out.println("[saveDataIntoSchoolFeetable]:"+response);
             System.out.println("[saveDataIntoSchoolFeetable]:"+response.body());
             if (response.code()==200||response.code()==201||response.code()==212||response.code()==202){
-
+                response.close();
             }else {
                 Platform.runLater(()->{
                     boolean error=new ConnectionError().Connection("server:error "+response.code()+" Unable to save data,CHECK INTERNET CONNECTION");
@@ -59,13 +63,36 @@ public class saveDataIntoSchoolFeeTable extends Thread{
                         System.out.println("[saveDataIntoSchoolFeetable]--> Connection Error");
                     }
                 });
+                response.close();
+            }
+            if (response.code()==400){
+                //Display alert dialog
+                Platform.runLater(()->{
+                    LoadingWindow.window.close();
+                    boolean error=new ConnectionError().Connection("server return error "+response.code()+": unable to save school fee");
+                    if (error){
+                        System.out.println("[saveDataIntoSchoolFeetable]--> unable to save school fee on the server");
+                    }
+                });
+                response.close();
+            }
+            if (response.code()==422){
+                //Display alert dialog
+                Platform.runLater(()->{
+                    LoadingWindow.window.close();
+                    boolean error=new ConnectionError().Connection("server return error "+response.code()+": Server cannot process your request,check fields for invalid character");
+                    if (error){
+                        System.out.println("[saveDataIntoSchoolFeetable]--> Connection error");
+                    }
+                });
+                response.close();
             }
         } catch (IOException e) {
             Platform.runLater(()->{
                 boolean error=new ConnectionError().Connection("Unable to establish connection,CHECK INTERNET CONNECTION");
                 if (error){
                     tableColumn.getTableView().getItems().clear();
-                    System.out.println("[saveDataIntoSchoolFeetable]--> Connection Error,Window close");
+                    System.out.println("[saveDataIntoSchoolFeetable]--> Connection Error");
                 }
             });
             e.printStackTrace();

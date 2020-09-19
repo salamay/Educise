@@ -13,6 +13,7 @@ import okhttp3.Response;
 import sample.ConnectionError;
 import sample.LoginPage.DashBoard.Admin.SchoolFee.Fee;
 import sample.LoginPage.DashBoard.SelectWindows.Registeration.LoadingWindow;
+import sample.LoginPage.LogInModel;
 
 import java.io.IOException;
 import java.util.List;
@@ -34,7 +35,7 @@ public class GetAllBooks extends Thread {
 
         Request request=new Request.Builder()
                 .url("http://localhost:8080/findallbook")
-                .addHeader("Authorization","Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzYWxhbWF5IiwiaWF0IjoxNTk5Nzk5OTY2LCJleHAiOjE2MDAxNTk5NjZ9.qwompSN9WRoyHTixemTubuVvPGZL9iN07ER0jpY-Ikc")
+                .addHeader("Authorization","Bearer "+ LogInModel.token)
                 .build();
         try {
             Response response=client.newCall(request).execute();
@@ -61,6 +62,7 @@ public class GetAllBooks extends Thread {
                     addbooktableview.setItems(tableList);
                     editbooktableview.setItems(tableList);
                 });
+                response.close();
             }else {
                 Platform.runLater(()->{
                     LoadingWindow.window.close();
@@ -69,13 +71,15 @@ public class GetAllBooks extends Thread {
                         System.out.println("[GetAllBooks]--> Connection Error");
                     }
                 });
+                response.close();
             }
             if (response.code()==204){
                 LoadingWindow.window.close();
                 boolean error=new ConnectionError().Connection("No book found");
                 if (error){
-                    System.out.println("[getBookSoldHistory]--> Connection Error");
+                    System.out.println("[GetAllBooks]--> Connection Error");
                 }
+                response.close();
             }
         } catch (IOException e) {
             Platform.runLater(()->{

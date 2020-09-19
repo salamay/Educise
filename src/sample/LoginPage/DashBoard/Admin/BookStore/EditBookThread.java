@@ -7,6 +7,7 @@ import javafx.scene.control.TableColumn;
 import okhttp3.*;
 import sample.ConnectionError;
 import sample.LoginPage.DashBoard.SelectWindows.Registeration.LoadingWindow;
+import sample.LoginPage.LogInModel;
 
 import java.io.IOException;
 
@@ -34,7 +35,7 @@ public class EditBookThread extends Thread {
         RequestBody requestBody=RequestBody.create(MediaType.parse("application/json"),json);
         Request request=new Request.Builder()
                 .url("http://localhost:8080/editbook")
-                .addHeader("Authorization","Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzYWxhbWF5IiwiaWF0IjoxNTk5Nzk5OTY2LCJleHAiOjE2MDAxNTk5NjZ9.qwompSN9WRoyHTixemTubuVvPGZL9iN07ER0jpY-Ikc")
+                .addHeader("Authorization","Bearer "+ LogInModel.token)
                 .post(requestBody)
                 .build();
         try {
@@ -50,19 +51,33 @@ public class EditBookThread extends Thread {
                 Platform.runLater(()->{
                     LoadingWindow.window.close();
                     e.getTableColumn().onEditCancelProperty();
-
                     boolean error=new ConnectionError().Connection("server:error "+response.code()+" Unable to Edit book books");
                     if (error){
                         System.out.println("[EditBook]--> Connection Error");
                     }
                 });
             }
-            if (response.code()==204){
-                LoadingWindow.window.close();
-                boolean error=new ConnectionError().Connection("book  not found");
-                if (error){
-                    System.out.println("[getBookSoldHistory]--> Connection Error");
-                }
+            if (response.code()==404){
+                //Display alert dialog
+                Platform.runLater(()->{
+                    LoadingWindow.window.close();
+                    boolean error=new ConnectionError().Connection("server return error "+response.code()+": Unable to edit book");
+                    if (error){
+                        System.out.println("[EditBook]--> unable to save school fee on the server");
+                    }
+                });
+                response.close();
+            }
+            if (response.code()==422){
+                //Display alert dialog
+                Platform.runLater(()->{
+                    LoadingWindow.window.close();
+                    boolean error=new ConnectionError().Connection("server return error "+response.code()+": Server cannot process your request,check fields for invalid character");
+                    if (error){
+                        System.out.println("[EditBook]--> Connection error");
+                    }
+                });
+                response.close();
             }
         } catch (IOException e) {
             Platform.runLater(()->{

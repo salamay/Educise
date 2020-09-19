@@ -8,6 +8,7 @@ import javafx.scene.control.TableView;
 import okhttp3.*;
 import sample.ConnectionError;
 import sample.LoginPage.DashBoard.SelectWindows.Registeration.LoadingWindow;
+import sample.LoginPage.LogInModel;
 
 import java.io.IOException;
 
@@ -37,7 +38,7 @@ public class SaveBook extends Thread {
         Request request=new Request.Builder()
                 .post(requestBody)
                 .url("http://localhost:8080/savebook")
-                .addHeader("Authorization","Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzYWxhbWF5IiwiaWF0IjoxNTk5Nzk5OTY2LCJleHAiOjE2MDAxNTk5NjZ9.qwompSN9WRoyHTixemTubuVvPGZL9iN07ER0jpY-Ikc")
+                .addHeader("Authorization","Bearer "+ LogInModel.token)
                 .build();
         Response response;
         try {
@@ -50,6 +51,7 @@ public class SaveBook extends Thread {
                     new ConnectionError().Connection("SUCCESS");
                     addbooktableview.getItems().add(book);
                 });
+                response.close();
             }else {
                 Platform.runLater(()->{
                     LoadingWindow.window.close();
@@ -59,6 +61,29 @@ public class SaveBook extends Thread {
                         System.out.println("[SchoolFeeThread]--> Connection Error");
                     }
                 });
+                response.close();
+            }
+            if (response.code()==404){
+                //Display alert dialog
+                Platform.runLater(()->{
+                    LoadingWindow.window.close();
+                    boolean error=new ConnectionError().Connection("server return error "+response.code()+": Books not found");
+                    if (error){
+                        System.out.println("[SaveBook]--> unable to save school fee on the server");
+                    }
+                });
+                response.close();
+            }
+            if (response.code()==422){
+                //Display alert dialog
+                Platform.runLater(()->{
+                    LoadingWindow.window.close();
+                    boolean error=new ConnectionError().Connection("server return error "+response.code()+": Server cannot process your request,check fields for invalid character");
+                    if (error){
+                        System.out.println("[SaveBook]--> Connection error");
+                    }
+                });
+                response.close();
             }
         } catch (IOException e) {
             Platform.runLater(()->{
@@ -66,7 +91,7 @@ public class SaveBook extends Thread {
                 boolean error=new ConnectionError().Connection("Unable to establish connection,CHECK INTERNET CONNECTION");
                 if (error){
                     addbooktableview.refresh();
-                    System.out.println("[SchoolFeeThread]--> Connection Error,Window close");
+                    System.out.println("[SaveBook]--> Connection Error,Window close");
                 }
             });
             e.printStackTrace();

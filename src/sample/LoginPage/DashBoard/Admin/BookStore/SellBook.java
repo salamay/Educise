@@ -8,6 +8,7 @@ import javafx.scene.control.TableView;
 import okhttp3.*;
 import sample.ConnectionError;
 import sample.LoginPage.DashBoard.SelectWindows.Registeration.LoadingWindow;
+import sample.LoginPage.LogInModel;
 
 import java.io.IOException;
 
@@ -46,7 +47,7 @@ public class SellBook  extends Thread{
         RequestBody requestBody=RequestBody.create(MediaType.parse("application/json"),json);
         Request request=new Request.Builder()
                 .url("http://localhost:8080/sellbook/"+bookname+"/"+term+"/"+session+"/"+buyer)
-                .addHeader("Authorization","Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzYWxhbWF5IiwiaWF0IjoxNTk5Nzk5OTY2LCJleHAiOjE2MDAxNTk5NjZ9.qwompSN9WRoyHTixemTubuVvPGZL9iN07ER0jpY-Ikc")
+                .addHeader("Authorization","Bearer "+ LogInModel.token)
                 .post(requestBody)
                 .build();
         Response response;
@@ -62,6 +63,7 @@ public class SellBook  extends Thread{
                     sellBookTableView.getSelectionModel().getSelectedItem().setCopies(copies-1);
                     sellBookTableView.refresh();
                 });
+                response.close();
             }else {
                 Platform.runLater(()->{
                     LoadingWindow.window.close();
@@ -71,6 +73,29 @@ public class SellBook  extends Thread{
                         System.out.println("[SellBook]--> Connection Error");
                     }
                 });
+                response.close();
+            }
+            if (response.code()==400){
+                //Display alert dialog
+                Platform.runLater(()->{
+                    LoadingWindow.window.close();
+                    boolean error=new ConnectionError().Connection("server return error "+response.code()+": Cannot sell book");
+                    if (error){
+                        System.out.println("[SellBook]--> unable to save school fee on the server");
+                    }
+                });
+                response.close();
+            }
+            if (response.code()==422){
+                //Display alert dialog
+                Platform.runLater(()->{
+                    LoadingWindow.window.close();
+                    boolean error=new ConnectionError().Connection("server return error "+response.code()+": Server cannot process your request,check fields for invalid character");
+                    if (error){
+                        System.out.println("[SellBook]--> Connection error");
+                    }
+                });
+                response.close();
             }
         } catch (IOException e) {
             Platform.runLater(()->{

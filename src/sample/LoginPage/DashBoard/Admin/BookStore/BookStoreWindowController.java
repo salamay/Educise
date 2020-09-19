@@ -124,6 +124,7 @@ public class BookStoreWindowController implements Initializable {
         editbooktitlecolumn.setOnEditCommit((e)->{
             try {
                 EditBook(e);
+                e.getRowValue().setTitle(e.getNewValue());
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
@@ -131,10 +132,12 @@ public class BookStoreWindowController implements Initializable {
         });
         editbooktitlecolumn.setCellFactory(TextFieldTableCell.forTableColumn());
         editbookidcolumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+
         editbookpricecolumn.setCellValueFactory(new PropertyValueFactory<>("price"));
         editbookpricecolumn.setOnEditCommit((e)->{
             try {
                 EditBook(e);
+                e.getRowValue().setPrice(e.getNewValue());
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
@@ -145,6 +148,7 @@ public class BookStoreWindowController implements Initializable {
         editbookauthorcolumn.setOnEditCommit((e)->{
             try {
                 EditBook(e);
+                e.getRowValue().setAuthor(e.getNewValue());
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
@@ -154,6 +158,7 @@ public class BookStoreWindowController implements Initializable {
         editbooksessioncolumn.setOnEditCommit((e)->{
             try {
                 EditBook(e);
+                e.getRowValue().setYear(e.getNewValue());
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
@@ -163,15 +168,18 @@ public class BookStoreWindowController implements Initializable {
         editbooktermcolumn.setOnEditCommit((e)->{
             try {
                 EditBook(e);
+                e.getRowValue().setTerm(e.getNewValue());
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
         });
         editbooktermcolumn.setCellFactory(TextFieldTableCell.forTableColumn());
+
         editbookcopiescolumn.setCellValueFactory(new PropertyValueFactory<>("copies"));
         editbookcopiescolumn.setOnEditCommit((e)->{
             try {
                 EditBook(e);
+                e.getRowValue().setCopies(e.getNewValue());
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
@@ -245,45 +253,47 @@ public class BookStoreWindowController implements Initializable {
         System.out.println("[BookStoreWindowController]:Copies->" + copies);
         System.out.println("[BookStoreWindowController]:Session->" + session);
         System.out.println("[BookStoreWindowController]:Term->" + term);
-        if (title.isEmpty() || title.contains("/?%&")) {
+        if (title.isEmpty() || !title.matches("^[A-Z[ ]a-z]*$")) {
+            System.out.println("HJGDHJJSKJSKS");
             book.setTitle(null);
-            new ConnectionError().Connection("Please provide valid title");
+            new ConnectionError().Connection("Please provide valid title,if symbol is present,delete it");
         } else {
             book.setTitle(title);
         }
-        if (author.isEmpty() || author.contains("/?&%")) {
+        if (author.isEmpty() || !author.matches("^[A-Z[ ]a-z]*$")) {
             book.setAuthor(null);
-            new ConnectionError().Connection("Please provide valid author");
+            new ConnectionError().Connection("Please provide valid author,if symbol is present,delete it");
         } else {
             book.setAuthor(author);
         }
-        if (price.isEmpty() || price.contains("/%&?")) {
+        if (price.isEmpty() || !price.matches("^[0-9]*$")) {
             book.setPrice(0);
-            new ConnectionError().Connection("Please provide valid price");
+            new ConnectionError().Connection("Please provide valid price,if symbol is present,delete it");
         } else {
             try {
                 book.setPrice(Integer.parseInt(price));
             } catch (NumberFormatException e) {
                 book.setPrice(0);
-                new ConnectionError().Connection("Please provide valid price");
+                new ConnectionError().Connection("Please provide valid price,if symbol is present,delete it");
             }
         }
-        if (copies.isEmpty() || copies.contains("/?%&")) {
+        if (copies.isEmpty() || !copies.matches("^[0-9]*$")) {
             book.setCopies(0);
-            new ConnectionError().Connection("Please provide valid copies");
+            new ConnectionError().Connection("Please provide valid copies,if symbol is present,delete it");
         } else {
             try {
                 book.setCopies(Integer.parseInt(copies));
             } catch (NumberFormatException e) {
+                book.setCopies(0);
                 new ConnectionError().Connection("Please provide valid Copies");
             }
         }
-        if (session.isEmpty()) {
+        if (session==null) {
             new ConnectionError().Connection("Select academic session");
         } else {
             book.setYear(session);
         }
-        if (term.isEmpty()) {
+        if (term==null) {
             new ConnectionError().Connection("Select term");
         } else {
             book.setTerm(term);
@@ -301,22 +311,22 @@ public class BookStoreWindowController implements Initializable {
 /////////////////////////////////////////////////////////////////////////SELL BOOK START/////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public void sellbookGoButtonClicked() throws IOException {
-        new LoadingWindow();
         //Getting name of the book
         System.out.println("[BookStoreWindowController]-->[Sell Book]:Getting and checking name");
         String bookname = booknamefield.getText();
         String session = sellbooksessioncombobox.getValue();
         String term = sellbooktermcombobox.getValue();
-        if (bookname==null) {
+        if (bookname==null||bookname.isEmpty()) {
             new ConnectionError().Connection("Enter book name");
         }
-        if (bookname.contains("/{}%&*()@#_><")) {
+        if (!bookname.matches("^[A-Z[ ]a-z]*$")) {
             new ConnectionError().Connection("Name of book contains invalid character");
         }
         if (session==null || term==null) {
             new ConnectionError().Connection("Session and term must be selected");
         }
-        if (!bookname.isEmpty() && !bookname.contains("/{}%&*()@#_><") && session!=null && term!=null) {
+        if (!bookname.isEmpty() &&bookname!=null&& bookname.matches("^[A-Z[ ]a-z]*$") && session!=null && term!=null) {
+            new LoadingWindow();
             new SearchBook(bookname, session, term, SellBookTableView).start();
         } else {
             new ConnectionError().Connection("Please provide valid information");
@@ -327,20 +337,19 @@ public class BookStoreWindowController implements Initializable {
         String buyer = sellbookbuyernamefield.getText();
         LocalDate localdate = sellbookDatePicker.getValue();
         String date = String.valueOf(localdate);
-        if (buyer.isEmpty()) {
+        if (buyer.isEmpty()||buyer==null) {
             new ConnectionError().Connection("Enter buyer name");
         }
-        if (date.isEmpty()) {
+        System.out.println("hghsjfhf"+date);
+        if (localdate==null) {
             new ConnectionError().Connection("Select todays date");
         }
-        if (buyer.contains("/{}%&*()@#_><")) {
+        if (!buyer.matches("^[A-Z[ ]a-z]*$")){
             new ConnectionError().Connection("Name of Buyer contains invalid character");
-        } else {
-
         }
         //This get the selected item in the table and deduct 1 from the number of copies from the server
         ObservableList<Book> bookselected = SellBookTableView.getSelectionModel().getSelectedItems();
-        if (!bookselected.isEmpty() || bookselected != null && !buyer.isEmpty() && !date.isEmpty()) {
+        if (!bookselected.isEmpty() && bookselected != null && !buyer.isEmpty() &&buyer!=null &&buyer.matches("^[A-Za-z]*$")&&localdate!=null) {
             if (bookselected.get(0).getCopies()==0){
                 new ConnectionError().Connection(" 0 "+bookselected.get(0).getTitle()+" left in store");
             }else {
@@ -365,24 +374,28 @@ public class BookStoreWindowController implements Initializable {
         String bookname=editbooktitletextfield.getText();
         String term=editbooktermcombobox.getValue();
         String session=editbooksessioncombobox.getValue();
-        if (bookname.isEmpty()){
+        if (bookname==null||bookname.isEmpty()){
             new ConnectionError().Connection("Please provide the book title to search");
+        }
+        if (!bookname.matches("^[A-Z[ ]a-z]*$")) {
+            new ConnectionError().Connection("Name of book contains invalid character");
         }
         if (term==null||session==null){
             new ConnectionError().Connection("Please select term and session of the book");
-        }else {
+        }
+        if (bookname!=null &&!bookname.isEmpty()&&bookname.matches("^[A-Z[ ]a-z]*$")&&term!=null&&session!=null){
             new LoadingWindow();
             new SearchBookForEditLayoutThread(bookname,session,term,editbooktableview).start();
         }
     }
     public void EditBook(TableColumn.CellEditEvent<Book, ?> e) throws IOException {
-        String oldValue= String.valueOf(e.getOldValue());
-        String entity= String.valueOf(e.getNewValue());
+        String oldValue= e.getOldValue().toString();
+        String entity= e.getNewValue().toString();
         //Columnname instance here correspond to a table column in the database
         String columnname=e.getTableColumn().getText();
         int id=e.getRowValue().getId();
         System.out.println("[Editing book]: entity:"+entity+"\n"+"column:"+columnname+"\n"+"id:"+id);
-        if (!entity.isEmpty()||!entity.contains("/%&*#$")||id!=0){
+        if (entity!=null &&entity.matches("^[A-Z[ ]a-z0-9]*$")&&id!=0){
             new LoadingWindow();
             EditBookRequest editBookRequest=new EditBookRequest();
             editBookRequest.setEntity(entity);
@@ -391,8 +404,8 @@ public class BookStoreWindowController implements Initializable {
             new EditBookThread(editBookRequest,oldValue,e).start();
         }
        else {
-            boolean error=new ConnectionError().Connection("Please provide a valid for the field");
-            System.out.println("EditBook: Please provide a valid for the field");
+            boolean error=new ConnectionError().Connection("Please provide a valid input for the field");
+            System.out.println("EditBook: Please provide a valid input for the field");
         }
     }
     //Editbook End
@@ -408,16 +421,16 @@ public class BookStoreWindowController implements Initializable {
         System.out.println("[getting history]-->"+session);
         System.out.println("[getting history]-->"+date);
 
-        if (term.isEmpty()){
+        if (term==null){
             new ConnectionError().Connection("Please select term");
         }
-        if (session.isEmpty()){
+        if (session==null){
             new ConnectionError().Connection("Please select session");
         }
-        if (date.isEmpty()){
+        if (localdate==null){
             new ConnectionError().Connection("Please select Date");
         }
-        if (!term.isEmpty()&&!session.isEmpty()&&!date.isEmpty()){
+        if (term!=null&&session!=null&&localdate!=null){
             new LoadingWindow();
             new getBookSoldHistory(session,term,historytableview,date,totalamount).start();
         }

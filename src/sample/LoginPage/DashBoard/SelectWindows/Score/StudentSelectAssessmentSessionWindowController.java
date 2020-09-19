@@ -22,6 +22,8 @@ import okhttp3.Response;
 import okhttp3.ResponseBody;
 import sample.ConnectionError;
 import sample.LoginPage.DashBoard.SelectWindows.Information.ClassNameThread;
+import sample.LoginPage.DashBoard.SelectWindows.Information.ListViewNames;
+import sample.LoginPage.LogInModel;
 
 import java.io.IOException;
 import java.net.URL;
@@ -122,9 +124,9 @@ public class StudentSelectAssessmentSessionWindowController implements Initializ
 
                 ////////////////////////////////////////////////////
 
-                TableColumn<Scores,Double> FirstCaColumn=new TableColumn<>("1st CA");
+                TableColumn<Scores,Double> FirstCaColumn=new TableColumn<>("first ca");
                 FirstCaColumn.setMinWidth(100);
-                FirstCaColumn.setCellValueFactory(new PropertyValueFactory<>("first ca"));
+                FirstCaColumn.setCellValueFactory(new PropertyValueFactory<>("FirstCa"));
                 FirstCaColumn.setCellFactory(TextFieldTableCell.forTableColumn(new DoubleStringConverter()));
                 final Double[] FirstCaInput = new Double[1];
                 FirstCaColumn.setOnEditCommit((de)->{
@@ -371,11 +373,19 @@ public class StudentSelectAssessmentSessionWindowController implements Initializ
                 Label labelerror=new Label("Check your Input");
                 AddButton.setMinWidth(100);
                 AddButton.setOnAction((ev)->{
-                    if(subject.getText().isEmpty()){
+                    String sub=subject.getText();
+                    if(sub.isEmpty()){
                         labelerror.setVisible(true);
-                    }else {
-                        ///This thread does the actual removing
-                        new InsertSubjectThread(subject.getText(),NewValue,ScoreSession.getSelectionModel().getSelectedItem(),tableview).start();
+                    }
+                    if (!sub.matches("^[A-Za-z]*$")){
+                        new ConnectionError().Connection("Subject field contains invalid character");
+                    }
+                    if(ScoreSession.getValue()==null){
+                        new ConnectionError().Connection("Please select session on top of the screen");
+                    }
+                    if (!sub.isEmpty() && sub.matches("^[A-Za-z]*$")&&ScoreSession.getValue()!=null){
+                        ///This thread does the actual adding
+                        new InsertSubjectThread(sub,NewValue,ScoreSession.getSelectionModel().getSelectedItem(),tableview).start();
                         labelerror.setVisible(false);
                         subject.clear();
                     }
@@ -385,8 +395,16 @@ public class StudentSelectAssessmentSessionWindowController implements Initializ
                 DeleteButton.setOnAction((ev2)->{
                     ObservableList<Scores> ScoreSelected;
                     ScoreSelected=tableview.getSelectionModel().getSelectedItems();
-                    //This Thread does the actual deleting
-                    new DeleteSubjectThread(ScoreSelected.get(0).getSubject(),NewValue,ScoreSession.getSelectionModel().getSelectedItem(),tableview).start();
+                    if(ScoreSession.getValue()==null){
+                        new ConnectionError().Connection("Please select session on top of the screen");
+                    }
+                    if (ScoreSelected.isEmpty()){
+                        new ConnectionError().Connection("Please select score to delete");
+                    }
+                    if (ScoreSession.getValue()!=null||!ScoreSelected.isEmpty()){
+                        //This Thread does the actual deleting
+                        new DeleteSubjectThread(ScoreSelected.get(0).getSubject(),NewValue,ScoreSession.getSelectionModel().getSelectedItem(),tableview).start();
+                    }
                 });
                 DeleteButton.setMinWidth(100);
                 labelerror.setVisible(false);
@@ -402,9 +420,10 @@ public class StudentSelectAssessmentSessionWindowController implements Initializ
                 VBox ScorevBox=new VBox();
                 ScorevBox.setPadding(new Insets(10,10,10,10));
                 ScorevBox.setSpacing(10);
-                ScoreSession.setPromptText("Select Class");
-                Label label=new Label("Select Class:");
-                label.setFont(Font.font("Verdana", FontWeight.MEDIUM,24));
+                ScoreSession.setPromptText("Select Session");
+                Label label=new Label("Select Session:");
+                label.setStyle("-fx-text-fill:#D5D5D5;-fx-background-color:#004487;");
+                label.setFont(Font.font("Verdana", FontWeight.BOLD,24));
                 ScorevBox.setAlignment(Pos.TOP_CENTER);
 
                 ScorevBox.getChildren().addAll(label,ScoreSession,tableview,scoreHbox,vb);
@@ -412,7 +431,6 @@ public class StudentSelectAssessmentSessionWindowController implements Initializ
                 Scene scene=new Scene(scrollpane);
                 StudentSelectAssessmentSessionWindow.window.setMaximized(true);
                 StudentSelectAssessmentSessionWindow.window.setScene(scene);
-
             });
 
             ///////////////////////////////////////ASSESSMENT Table END//////////////////////////////////////////////////////
@@ -443,8 +461,6 @@ public class StudentSelectAssessmentSessionWindowController implements Initializ
         });
         ////////////////////////////////////LIST VIEW END HERE//////////////////////////////////////////////
         ////////////////////////////////////List view stop Here//////////////////////////////////////////////
-
-
     }
 
 
@@ -470,7 +486,7 @@ public class StudentSelectAssessmentSessionWindowController implements Initializ
         System.out.println("[Retrieving information session]: setting up okhttp client request");
         Request request=new Request.Builder()
                 .url("http://localhost:8080/retrieveinformationsession")
-                .addHeader("Authorization","Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzYWxhbWF5IiwiaWF0IjoxNTk4NTA5MDU2LCJleHAiOjE1OTg2ODkwNTZ9.rJnYfPefYX8tapQkTmyKuv15tprmJEyYl6FHvB21AZg")
+                .addHeader("Authorization","Bearer "+ LogInModel.token)
                 .build();
 
         try {
@@ -490,6 +506,7 @@ public class StudentSelectAssessmentSessionWindowController implements Initializ
                     list= Arrays.stream(data4.split(",")).collect(Collectors.toList());
                     Platform.runLater(()->{
                         clas.getItems().addAll(list);
+                        progressBar.setProgress(1);
                     });
                     System.out.println(data);
                     response.close();

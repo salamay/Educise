@@ -10,6 +10,8 @@ import okhttp3.*;
 import sample.ConnectionError;
 import sample.LoginPage.DashBoard.SelectWindows.Registeration.LoadingWindow;
 import sample.LoginPage.DashBoard.SelectWindows.Registeration.RegisterationWindow;
+import sample.LoginPage.LogInModel;
+
 import java.io.IOException;
 
 //This class save the school fee data to the server
@@ -39,7 +41,7 @@ public class SaveSchoolFeeThread extends Thread {
         Request request=new Request.Builder()
                 .post(requestBody)
                 .url("http://localhost:8080/saveschoolfee")
-                .addHeader("Authorization","Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzYWxhbWF5IiwiaWF0IjoxNTk4NzI2OTQxLCJleHAiOjE1OTg5MDY5NDF9.bJd8e4fkhpmaPdRNUMNnldNdEivacdZgSpZSkzVPgPQ")
+                .addHeader("Authorization","Bearer "+ LogInModel.token)
                 .build();
         try {
             Response response=client.newCall(request).execute();
@@ -48,9 +50,10 @@ public class SaveSchoolFeeThread extends Thread {
             if (response.code()==200||response.code()==201||response.code()==212||response.code()==202){
               Platform.runLater(()->{
                   LoadingWindow.window.close();
-                  ObservableList<Fee> data= FXCollections.observableArrayList();
+                  ObservableList<Fee> data= tableView.getItems();
                   data.add(fee);
                   tableView.setItems(data);
+                  response.close();
               });
             }else {
                 Platform.runLater(()->{
@@ -61,6 +64,29 @@ public class SaveSchoolFeeThread extends Thread {
                         System.out.println("[SchoolFeeThread]--> Connection Error");
                     }
                 });
+                response.close();
+            }
+            if (response.code()==400){
+                //Display alert dialog
+                Platform.runLater(()->{
+                    LoadingWindow.window.close();
+                    boolean error=new ConnectionError().Connection("server return error "+response.code()+": unable to save school fee");
+                    if (error){
+                        System.out.println("[SchoolFeeThread]--> unable to save school fee on the server");
+                    }
+                });
+                response.close();
+            }
+            if (response.code()==422){
+                //Display alert dialog
+                Platform.runLater(()->{
+                    LoadingWindow.window.close();
+                    boolean error=new ConnectionError().Connection("server return error "+response.code()+": Server cannot process your request,check fields for invalid character");
+                    if (error){
+                        System.out.println("[SchoolFeeThread]--> Connection error");
+                    }
+                });
+                response.close();
             }
         } catch (IOException e) {
             Platform.runLater(()->{
@@ -68,7 +94,7 @@ public class SaveSchoolFeeThread extends Thread {
                 boolean error=new ConnectionError().Connection("Unable to establish connection,CHECK INTERNET CONNECTION");
                 if (error){
                     tableView.getItems().clear();
-                    System.out.println("[SchoolFeeThread]--> Connection Error,Window close");
+                    System.out.println("[SchoolFeeThread]--> Connection error");
                 }
             });
             e.printStackTrace();

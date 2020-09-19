@@ -12,10 +12,12 @@ import okhttp3.Request;
 import okhttp3.Response;
 import sample.ConnectionError;
 import sample.LoginPage.DashBoard.SelectWindows.Registeration.LoadingWindow;
+import sample.LoginPage.LogInModel;
 
 import java.io.IOException;
 import java.util.List;
 
+//This class is applicable for selling book
 public class SearchBook extends Thread {
     private String bookname;
     private String session;
@@ -35,7 +37,7 @@ public class SearchBook extends Thread {
 
         Request request=new Request.Builder()
                 .url("http://localhost:8080/searchbook/"+bookname+"/"+session+"/"+term)
-                .addHeader("Authorization","Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzYWxhbWF5IiwiaWF0IjoxNTk5Nzk5OTY2LCJleHAiOjE2MDAxNTk5NjZ9.qwompSN9WRoyHTixemTubuVvPGZL9iN07ER0jpY-Ikc")
+                .addHeader("Authorization","Bearer "+ LogInModel.token)
                 .build();
         try {
             Response response=client.newCall(request).execute();
@@ -61,14 +63,16 @@ public class SearchBook extends Thread {
                     LoadingWindow.window.close();
                     sellBookTableView.setItems(tableList);
                 });
+                response.close();
             }else {
                 Platform.runLater(()->{
                     LoadingWindow.window.close();
-                    boolean error=new ConnectionError().Connection("server:error "+response.code()+" Unable to get abook");
+                    boolean error=new ConnectionError().Connection("server:error "+response.code()+" Book not found");
                     if (error){
                         System.out.println("[SearchBook]--> Connection Error");
                     }
                 });
+                response.close();
             }
         } catch (IOException e) {
             Platform.runLater(()->{

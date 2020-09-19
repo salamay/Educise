@@ -10,6 +10,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.TableView;
 import okhttp3.*;
 import sample.ConnectionError;
+import sample.LoginPage.LogInModel;
 
 
 import java.io.IOException;
@@ -56,7 +57,7 @@ public class GetScoreThread extends Thread {
                 .build();
         Request request=new Request.Builder()
                 .post(body)
-                .addHeader("Authorization","Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzYWxhbWF5IiwiaWF0IjoxNTk4NTA4NTczLCJleHAiOjE1OTg2ODg1NzN9.9nK-QCA6cxUmsU1qBiE8CEhiAMoBqfLuSehQQA9yJbU")
+                .addHeader("Authorization","Bearer "+ LogInModel.token)
                 .url("http://localhost:8080/getstudentscores")
                 .build();
         System.out.println("[GetScoreThread]: Setting up request body");
@@ -102,11 +103,32 @@ public class GetScoreThread extends Thread {
                 System.out.println("[GetScoreThread]--> server return error "+response.code()+": Unable to get score");
                 //Display alert dialog
                 Platform.runLater(()->{
-                    boolean error=new ConnectionError().Connection("server return error "+response.code()+": Unable to  get data");
+                    boolean error=new ConnectionError().Connection("server return error "+response.code()+": Unable to  get score");
                     if (error){
-                            System.out.println("[GetScoreThread]--> Connection Error,Window close");
+                            System.out.println("[GetScoreThread]--> Server error,unable to get score");
                     }
                 });
+                response.close();
+            }
+            if (response.code()==404){
+                //Display alert dialog
+                Platform.runLater(()->{
+                    boolean error=new ConnectionError().Connection("server return error "+response.code()+": Score not found");
+                    if (error){
+                        System.out.println("[GetScoreThread]--> Score not found on the server");
+                    }
+                });
+                response.close();
+            }
+            if (response.code()==422){
+                //Display alert dialog
+                Platform.runLater(()->{
+                    boolean error=new ConnectionError().Connection("server return error "+response.code()+": Server cannot process your request,check fields for invalid character");
+                    if (error){
+                        System.out.println("[GetScoreThread]--> Connection Error,Window close");
+                    }
+                });
+                response.close();
             }
         } catch (IOException e) {
             //Display an Alert dialog
@@ -118,7 +140,6 @@ public class GetScoreThread extends Thread {
             });
             e.printStackTrace();
         }
-
     }
 }
 

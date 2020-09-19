@@ -20,6 +20,7 @@ public class StudentSelectAssessmentSessionWindow {
         window.setScene(scene);
         window.setResizable(true);
         window.setMaximized(true);
+        window.isMaximized();
         window.centerOnScreen();
         window.setMinHeight(700);
         window.setMinWidth(1200);

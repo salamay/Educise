@@ -20,6 +20,7 @@ import sample.LoginPage.DashBoard.Admin.SchoolFee.getSchoolFees.getSchoolFeeWith
 import sample.LoginPage.DashBoard.Admin.SchoolFee.getSchoolFees.insertTerm;
 import sample.LoginPage.DashBoard.SelectWindows.Information.SelectInformationSesssionWindow;
 import sample.LoginPage.DashBoard.SelectWindows.Registeration.LoadingWindow;
+import sample.LoginPage.LogInModel;
 
 import java.io.IOException;
 import java.net.URL;
@@ -59,7 +60,7 @@ public class SchoolFeeWindowController implements Initializable {
     private String tag;
     private String modeofpayment;
     private String studentname;
-    private int amount;
+    private String amount;
     private String date;
     private String depositor;
     private String transactionid;
@@ -87,7 +88,7 @@ public class SchoolFeeWindowController implements Initializable {
         //////////////////////////////////////////////////Setting up table column
         //Student name Column
         namecolumn=new TableColumn<>("Student name");
-        namecolumn.setMinWidth(180);
+        namecolumn.setMinWidth(160);
         namecolumn.setCellValueFactory(new PropertyValueFactory<>("studentname"));
 
         //Amount column
@@ -100,8 +101,12 @@ public class SchoolFeeWindowController implements Initializable {
             Fee rowvalue=e.getRowValue();
             boolean state=CheckTermColumn(rowvalue,e);
             if (!state){
-                saveDataToSchoolfeetable(amountcolumn,e);
-                e.getRowValue().setAmount(e.getNewValue());
+                if (e.getNewValue().matches("^[0-9]*$")){
+                    saveDataToSchoolfeetable(amountcolumn,e);
+                    e.getRowValue().setAmount(e.getNewValue());
+                }else{
+                    new ConnectionError().Connection("Invalid character detected,delete the character");
+                }
             }else {
                 boolean error=new ConnectionError().Connection("Pls enter term field first");
                 System.out.println("Pls enter term field first");
@@ -127,7 +132,7 @@ public class SchoolFeeWindowController implements Initializable {
 
         //Year column
         yearcolumn=new TableColumn<>("Year");
-        yearcolumn.setMinWidth(100);
+        yearcolumn.setMinWidth(50);
         yearcolumn.setCellValueFactory(new PropertyValueFactory<>("year"));
         yearcolumn.setCellFactory(TextFieldTableCell.forTableColumn());
         yearcolumn.setOnEditCommit((e)->{
@@ -182,7 +187,7 @@ public class SchoolFeeWindowController implements Initializable {
 
         //datecolumn column
         datecolumn=new TableColumn<>("payment date");
-        datecolumn.setMinWidth(50);
+        datecolumn.setMinWidth(60);
         datecolumn.setCellValueFactory(new PropertyValueFactory<>("date"));
         datecolumn.setCellFactory(TextFieldTableCell.forTableColumn());
         datecolumn.setOnEditCommit((e)->{
@@ -200,7 +205,7 @@ public class SchoolFeeWindowController implements Initializable {
 
         //depositor column
         depositorcolumn=new TableColumn<>("Depositor");
-        depositorcolumn.setMinWidth(180);
+        depositorcolumn.setMinWidth(160);
         depositorcolumn.setCellValueFactory(new PropertyValueFactory<>("depositorname"));
         depositorcolumn.setCellFactory(TextFieldTableCell.forTableColumn());
         depositorcolumn.setOnEditCommit((e)->{
@@ -295,7 +300,6 @@ public class SchoolFeeWindowController implements Initializable {
         //Checking year combo box
         if (session!=null){
             yearerror.setVisible(false);
-            session=sessioncombobox.getSelectionModel().getSelectedItem();
         }
         else {
             yearerror.setVisible(true);
@@ -308,21 +312,15 @@ public class SchoolFeeWindowController implements Initializable {
             modeofpaymenterror.setVisible(true);
         }
         //Checking name text field
-        if (namefield.getText().isEmpty()&&namefield.getText().matches("^[0-9]*$")){
+        if (namefield.getText().isEmpty()||!namefield.getText().matches("^[A-Z[ ]a-z]*$")){
             nameerror.setVisible(true);
         }else {
             nameerror.setVisible(false);
         }
         //Checking amount text field
-        if (amountfield.getText().isEmpty()&&amountfield.getText().matches("^[a-zA-Z]*$")){
+        if (amountfield.getText().isEmpty()||!amountfield.getText().matches("^[0-9]*$")){
             amounterror.setVisible(true);
         }else {
-            try {
-                amount=Integer.parseInt(amountfield.getText());
-            }catch (NumberFormatException e){
-                e.printStackTrace();
-                amounterror.setVisible(true);
-            }
             amounterror.setVisible(false);
         }
         //Checking date text field
@@ -343,16 +341,14 @@ public class SchoolFeeWindowController implements Initializable {
         }else {
             transactioniderror.setVisible(false);
         }
-
-
         if (clas!=null&&term!=null&& session!=null&&modeofpayment!=null &&!namefield.getText().isEmpty() &&!amountfield.getText().isEmpty()&&!datefield.getText().isEmpty()&&!depositorname.getText().isEmpty()&&!transactionidfield.getText().isEmpty()){
             new LoadingWindow();
             studentname=namefield.getText();
-            amount=Integer.parseInt(amountfield.getText());
+            amount=amountfield.getText();
             date=datefield.getText();
             depositor=depositorname.getText();
             transactionid=transactionidfield.getText();
-            if (!studentname.contains("/&?")&&!date.contains("/&?")&&!depositor.contains("/?&")&&!transactionid.contains("/?&")){
+            if (!studentname.matches("^[><}{+_)(*&^%$#@!]*$")&&!date.matches("^[A-Z[><}{+_)(*&^%$#@!]a-z]*$")&&!depositor.matches("^[/><}{+_)(*&^%$#@!]*$")&&!transactionid.matches("^[><}{+)(*&^%$#@!]*$")&&amount.matches("^[0-9]")){
                 System.out.println("SchoolFeeWindowController: All input are Ok");
                 System.out.println("SchoolFeeWindowController: Student name: "+studentname);
                 System.out.println("SchoolFeeWindowController: class: "+clas);
@@ -383,7 +379,7 @@ public class SchoolFeeWindowController implements Initializable {
                 amountfield.clear();
                 datefield.clear();
             }else {
-                new ConnectionError().Connection("Invalid Character");
+                new ConnectionError().Connection("Invalid Character,detected");
             }
         }else {
             new ConnectionError().Connection("Invalid input, Check your input");
@@ -432,10 +428,42 @@ public class SchoolFeeWindowController implements Initializable {
             new LoadingWindow();
             new getSchoolFeeThread(clas,term,session,tableview).start();
         }
+
+    }
+    public void getSchoolfeeWithoutTerm() throws IOException {
+        //Getting input
+        System.out.println("SchoolFeeWindowController:get button without term pressed--> getting input");
+        clas=classcombobox.getValue();
+        session=sessioncombobox.getValue();
+        term=termcombobox.getValue();
+        tag=tagcombobox.getValue();
+        //Checking input for error
+        //Checking class combobox
+        if (clas!=null){
+            classerror.setVisible(false);
+        }
+        else {
+            classerror.setVisible(true);
+        }
+
+        //Checking year combobox
+        if (session!=null){
+            yearerror.setVisible(false);
+            session=sessioncombobox.getSelectionModel().getSelectedItem();
+        }
+        else {
+            yearerror.setVisible(true);
+        }
+        if (tag!=null){
+            tagerror.setVisible(false);
+        }
+        else {
+            tagerror.setVisible(true);
+        }
         //if only class and year is present, it will fetch the school fee for all the term
         if (clas!=null && session!=null &&tag!=null && term==null){
             new LoadingWindow();
-            System.out.println("SchoolFeeWindowController:Fetch Button pressed--> getting all term schoolfees");
+            System.out.println("SchoolFeeWindowController:get button without term pressed--> getting all term schoolfees");
             new getSchoolFeeWithoutTermThread(clas,session,tag,tableview).start();
         }
     }
@@ -506,9 +534,9 @@ public class SchoolFeeWindowController implements Initializable {
 
     //Saving data to school fee table
     public void saveDataToSchoolfeetable(TableColumn<?, ?> column, TableColumn.CellEditEvent<Fee, ?> e){
-        String newvalue=e.getNewValue().toString().replaceAll("/&?","-");
+        String newvalue=e.getNewValue().toString().replaceAll("/","-");
         System.out.println("SchoolFeeWindowController: entity: "+newvalue);
-       if (!newvalue.isEmpty()){
+       if (!newvalue.isEmpty()&&!newvalue.matches("^[/<>+_)(*&^%$#!}{}@]*$")){
            //get the student name in the selected row
            String studentnameInTheColumn=e.getRowValue().getStudentname();
            System.out.println("SchoolFeeWindowController: student name: "+studentnameInTheColumn);
@@ -529,8 +557,8 @@ public class SchoolFeeWindowController implements Initializable {
            System.out.println("SchoolFeeWindowController: term: "+term);
            new saveDataIntoSchoolFeeTable(clas,session,studentnameInTheColumn,tag,newvalue,columntable,term,column).start();
        }else {
-           boolean error=new ConnectionError().Connection("Please provide a value for the field");
-           System.out.println("SchoolFeeWindowController: Please provide a value for the field");
+           boolean error=new ConnectionError().Connection("Check for invalid symbol, symbol '-' is only allow in date field,delet or change the symbol");
+           System.out.println("SchoolFeeWindowController: Please provide valid value for the field");
        }
     }
 
@@ -568,7 +596,7 @@ public class SchoolFeeWindowController implements Initializable {
             System.out.println("[ClassThread]: setting up okhttp client request");
             Request request=new Request.Builder()
                     .url("http://localhost:8080/retrieveinformationsession")
-                    .addHeader("Authorization","Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzYWxhbWF5IiwiaWF0IjoxNTk5Nzk5OTY2LCJleHAiOjE2MDAxNTk5NjZ9.qwompSN9WRoyHTixemTubuVvPGZL9iN07ER0jpY-Ikc")
+                    .addHeader("Authorization","Bearer "+ LogInModel.token)
                     .build();
 
             try {

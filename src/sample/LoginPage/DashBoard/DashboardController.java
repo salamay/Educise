@@ -1,7 +1,12 @@
 package sample.LoginPage.DashBoard;
 
 
+import com.jfoenix.controls.JFXButton;
+import javafx.animation.ScaleTransition;
 import javafx.fxml.Initializable;
+import javafx.scene.transform.Scale;
+import javafx.util.Duration;
+import sample.ConnectionError;
 import sample.LoginPage.DashBoard.Admin.AdminWindow;
 import sample.LoginPage.DashBoard.SelectWindows.AcademicSession.SelectAcademicSession;
 import sample.LoginPage.DashBoard.SelectWindows.Information.SelectInformationSesssionWindow;
@@ -15,9 +20,13 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class DashboardController implements Initializable {
+    public JFXButton studentinfobutton;
+    public JFXButton teacherinfobutton;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        teacherinfobutton.setOnAction((e)->{
+            new ConnectionError().Connection("Not available");
+        });
 
     }
 
@@ -31,7 +40,8 @@ public class DashboardController implements Initializable {
 
     }
     public void NewTeacherButtonClicked() throws IOException {
-        new NewTeacherWindow();
+        new ConnectionError().Connection("Not available");
+        //new NewTeacherWindow();
     }
 
     public void Student_Score_Clicked() throws IOException {
@@ -52,6 +62,23 @@ public class DashboardController implements Initializable {
     public void AdminButtonClicked() throws IOException {
         new AdminWindow();
     }
+    ///on over method
+    public void StundenInfoButtonOnDragExited(){
+        System.out.println("Mouse status:On drag over");
+        scaleTransition(studentinfobutton);
+    }
+    public void StundenInfoButtonOnDragReleased(){
 
+    }
+
+
+    public void scaleTransition(JFXButton button){
+        ScaleTransition scaleTransition=new ScaleTransition();
+        scaleTransition.setDuration(new Duration(100));
+        scaleTransition.setByX(1.5);
+        scaleTransition.setByY(1.5);
+        scaleTransition.setNode(button);
+        scaleTransition.play();
+    }
 
 }

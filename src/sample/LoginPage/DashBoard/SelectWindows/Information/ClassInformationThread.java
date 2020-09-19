@@ -12,6 +12,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import sample.ConnectionError;
+import sample.LoginPage.LogInModel;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -23,20 +24,20 @@ import java.nio.file.Paths;
 //this class does the fetching of Student information from database
 public class ClassInformationThread extends  Thread {
 
-        String classname;
-        String studentName;
-    Label ageLabel;
-    Label phoneNoLabel;
-    Label fatherNameLabel;
-    Label motherNameLabel;
-    Label addressLabel;
-    Label nextOfKinLabel;
-    Label genderLabel;
-    Label clubLabel;
-    Label rOleModelLabel;
-    Label academicPerformance;
-    Label namelabel;
-    private  Label MotherName;
+    private String classname;
+    private String studentName;
+    private Label ageLabel;
+    private Label phoneNoLabel;
+    private Label fatherNameLabel;
+    private Label motherNameLabel;
+    private Label addressLabel;
+    private Label nextOfKinLabel;
+    private Label genderLabel;
+    private Label clubLabel;
+    private Label rOleModelLabel;
+    private Label academicPerformance;
+    private Label namelabel;
+    private Label MotherName;
     private Label FatherName;
 
     private ImageView imageView;
@@ -49,8 +50,8 @@ public class ClassInformationThread extends  Thread {
 
         public ClassInformationThread(String clas, String name, Label namelabel, Label ageLabel, Label phoneNoLabel, Label fatherNameLabel,
                                       Label motherNameLabel, Label addressLabel, Label nextOfKinLabel, Label genderLabel,
-                                      Label clubLabel, Label rOleModelLabel, Label academicPerformance, ImageView image,ImageView Father,
-                                      ImageView Mother,Label FatherName,Label MotherName){
+                                      Label clubLabel, Label rOleModelLabel, ImageView image, ImageView Father,
+                                      ImageView Mother, Label FatherName, Label MotherName){
             this.studentName=name;
             this.classname=clas;
             this.namelabel=namelabel;
@@ -69,21 +70,21 @@ public class ClassInformationThread extends  Thread {
             this.MotherImageView=Mother;
             this.FatherName=FatherName;
             this.MotherName=MotherName;
-            System.out.println(" [ClassInformationThread]: "+studentName);
-            System.out.println("[ClassInformationThread]: "+classname);
+            System.out.println(" [ClassInformationThread]:"+studentName);
+            System.out.println("[ClassInformationThread]:"+classname);
         }
         @Override
         public void run() {
             OkHttpClient client=new OkHttpClient();
-
             Request request=new Request.Builder()
                     .url("http://localhost:8080/retrievestudentinformation/"+studentName+"/"+classname)
-                    .addHeader("Authorization","Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzYWxhbWF5IiwiaWF0IjoxNTk4NTA4NTczLCJleHAiOjE1OTg2ODg1NzN9.9nK-QCA6cxUmsU1qBiE8CEhiAMoBqfLuSehQQA9yJbU")
+                    .addHeader("Authorization","Bearer "+ LogInModel.token)
                     .build();
+            Response response;
             try {
-                Response response=client.newCall(request).execute();
-                if (response.code()==200||response.code()==204){
-                    System.out.println("[ClassInformationThread]"+response);
+                 response=client.newCall(request).execute();
+                System.out.println("[ClassInformationThread]"+response);
+                if (response.code()==200||response.code()==202||response.code()==212||response.code()==201){
                     ResponseBody responseBody=response.body();
                     System.out.println("[ClassInformationThread]"+responseBody);
                     /////Retrieving and processing body,The response contains images and sting value
@@ -103,10 +104,10 @@ public class ClassInformationThread extends  Thread {
                     byte[] father=retrieveResponseEntity.getFather();
                     byte[] mother=retrieveResponseEntity.getMother();
                     Path path=Paths.get(System.getProperty("user.dir")+"/MyChildSchool");
+                    Files.createDirectories(path);
                     System.out.println("[ClassInformationThread]: Creating path on the Pc to store Images");
                     if (Files.exists(path)){
                         System.out.println("[ClassInformationThread]:Creating new Path");
-                        Files.createDirectories(path);
                         System.out.println("[ClassInformationThread]:Processing student image");
                         File studentimage=new File(System.getProperty("user.dir")+"/MyChildSchool/student");
                         FileOutputStream sout=new FileOutputStream(studentimage);
@@ -122,6 +123,7 @@ public class ClassInformationThread extends  Thread {
                             System.out.println("[ClassInformationThread]:Processing student image successful");
                         }
                         else {
+                            Files.createDirectories(path);
                             System.out.println("[ClassInformationThread]:student image is null cannot read file");
                         }
                         //////Processing Father Image
@@ -159,6 +161,33 @@ public class ClassInformationThread extends  Thread {
                         else {
                             System.out.println("[ClassInformationThread]:mother image is null cannot read file");
                         }
+
+                      Platform.runLater(()->{
+                          MotherName.setWrapText(true);
+                          fatherNameLabel.setWrapText(true);
+                          ageLabel.isWrapText();
+                          phoneNoLabel.isWrapText();
+                          addressLabel.isWrapText();
+                          nextOfKinLabel.isWrapText();
+                          genderLabel.isWrapText();
+                          clubLabel.isWrapText();
+                          rOleModelLabel.isWrapText();
+                          namelabel.isWrapText();
+                          MotherName.setText(retrieveResponseEntity.getMothername());
+                          FatherName.setText(retrieveResponseEntity.getFathername());
+                          ageLabel.setText(String.valueOf(retrieveResponseEntity.getAge()));
+                          phoneNoLabel.setText(retrieveResponseEntity.getPhoneno());
+                          fatherNameLabel.setText(retrieveResponseEntity.getFathername());
+                          motherNameLabel.setText(retrieveResponseEntity.getMothername());
+                          addressLabel.setText(retrieveResponseEntity.getAddress());
+                          nextOfKinLabel.setText(retrieveResponseEntity.getNextofkin());
+                          genderLabel.setText(retrieveResponseEntity.getGender());
+                          clubLabel.setText(retrieveResponseEntity.getClub());
+                          rOleModelLabel.setText(retrieveResponseEntity.getRolemodel());
+                          namelabel.setText(retrieveResponseEntity.getStudentname());
+                      });
+
+
                     }else {
                         System.out.println("[ClassInformationThread]:path to store images does not exists" );
                     }
@@ -175,7 +204,17 @@ public class ClassInformationThread extends  Thread {
                     });
 
                 }
-
+                if (response.code()==204){
+                    //Display alert dialog
+                    Platform.runLater(()->{
+                        boolean error=new ConnectionError().Connection("server return error "+response.code()+": Information not found");
+                        if (error){
+                            InformationWindow.window1.close();
+                            System.out.println("[GetScoreThread]--> Connection Error,Window close");
+                            response.close();
+                        }
+                    });
+                }
             } catch (IOException e) {
                 //Display an Alert dialog
                 Platform.runLater(()->{

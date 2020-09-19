@@ -8,7 +8,9 @@ import okhttp3.Response;
 import sample.ConnectionError;
 import sample.LoginPage.DashBoard.Admin.SchoolFee.Fee;
 import sample.LoginPage.DashBoard.SelectWindows.Registeration.LoadingWindow;
+import sample.LoginPage.LogInModel;
 
+import javax.security.auth.spi.LoginModule;
 import java.io.IOException;
 
 public class DeleteSchoolFee extends Thread {
@@ -35,7 +37,7 @@ public class DeleteSchoolFee extends Thread {
         System.out.println("[DeleteSchoolFee]: Making request");
         Request request=new Request.Builder()
                 .url("http://localhost:8080/deleteschoolfee/"+clas+"/"+session+"/"+term+"/"+studentname)
-                .addHeader("Authorization","Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzYWxhbWF5IiwiaWF0IjoxNTk5MzAzNjk4LCJleHAiOjE1OTk0ODM2OTh9.PhAyaBtsbOAVrBevhjAYLD3B7ZoqXYhsB_CCp_LakyA")
+                .addHeader("Authorization","Bearer "+ LogInModel.token)
                 .delete()
                 .build();
         Response response;
@@ -52,6 +54,7 @@ public class DeleteSchoolFee extends Thread {
                     fee.setTerm(null);
                     tableview.refresh();
                 });
+                response.close();
                 System.out.println("[DeleteSchoolFee]--> OK-->"+response.code());
             }else {
                 Platform.runLater(()->{
@@ -62,6 +65,27 @@ public class DeleteSchoolFee extends Thread {
                         System.out.println("[DeleteSchoolFee]--> Connection Error");
                     }
                 });
+                response.close();
+            }
+            if (response.code()==400){
+                //Display alert dialog
+                Platform.runLater(()->{
+                    boolean error=new ConnectionError().Connection("server return error "+response.code()+": unable to delete school fee");
+                    if (error){
+                        System.out.println("[DeleteSchoolFee]--> unable to delete school fee on the server");
+                    }
+                });
+                response.close();
+            }
+            if (response.code()==422){
+                //Display alert dialog
+                Platform.runLater(()->{
+                    boolean error=new ConnectionError().Connection("server return error "+response.code()+": Server cannot process your request,check fields for invalid character");
+                    if (error){
+                        System.out.println("[DeleteSchoolFee]--> Connection error");
+                    }
+                });
+                response.close();
             }
         } catch (IOException e) {
             Platform.runLater(()->{
@@ -69,11 +93,10 @@ public class DeleteSchoolFee extends Thread {
                 boolean error=new ConnectionError().Connection(" Unable to delete,Check internet connection");
                 if (error){
                     tableview.getItems().clear();
-                    System.out.println("[DeleteSchoolFee]--> Connection Error");
+                    System.out.println("[DeleteSchoolFee]--> Connection error");
                 }
             });
             e.printStackTrace();
         }
-
     }
 }

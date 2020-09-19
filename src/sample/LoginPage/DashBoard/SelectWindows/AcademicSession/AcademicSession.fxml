@@ -7,9 +7,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="660.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.LoginPage.DashBoard.SelectWindows.AcademicSession.AcademicSessionController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.LoginPage.DashBoard.SelectWindows.AcademicSession.AcademicSessionController">
    <children>
-      <AnchorPane prefHeight="700.0" prefWidth="600.0" style="-fx-background-color: #D5D5D5;">
+      <AnchorPane prefHeight="600.0" prefWidth="600.0" style="-fx-background-color: #D5D5D5;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Label alignment="CENTER" layoutX="6.0" prefHeight="28.0" prefWidth="573.0" text="Shekinah College, Inisa.">
                <font>
@@ -17,17 +17,20 @@
                </font>
             </Label>
             <VBox layoutX="14.0" layoutY="34.0" prefHeight="259.0" prefWidth="566.0" styleClass="SessionBackground" stylesheets="@../../../../../back.css" />
-            <VBox alignment="CENTER" layoutX="34.0" layoutY="319.0" prefHeight="401.0" prefWidth="517.0" spacing="10.0">
+            <VBox alignment="CENTER" layoutX="34.0" layoutY="319.0" prefHeight="361.0" prefWidth="517.0" spacing="10.0">
                <children>
                   <VBox alignment="CENTER" prefHeight="68.0" prefWidth="517.0">
                      <children>
-                        <Label prefHeight="22.0" prefWidth="117.0" text="Create New Session:" VBox.vgrow="ALWAYS">
+                        <Label prefHeight="22.0" prefWidth="117.0" text="Create New Session:" textFill="#0a861d" VBox.vgrow="ALWAYS">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Label>
-                        <Label text="Note that you have to create session for each class" VBox.vgrow="ALWAYS" />
-                        <Label prefHeight="17.0" prefWidth="175.0" text="Format : jss1_year e.g jss12018  " VBox.vgrow="ALWAYS" />
+                        <Label text="Note: You have to create session for each class at the end of each session with the format below" textFill="#ff3f3f" VBox.vgrow="ALWAYS">
+                           <font>
+                              <Font name="System Bold Italic" size="12.0" />
+                           </font></Label>
+                        <Label prefHeight="17.0" prefWidth="327.0" text="Format : jss1_starting year_end year e.g jss1_2018_2019 " textAlignment="CENTER" textFill="#008009" wrapText="true" VBox.vgrow="ALWAYS" />
                      </children>
                   </VBox>
                   <HBox prefHeight="17.0" prefWidth="549.0">
@@ -96,7 +99,6 @@
                      </font>
                   </Label>
                   <Button mnemonicParsing="false" onAction="#CreateSessionClicked" prefHeight="34.0" prefWidth="94.0" text="Create Session" />
-                  <JFXSpinner fx:id="LoadingSpinner" />
                </children>
             </VBox>
          </children>

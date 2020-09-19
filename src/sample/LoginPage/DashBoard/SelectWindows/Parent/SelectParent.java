@@ -1,5 +1,8 @@
 package sample.LoginPage.DashBoard.SelectWindows.Parent;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.jfoenix.controls.JFXComboBox;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -19,7 +22,10 @@ import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import sample.ConnectionError;
+import sample.LoginPage.DashBoard.SelectWindows.Information.ListViewNames;
+import sample.LoginPage.LogInModel;
 
+import javax.security.auth.spi.LoginModule;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -124,7 +130,6 @@ public class SelectParent {
         //this list here is static,its value will be needed later in thr StudentAssessmentSessionController class
         public static List<String> list;
         ProgressIndicator progressBar;
-        double progress=0.0;
 
 
         public ClassThread(JFXComboBox<String> comb,ProgressIndicator PgBar) {
@@ -140,7 +145,7 @@ public class SelectParent {
             System.out.println("[Retrieving information session]: setting up okhttp client request");
             Request request=new Request.Builder()
                     .url("http://localhost:8080/retrieveinformationsession")
-                    .addHeader("Authorization","Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzYWxhbWF5IiwiaWF0IjoxNTk4NTA5MDU2LCJleHAiOjE1OTg2ODkwNTZ9.rJnYfPefYX8tapQkTmyKuv15tprmJEyYl6FHvB21AZg")
+                    .addHeader("Authorization","Bearer "+ LogInModel.token)
                     .build();
 
             try {
@@ -160,6 +165,7 @@ public class SelectParent {
                         list= Arrays.stream(data4.split(",")).collect(Collectors.toList());
                         Platform.runLater(()->{
                             clas.getItems().addAll(list);
+                            progressBar.setProgress(1);
                         });
                         System.out.println(data);
                         response.close();
@@ -177,6 +183,17 @@ public class SelectParent {
                             System.out.println("[SelectClassThread]--> Connection Error,Window close");
                         }
                     });
+                    response.close();
+                }
+                if (response.code()==404){
+                    Platform.runLater(()->{
+                        boolean error=new ConnectionError().Connection("Server:error"+response.code()+" Session not found");
+                        if (error){
+                            SelectParent.window1.close();
+                            System.out.println("[SelectParent]--> Connection Error,Window close");
+                        }
+                    });
+                    response.close();
                 }
             } catch (IOException e) {
                 //Display an Alert dialog
@@ -214,7 +231,7 @@ public class SelectParent {
             System.out.println("[SelectParent]: setting up okhttp client request");
             Request request=new Request.Builder()
                     .url("http://localhost:8080/retrieveparent/"+classSelected)
-                    .addHeader("Authorization","Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzYWxhbWF5IiwiaWF0IjoxNTk4NTA5MDU2LCJleHAiOjE1OTg2ODkwNTZ9.rJnYfPefYX8tapQkTmyKuv15tprmJEyYl6FHvB21AZg")
+                    .addHeader("Authorization","Bearer "+ LogInModel.token)
                     .build();
 
             try {
@@ -230,13 +247,17 @@ public class SelectParent {
                         byte [] bytes=body.bytes();
                         //removing bracket from response
                         String data=new String(bytes,"UTF-8");
-                        String data2=data.replace(']',' ');
-                        String data3=data2.replace('[',' ');
-                        String data4=data3.replaceAll(" ","");
-                        rawlist= Arrays.stream(data4.split(",")).collect(Collectors.toList());
-                        ObservableList<String> names=FXCollections.observableArrayList(rawlist);
+                        GsonBuilder gsonBuilder=new GsonBuilder();
+                        gsonBuilder.serializeNulls();
+                        gsonBuilder.setPrettyPrinting();
+                        Gson gson=gsonBuilder.create();
+                        List<RetrieveParentNameResponse> list2=gson.fromJson(data,new TypeToken<List<RetrieveParentNameResponse>>(){}.getType());
+
                         Platform.runLater(()->{
-                            parentListView.getItems().addAll(names);
+                            for (int i=0;i<list2.size();i++){
+                                parentListView.getItems().add(list2.get(i).getFathername());
+                                parentListView.getItems().add(list2.get(i).getMothername());
+                            }
                         });
                         System.out.println(data);
                         response.close();
@@ -255,6 +276,15 @@ public class SelectParent {
                         }
                     });
                 }
+               if (response.code()==404){
+                   Platform.runLater(()->{
+                       boolean error=new ConnectionError().Connection("Server:error"+response.code()+" Parent names not found");
+                       if (error){
+                           SelectParent.window1.close();
+                           System.out.println("[SelectParent]--> Connection Error,Window close");
+                       }
+                   });
+               }
             } catch (IOException e) {
                 //Display an Alert dialog
                 Platform.runLater(()->{

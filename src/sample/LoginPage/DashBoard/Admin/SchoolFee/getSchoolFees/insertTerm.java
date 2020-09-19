@@ -7,6 +7,7 @@ import okhttp3.*;
 import sample.ConnectionError;
 import sample.LoginPage.DashBoard.Admin.SchoolFee.Fee;
 import sample.LoginPage.DashBoard.Admin.SchoolFee.SchoolFeeWindowController;
+import sample.LoginPage.LogInModel;
 
 
 import java.io.IOException;
@@ -37,7 +38,7 @@ public class insertTerm extends Thread{
 
         Request request=new Request.Builder()
                 .url("http://localhost:8080/saveterm/"+term+"/"+studentname+"/"+clas+"/"+session+"/"+tag)
-                .addHeader("Authorization","Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzYWxhbWF5IiwiaWF0IjoxNTk5Nzk5OTY2LCJleHAiOjE2MDAxNTk5NjZ9.qwompSN9WRoyHTixemTubuVvPGZL9iN07ER0jpY-Ikc")
+                .addHeader("Authorization","Bearer "+ LogInModel.token)
                 .build();
         try {
             Response response=client.newCall(request).execute();
@@ -49,6 +50,7 @@ public class insertTerm extends Thread{
                     //set the term column to new value
                     ce.getRowValue().setTerm(term);
                 });
+                response.close();
             }else {
                 Platform.runLater(()->{
                     boolean error=new ConnectionError().Connection("server:error "+response.code()+" Unable to insert term,CHECK INTERNET CONNECTION");
@@ -58,6 +60,27 @@ public class insertTerm extends Thread{
                         System.out.println("[InsertTerm]--> Connection Error");
                     }
                 });
+                response.close();
+            }
+            if (response.code()==400){
+                //Display alert dialog
+                Platform.runLater(()->{
+                    boolean error=new ConnectionError().Connection("server return error "+response.code()+": unable to insert term");
+                    if (error){
+                        System.out.println("[InsertTerm]--> school fee  not found on the server");
+                    }
+                });
+                response.close();
+            }
+            if (response.code()==422){
+                //Display alert dialog
+                Platform.runLater(()->{
+                    boolean error=new ConnectionError().Connection("server return error "+response.code()+": Server cannot process your request,check fields for invalid character");
+                    if (error){
+                        System.out.println("[InsertTerm]--> Connection error");
+                    }
+                });
+                response.close();
             }
         } catch (IOException e) {
             Platform.runLater(()->{
@@ -65,7 +88,7 @@ public class insertTerm extends Thread{
                 if (error){
                     ce.getRowValue().setTerm(null);
                     ce.getTableView().refresh();
-                    System.out.println("[InsertTerm]--> Connection Error,Window close");
+                    System.out.println("[InsertTerm]--> Connection Error");
                 }
             });
             e.printStackTrace();

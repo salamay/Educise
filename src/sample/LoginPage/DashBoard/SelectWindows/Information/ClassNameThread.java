@@ -1,12 +1,17 @@
 package sample.LoginPage.DashBoard.SelectWindows.Information;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import javafx.application.Platform;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 import okhttp3.*;
 import sample.ConnectionError;
+import sample.LoginPage.LogInModel;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,7 +36,7 @@ public class ClassNameThread extends Thread {
         System.out.println("[ClassNameThread]: Receiving name ");
         System.out.println("[ClassNameThread]: preparing request ");
         Request request=new Request.Builder()
-                .addHeader("Authorization","Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzYWxhbWF5IiwiaWF0IjoxNTk4NTA4NTczLCJleHAiOjE1OTg2ODg1NzN9.9nK-QCA6cxUmsU1qBiE8CEhiAMoBqfLuSehQQA9yJbU")
+                .addHeader("Authorization","Bearer "+ LogInModel.token)
                 .url("http://localhost:8080/retrivenames/"+classname)
                 .build();
         System.out.println("[ClassNameThread]: preparing to send request ");
@@ -44,18 +49,20 @@ public class ClassNameThread extends Thread {
                 ResponseBody body=response.body();
                 byte[] bytes=body.bytes();
                 String list=new String(bytes,"UTF-8");
-                String list2=list.replace('[',' ');
-                String list3=list2.replace(']',' ');
-                String list4=list3.replaceAll(" ","");
-                System.out.println(list4);
-                List<String> namelist= Arrays.stream(list4.split(",")).collect(Collectors.toList());
+                GsonBuilder gsonBuilder=new GsonBuilder();
+                gsonBuilder.serializeNulls();
+                gsonBuilder.setPrettyPrinting();
+                Gson gson=gsonBuilder.create();
+                List<ListViewNames> list2=gson.fromJson(list,new TypeToken<List<ListViewNames>>(){}.getType());
+
                 ////Processing request end
                 Platform.runLater(() -> {
-                    listview.getItems().addAll(namelist);
-                    System.out.println(listview);
+                    for (int i=0;i<list2.size();i++){
+                        listview.getItems().addAll(list2.get(i).getName());
+                    }
+                    System.out.println(listview.toString());
                 });
                 response.close();
-                body.close();
             }else{
                 //Display alert dialog
                 Platform.runLater(()->{
@@ -65,6 +72,7 @@ public class ClassNameThread extends Thread {
                         System.out.println("[GetScoreThread]--> Connection Error,Window close");
                     }
                 });
+                response.close();
             }
 
         } catch (IOException e) {

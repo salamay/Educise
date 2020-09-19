@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder;
 import javafx.application.Platform;
 import okhttp3.*;
 import sample.ConnectionError;
+import sample.LoginPage.LogInModel;
 
 import java.io.*;
 
@@ -26,7 +27,7 @@ public class RegisterStudentThread extends  Thread {
     }
 
     public RegisterStudentThread(String studentname, int age, String fathername, String mothername, String NextOfKin,
-                                 String address, float PhoneNo, String NickName, String Hobbies, String TurnOn,
+                                 String address, String PhoneNo, String NickName, String Hobbies, String TurnOn,
                                  String TurnOff, String Club, String RoleModel, String FutureAmbition, String Gender, String session,
                                  File file, File FatherPicture, File Mother,String clas,String tag) {
         this.session = session;
@@ -110,7 +111,7 @@ public class RegisterStudentThread extends  Thread {
             Request  request=new Request.Builder()
                     .url("http://localhost:8080/register/"+session)
                     .post(requestBody)
-                    .addHeader("Authorization","Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzYWxhbWF5IiwiaWF0IjoxNTk4OTU1ODM2LCJleHAiOjE1OTkxMzU4MzZ9.VhM5uk9VMifPBoFz0yhZGGzYP3CTN4lNbMeJiJ2PVAM")
+                    .addHeader("Authorization","Bearer "+ LogInModel.token)
                     .build();
             try {
 
@@ -135,6 +136,7 @@ public class RegisterStudentThread extends  Thread {
                             System.out.println("[RegisterstudentThread]--> Connection Error,Window close");
                         }
                     });
+                    response.close();
                 }
             } catch (IOException e) {
                 Platform.runLater(()->{
@@ -149,24 +151,7 @@ public class RegisterStudentThread extends  Thread {
                 e.printStackTrace();
             }
         ////////////////////////////Preparing request end////////////////////////////////////
-            /////////////////////////////////////////////////////////////
-
-            //Increase the progress bar
-//            while (true) {
-//                System.out.println(counter);
-//                try {
-//                    Thread.sleep(100);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//                Platform.runLater(() -> {
-//
-//                });
-//                counter += 0.01;
-//                if (counter > 1) {
-//                    break;
-//                }
-//            }
+            ///////////////////////////////////////////////////////////
 
     }
 }

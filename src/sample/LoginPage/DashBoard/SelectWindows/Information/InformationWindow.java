@@ -18,7 +18,7 @@ import javafx.stage.Stage;
 public class InformationWindow {
    static Stage window1;
 
-    public InformationWindow(String clas,String NewValue) {
+    public InformationWindow(String clas, String NewValue) {
 
         window1=new Stage();
 
@@ -31,10 +31,12 @@ public class InformationWindow {
         topVbox.setMinWidth(Control.USE_COMPUTED_SIZE);
         topVbox.setMinHeight(Control.USE_COMPUTED_SIZE);
         topVbox.setPadding(new Insets(10,10,10,10));
+        topVbox.setAlignment(Pos.CENTER);
         //Vbox content
         HBox hbox=new HBox();
         Label label=new Label("Student Information.");
         label.setFont(Font.font("Verdana", FontWeight.MEDIUM,25));
+        label.setStyle("-fx-text-fill:#FFFFFF");
         hbox.getChildren().add(label);
         HBox hBox2=new HBox();
         hBox2.setPrefWidth(1180);
@@ -71,7 +73,8 @@ public class InformationWindow {
         String styles="-fx-background-image: url('image/schoolback.jpg');"+"-fx-background-size:70%;";
         hBox2.setStyle(styles);
         topVbox.getChildren().addAll(hbox,hBox2);
-
+        borderPane.setTop(hbox);
+        borderPane.setCenter(hBox2);
         ///center
 
         BorderPane bdp=new BorderPane();
@@ -115,10 +118,8 @@ public class InformationWindow {
         ClubLabel.setStyle(labelstyle);
         Label ROleModelLabel=new Label("RoleModel: ");
         ROleModelLabel.setStyle(labelstyle);
-        Label AcademicPerformance=new Label("Academic Performance: ");
-        AcademicPerformance.setStyle(labelstyle);
-        infocontainer.getChildren().addAll(AgeLabel,PhoneNoLabel,FatherNameLabel,MotherNameLabel,AddressLabel,
-                AcademicPerformance,NextOfKinLabel,GenderLabel,ClubLabel,ROleModelLabel);
+
+        infocontainer.getChildren().addAll(AgeLabel,PhoneNoLabel,FatherNameLabel,MotherNameLabel,AddressLabel,NextOfKinLabel,GenderLabel,ClubLabel,ROleModelLabel);
         bdp.setLeft(infocontainer);
 
         //Vbox containing node
@@ -147,77 +148,24 @@ public class InformationWindow {
         clubLabel.setStyle(labelstyle);
         Label rOleModelLabel=new Label();
         rOleModelLabel.setStyle(labelstyle);
-        Label academicPerformance=new Label();
-        academicPerformance.setStyle(labelstyle);
         infocontainer2.getChildren().addAll(ageLabel,phoneNoLabel,fatherNameLabel,motherNameLabel,addressLabel,
-                nextOfKinLabel,genderLabel,clubLabel,rOleModelLabel,academicPerformance);
+                nextOfKinLabel,genderLabel,clubLabel,rOleModelLabel);
         bdp.setCenter(infocontainer2);
-
-
-        //GridPane containing JFX node
-        GridPane gridPane=new GridPane();
-        gridPane.setMinHeight(Control.USE_COMPUTED_SIZE);
-        gridPane.setMaxWidth(Control.USE_COMPUTED_SIZE);
-        gridPane.setHgap(30);
-        gridPane.setVgap(20);
-        gridPane.setAlignment(Pos.TOP_LEFT);
-        ProgressIndicator MathSpinner=new ProgressIndicator();
-        MathSpinner.isIndeterminate();
-        ProgressIndicator EnglishSpinner=new ProgressIndicator();
-        EnglishSpinner.isIndeterminate();
-        ProgressIndicator BasicScienceSpinner=new ProgressIndicator();
-        BasicScienceSpinner.isIndeterminate();
-        ProgressIndicator BasicTechnologySpinner=new ProgressIndicator();
-        BasicTechnologySpinner.isIndeterminate();
-        ProgressIndicator RnvSpinner=new ProgressIndicator();
-        RnvSpinner.isIndeterminate();
-        ProgressIndicator AgricSpinner=new ProgressIndicator();
-        AgricSpinner.isIndeterminate();
-        Label math=new Label("Mathematics");
-        Label english=new Label("English Studies");
-        Label basicscience=new Label("Basic Science");
-        Label Basictech=new Label("Basic Technology");
-        Label rnv=new Label("RNV");
-        Label agric=new Label("Agricultural Studies");
-        GridPane.setConstraints(math,1,1);
-        GridPane.setConstraints(english,2,1);
-        GridPane.setConstraints(basicscience,3,1);
-        GridPane.setConstraints(MathSpinner,1,2);
-        GridPane.setConstraints(EnglishSpinner,2,2);
-        GridPane.setConstraints(BasicScienceSpinner,3,2);
-        GridPane.setConstraints(Basictech,1,3);
-        GridPane.setConstraints(rnv,2,3);
-        GridPane.setConstraints(agric,3,3);
-        GridPane.setConstraints(BasicTechnologySpinner,1,4);
-        GridPane.setConstraints(RnvSpinner,2,4);
-        GridPane.setConstraints(AgricSpinner,3,4);
-        gridPane.getChildren().addAll(math,english,basicscience,Basictech,rnv,agric,
-                MathSpinner,EnglishSpinner,BasicScienceSpinner,BasicTechnologySpinner,RnvSpinner,AgricSpinner);
-        bdp.setRight(gridPane);
-        Region region1=new Region();
-        Region region2=new Region();
-        region1.setMinHeight(302);
-        region1.setMinWidth(108);
-        region2.setMinHeight(302);
-        region2.setMinWidth(108);
-        borderPane.setTop(topVbox);
-        borderPane.setCenter(bdp);
-        borderPane.setLeft(region1);
-        borderPane.setRight(region2);
-
+        borderPane.setBottom(bdp);
         window1.initModality(Modality.APPLICATION_MODAL);
         window1.setMaximized(true);
         window1.setResizable(true);
-        Scene scene=new Scene(borderPane,1200.,650);
+        window1.isResizable();
+        window1.isMaximized();
+        Scene scene=new Scene(borderPane,1200,700);
         window1.setScene(scene);
         window1.show();
-        System.out.println("[InformationWindow]: "+NewValue);
-        System.out.println("[InformationWindow]: "+clas);
-
+        System.out.println("[InformationWindow]:"+NewValue);
+        System.out.println("[InformationWindow]:"+clas);
+        SelectInformationSesssionWindow.StudentWindow.close();
         //this get the student information,the clas and new value is the class and the student name respectively
         new ClassInformationThread(clas,NewValue,NameLabel,ageLabel,phoneNoLabel,fatherNameLabel,motherNameLabel,
-                addressLabel,nextOfKinLabel,genderLabel,clubLabel,rOleModelLabel,academicPerformance,image,FatherImage,MotherImage,FatherName,MotherName).start();
-
+                addressLabel,nextOfKinLabel,genderLabel,clubLabel,rOleModelLabel,image,FatherImage,MotherImage,FatherName,MotherName).start();
     }
 
 }

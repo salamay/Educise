@@ -11,6 +11,8 @@ import okhttp3.*;
 import sample.ConnectionError;
 import sample.LoginPage.DashBoard.Admin.SchoolFee.Fee;
 import sample.LoginPage.DashBoard.SelectWindows.Registeration.LoadingWindow;
+import sample.LoginPage.LogInModel;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -32,23 +34,23 @@ public class getSchoolFeeThread extends Thread {
     @Override
     public void run() {
 
-        System.out.println("[SchoolFeeThread]: Setting up client ");
+        System.out.println("[getschoolfee]: Setting up client ");
         OkHttpClient client=new OkHttpClient();
 
         Request request=new Request.Builder()
                 .url("http://localhost:8080/getschoolfee/"+clas+"/"+term+"/"+year)
-                .addHeader("Authorization","Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzYWxhbWF5IiwiaWF0IjoxNTk5Nzk5OTY2LCJleHAiOjE2MDAxNTk5NjZ9.qwompSN9WRoyHTixemTubuVvPGZL9iN07ER0jpY-Ikc")
+                .addHeader("Authorization","Bearer "+ LogInModel.token)
                 .build();
         try {
             Response response=client.newCall(request).execute();
-            System.out.println("[SchoolFeeThread]: Retrieving response ");
-            System.out.println("[SchoolFeeThread]:"+response);
-            System.out.println("[SchoolFeeThread]:"+response.body());
+            System.out.println("[getschoolfee]: Retrieving response ");
+            System.out.println("[getschoolfee]:"+response);
+            System.out.println("[getschoolfee]:"+response.body());
             if (response.code()==200||response.code()==201||response.code()==212||response.code()==202){
                 byte [] rawbytes = response.body().bytes();
                 String rawBody=new String(rawbytes,"UTF-8");
-                System.out.println("[SchoolFeeThread]: "+rawBody);
-                System.out.println("[SchoolFeeThread]: Processing response Body");
+                System.out.println("[getschoolfee]: "+rawBody);
+                System.out.println("[getschoolfee]: Processing response Body");
                 GsonBuilder builder=new GsonBuilder();
                 builder.setPrettyPrinting();
                 builder.serializeNulls();
@@ -63,21 +65,45 @@ public class getSchoolFeeThread extends Thread {
                     LoadingWindow.window.close();
                     tableView.setItems(tableList);
                 });
+                response.close();
             }else {
                 Platform.runLater(()->{
                     LoadingWindow.window.close();
                     boolean error=new ConnectionError().Connection("server:error "+response.code()+" Unable to get School fee");
                     if (error){
-                        System.out.println("[SchoolFeeThread]--> Connection Error");
+                        System.out.println("[getschoolfee]--> Connection Error");
                     }
                 });
+                response.close();
+            }
+            if (response.code()==404){
+                //Display alert dialog
+                Platform.runLater(()->{
+                    LoadingWindow.window.close();
+                    boolean error=new ConnectionError().Connection("server return error "+response.code()+": School fee not found");
+                    if (error){
+                        System.out.println("[getschoolfee]--> school fee not found on the server");
+                    }
+                });
+                response.close();
+            }
+            if (response.code()==422){
+                //Display alert dialog
+                Platform.runLater(()->{
+                    LoadingWindow.window.close();
+                    boolean error=new ConnectionError().Connection("server return error "+response.code()+": Server cannot process your request");
+                    if (error){
+                        System.out.println("[getschoolfee]--> Connection error");
+                    }
+                });
+                response.close();
             }
         } catch (IOException e) {
             Platform.runLater(()->{
                 LoadingWindow.window.close();
                 boolean error=new ConnectionError().Connection("Unable to establish connection,CHECK INTERNET CONNECTION");
                 if (error){
-                    System.out.println("[SchoolFeeThread]--> Connection Error,Window close");
+                    System.out.println("[getschoolfee]--> Server error");
                 }
             });
             e.printStackTrace();

@@ -14,6 +14,14 @@
     -fx-background-image: url('image/ivan-aleksic-PDRFeeDniCk-unsplash.jpg');
     -fx-background-size:100%, 100%;
 }
+.admin{
+    -fx-background-image: url('image/kimberly-farmer-lUaaKCUANVI-unsplash.jpg');
+    -fx-background-size:100%, 100%;
+}
+.top{
+    -fx-background-image: url('image/images.jpeg');
+    -fx-background-size:50%, 50%;
+}
 
 .Button{
 
@@ -22,6 +30,34 @@
    -fx-background-radius: 20 0 0 20;
 
    }
+ .schoolfee{
+   -fx-background-image: url('icon/drawable-xxxhdpi/ic_school_indigo_a400_48dp.png');
+   -fx-background-size:100%, 100%;
+   }
+   .libary{
+   -fx-background-image: url('icon/drawable-xxxhdpi/ic_library_books_light_green_a700_48dp.png');
+   -fx-background-size:100%, 100%;
+   }
+    .Exam{
+   -fx-background-image: url('icon/drawable-xxxhdpi/ic_assessment_purple_a400_48dp.png');
+   -fx-background-size:100%, 100%;
+
+   }
+   .fetch{
+      -fx-background-image: url('icon/drawable-xxxhdpi/ic_assignment_turned_in_blue_a700_24dp.png');
+      -fx-background-size:100%, 100%;
+
+      }
+      .delete{
+      -fx-background-image: url('icon/drawable-xxxhdpi/ic_delete_light_blue_a700_48dp.png');
+      -fx-background-size:100%, 100%;
+
+      }
+      .save{
+            -fx-background-image: url('icon/drawable-xxxhdpi/ic_save_blue_a700_24dp.png');
+            -fx-background-size:100%, 100%;
+
+            }
 .dashboardVbox{
 -fx-background-radius: 0 30 0 0;
 }
@@ -31,7 +67,7 @@
 
 .NewStudentButton{
 
-   -fx-background-image: url('image/new_student2.png');
+   -fx-background-image: url('icon/drawable-xxxhdpi/ic_people_outline_light_blue_a700_48dp.png');
    -fx-background-size:100%, 100%;
    -fx-background-radius: 20 20 20 20;
 
@@ -45,7 +81,7 @@
       }
    .NewTeacher{
 
-      -fx-background-image: url('image/New_Teacher.jpeg');
+      -fx-background-image: url('icon/drawable-xxxhdpi/ic_nature_people_light_blue_a700_48dp.png');
       -fx-background-size:100%, 100%;
       -fx-background-radius: 20 20 20 20;
 
@@ -101,11 +137,11 @@
                 -fx-background-size:70%;
             }
      .StudentAssessment{
-                     -fx-background-image: url('image/assessment_2.png');
+                     -fx-background-image: url('icon/drawable-xxxhdpi/ic_assessment_light_blue_a700_48dp.png');
                      -fx-background-size:100%;
                  }
      .Parent{
-                          -fx-background-image: url('image/parent.png');
+                          -fx-background-image: url('icon/drawable-xxxhdpi/ic_people_light_blue_a700_48dp.png');
                           -fx-background-size:100%;
                            -fx-background-radius: 20 20 20 20;
                       }

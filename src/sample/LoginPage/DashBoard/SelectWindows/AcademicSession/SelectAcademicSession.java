@@ -17,10 +17,10 @@ public class SelectAcademicSession {
         Scene scene=new Scene(root);
         window.setResizable(false);
         window.initModality(Modality.APPLICATION_MODAL);
-        window.setMaxHeight(600);
+        window.setMaxHeight(800);
         window.setMaxWidth(602);
+        window.centerOnScreen();
         window.setScene(scene);
         window.show();
-
     }
 }

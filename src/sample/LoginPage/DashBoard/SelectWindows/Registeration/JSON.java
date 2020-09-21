@@ -3,6 +3,8 @@ package sample.LoginPage.DashBoard.SelectWindows.Registeration;
 public class JSON {
 
     private String studentname;
+    private String clas;
+    private String tag;
     private int age;
     private String fathername;
     private String mothername;
@@ -22,7 +24,7 @@ public class JSON {
     public JSON() {
     }
 
-    public JSON(String studentname, int age, String fathername, String mothername, String nextofkin, String address, String phoneno, String nickname, String hobbies, String turnon, String turnoff, String club, String rolemodel, String futureambition, String gender) {
+    public JSON(String studentname, int age, String fathername, String mothername, String nextofkin, String address, String phoneno, String nickname, String hobbies, String turnon, String turnoff, String club, String rolemodel, String futureambition, String gender,String clas,String tag) {
         this.studentname = studentname;
         this.age = age;
         this.fathername = fathername;
@@ -38,10 +40,16 @@ public class JSON {
         this.rolemodel = rolemodel;
         this.futureambition = futureambition;
         this.gender = gender;
+        this.clas=clas;
+        this.tag=tag;
     }
 
     public void setStudentname(String studentname) {
         this.studentname = studentname;
+    }
+
+    public void setClas(String clas) {
+        this.clas = clas;
     }
 
     public void setAge(int age) {
@@ -100,4 +108,7 @@ public class JSON {
         this.gender = gender;
     }
 
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
 }

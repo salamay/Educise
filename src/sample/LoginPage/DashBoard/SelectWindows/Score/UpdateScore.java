@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import javafx.application.Platform;
 import okhttp3.*;
 import sample.ConnectionError;
+import sample.LoginPage.LogInModel;
 
 import java.io.IOException;
 
@@ -51,31 +52,52 @@ public class UpdateScore extends Thread {
         OkHttpClient client=new OkHttpClient();
         System.out.println("[UpdateScore]:Updating Score--> Making Request");
         Request request=new Request.Builder()
-                .addHeader("Authorization","Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzYWxhbWF5IiwiaWF0IjoxNTk4NTA4NTczLCJleHAiOjE1OTg2ODg1NzN9.9nK-QCA6cxUmsU1qBiE8CEhiAMoBqfLuSehQQA9yJbU")
+                .addHeader("Authorization","Bearer "+ LogInModel.token)
                 .post(requestbody)
                 .url("http://localhost:8080/updatescore")
                 .build();
         System.out.println("[UpdateScore]:Updating Score--> Sending Request");
         try {
             Response response=client.newCall(request).execute();
+            System.out.println("[UpdateScore]:Response--> "+response);
             if (response.code()==200||response.code()==201||response.code()==212||response.code()==202){
 
             }else {
-                System.out.println("[GetScoreThread]--> server return error "+response.code()+": Unable to get score");
+                System.out.println("[UpdateScore]--> server return error "+response.code()+": Unable to get score");
                 //Display alert dialog
                 Platform.runLater(()->{
                     boolean error=new ConnectionError().Connection("server return error "+response.code()+": Unable to update score");
                     if (error){
-                        System.out.println("[GetScoreThread]--> Connection Error,Window close");
+                        System.out.println("[UpdateScore]--> Connection Error,Window close");
                     }
                 });
+            }
+            if (response.code()==422){
+                //Display alert dialog
+                Platform.runLater(()->{
+                    boolean error=new ConnectionError().Connection("server return error "+response.code()+": Server cannot process your request,check for invalid characters");
+                    if (error){
+                        System.out.println("[UpdateScore]--> Server error ,server cannot process request");
+                    }
+                });
+                response.close();
+            }
+            if (response.code()==400){
+                //Display alert dialog
+                Platform.runLater(()->{
+                    boolean error=new ConnectionError().Connection("server return error "+response.code()+": Bad request,check field for invalid characters");
+                    if (error){
+                        System.out.println("[GetScoreThread]--> server error,bad request");
+                    }
+                });
+                response.close();
             }
         } catch (IOException e) {
             //Display an Alert dialog
             Platform.runLater(()->{
                 boolean error=new ConnectionError().Connection("Unable to establish,CHECK INTERNET CONNECTION");
                 if (error){
-                    System.out.println("[SaveScoreThread]--> Connection Error,Window close");
+                    System.out.println("[UpdateScore]--> Connection Error,Window close");
                 }
             });
             e.printStackTrace();

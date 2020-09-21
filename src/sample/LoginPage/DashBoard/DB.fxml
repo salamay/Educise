@@ -10,27 +10,18 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="615.0" prefWidth="1011.0" style="-fx-background-color: #FEFEFE;" styleClass="bck2" stylesheets="@../../../back.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.LoginPage.DashBoard.DashboardController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" style="-fx-background-color: #FEFEFE;" styleClass="bck2" stylesheets="@../../../back.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.LoginPage.DashBoard.DashboardController">
     <children>
         <VBox fx:id="vbox" alignment="BASELINE_LEFT" layoutX="8.0" layoutY="87.0" prefHeight="517.0" prefWidth="171.0" spacing="10.0" style="-fx-background-color: #1E306E;" AnchorPane.bottomAnchor="21.0" AnchorPane.leftAnchor="-2.0" AnchorPane.topAnchor="77.0">
             <padding>
                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
             </padding>
             <children>
-            <JFXButton alignment="TOP_LEFT" onAction="#StudentButtonClicked" prefHeight="36.0" prefWidth="214.0" ripplerFill="#dacbcb" text="Student info" textAlignment="RIGHT" textFill="#f2f2f2" VBox.vgrow="ALWAYS">
+            <JFXButton fx:id="studentinfobutton" alignment="TOP_LEFT" onAction="#StudentButtonClicked" prefHeight="36.0" prefWidth="214.0" ripplerFill="#dacbcb" text="Student info" textAlignment="RIGHT" textFill="#f2f2f2" VBox.vgrow="ALWAYS">
                <graphic>
                   <ImageView fitHeight="28.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../../student_info.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </JFXButton>
-            <JFXButton alignment="TOP_LEFT" layoutX="15.0" layoutY="235.0" prefHeight="36.0" prefWidth="179.0" ripplerFill="#e00b0b" text="Calendar" textFill="#f2f2f2">
-               <graphic>
-                  <ImageView fitHeight="28.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../calender.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -44,16 +35,7 @@
                   </ImageView>
                </graphic>
             </JFXButton>
-            <JFXButton alignment="TOP_LEFT" layoutX="15.0" layoutY="289.0" prefHeight="36.0" prefWidth="174.0" ripplerFill="#e00b0b" text="Teacher info" textFill="#f2f2f2" VBox.vgrow="ALWAYS">
-               <graphic>
-                  <ImageView fitHeight="28.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../libary_icon.jpeg" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </JFXButton>
-            <JFXButton alignment="TOP_LEFT" layoutX="15.0" layoutY="291.0" prefHeight="36.0" prefWidth="174.0" ripplerFill="#e00b0b" text="Libary" textFill="#f2f2f2" VBox.vgrow="ALWAYS">
+            <JFXButton fx:id="teacherinfobutton" alignment="TOP_LEFT" layoutX="15.0" layoutY="289.0" prefHeight="36.0" prefWidth="174.0" ripplerFill="#e00b0b" text="Teacher info" textFill="#f2f2f2" VBox.vgrow="ALWAYS">
                <graphic>
                   <ImageView fitHeight="28.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -67,6 +49,15 @@
                   <ImageView fitHeight="28.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../../image/score.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </JFXButton>
+            <JFXButton alignment="TOP_LEFT" layoutX="15.0" layoutY="249.0" onAction="#AdminButtonClicked" prefHeight="36.0" prefWidth="174.0" ripplerFill="#e00b0b" text="Admin" textFill="#f2f2f2">
+               <graphic>
+                  <ImageView fitHeight="28.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../icon/drawable-hdpi/ic_school_indigo_a400_48dp.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -100,41 +91,6 @@
             </children>
         </HBox>
         <HBox layoutX="210.0" layoutY="308.0" prefHeight="150.0" prefWidth="425.0" AnchorPane.leftAnchor="210.0" AnchorPane.rightAnchor="388.0" />
-        <Pane layoutX="223.0" layoutY="451.0" prefHeight="144.0" prefWidth="406.0" AnchorPane.leftAnchor="213.0" AnchorPane.rightAnchor="392.0">
-            <children>
-                <Label layoutX="9.0" layoutY="6.0" prefHeight="17.0" prefWidth="124.0" text="Performance Details">
-                    <font>
-                        <Font name="System Bold" size="12.0" />
-                    </font>
-                </Label>
-                <Label layoutX="9.0" layoutY="34.0" prefHeight="17.0" prefWidth="40.0" text="Math">
-                    <font>
-                        <Font name="System Bold" size="12.0" />
-                    </font>
-                </Label>
-                <Label layoutX="90.0" layoutY="34.0" prefHeight="17.0" prefWidth="50.0" text="English">
-                    <font>
-                        <Font name="System Bold" size="12.0" />
-                    </font>
-                </Label>
-                <Label layoutX="166.0" layoutY="34.0" prefHeight="17.0" prefWidth="60.0" text="Biology">
-                    <font>
-                        <Font name="System Bold" size="12.0" />
-                    </font>
-                </Label>
-                <Label layoutX="239.0" layoutY="34.0" prefHeight="17.0" prefWidth="50.0" text="Physics">
-                    <font>
-                        <Font name="System Bold" size="12.0" />
-                    </font>
-                </Label>
-                <Label layoutX="311.0" layoutY="34.0" prefHeight="17.0" prefWidth="66.0" text="Chemistry">
-                    <font>
-                        <Font name="System Bold" size="12.0" />
-                    </font>
-                </Label>
-
-            </children>
-        </Pane>
         <VBox layoutX="826.0" layoutY="379.0" prefHeight="211.0" prefWidth="144.0" AnchorPane.rightAnchor="43.0">
             <effect>
                 <DropShadow color="#ddd6d6" offsetX="10.0" offsetY="10.0" />
@@ -149,7 +105,7 @@
                 <Region prefHeight="102.0" prefWidth="70.0" />
             <JFXButton onAction="#NewStudentButtonClicked" prefHeight="102.0" prefWidth="120.0" ripplerFill="#1e36d0" styleClass="NewStudentButton" stylesheets="@../../../back.css" text=" " />
                 <Region layoutX="20.0" layoutY="20.0" prefHeight="102.0" prefWidth="85.0" />
-            <JFXButton onAction="#StudentAssessmentButtonClicked" prefHeight="102.0" prefWidth="120.0" ripplerFill="#1c37d0" styleClass="StudentAssessment" stylesheets="@../../../back.css" text=" " />
+            <JFXButton buttonType="RAISED" onAction="#StudentAssessmentButtonClicked" prefHeight="102.0" prefWidth="120.0" ripplerFill="#1c37d0" styleClass="StudentAssessment" stylesheets="@../../../back.css" text=" " />
                 <Region layoutX="234.0" layoutY="20.0" prefHeight="102.0" prefWidth="85.0" />
             <JFXButton layoutX="95.0" layoutY="20.0" onAction="#ParentPortalClicked" prefHeight="102.0" prefWidth="120.0" ripplerFill="#1d39d7" styleClass="Parent" stylesheets="@../../../back.css" text=" " />
             </children>

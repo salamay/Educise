@@ -1,6 +1,8 @@
 package sample.LoginPage.DashBoard.SelectWindows.Registeration;
 
 
+import com.jfoenix.controls.JFXComboBox;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
@@ -13,6 +15,13 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
+import sample.ConnectionError;
+import sample.LoginPage.DashBoard.SelectWindows.Information.SelectInformationSesssionWindow;
+import sample.LoginPage.LogInModel;
 import sample.SqlConnection;
 
 import javax.imageio.ImageIO;
@@ -24,7 +33,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class RegisterStudentController implements Initializable {
     ObservableList<String> sessionlist;
@@ -34,14 +46,16 @@ public class RegisterStudentController implements Initializable {
     private File MotherImageFile;
     private File FatherImageFile;
     private String studentname;
+    private String session;
     private String clas;
     private int age;
     private String fathername;
+    private String tag;
     private String mothername;
     private String nextofkin;
     private String address;
     private String Gender;
-    private float PhoneNo;
+    private String PhoneNo;
     private String NickName;
     private String Hobbies;
     private String TurnOn;
@@ -51,7 +65,9 @@ public class RegisterStudentController implements Initializable {
     private String FutureAmbition;
     public  Button RegButton;
     public TextField StudentName;
-    public ComboBox<String> ClassComboBox;
+    public JFXComboBox<String> SessionComboBox;
+    public JFXComboBox<String> classCombobox;
+    public JFXComboBox<String> tagComboBox;
     public TextField Age;
     public TextField FatherName;
     public TextField MotherName;
@@ -68,7 +84,6 @@ public class RegisterStudentController implements Initializable {
 
     public RadioButton Female;
     public RadioButton Male;
-
     public Label nameerror;
     public Label ageerror;
     public Label fathernameerror;
@@ -76,7 +91,9 @@ public class RegisterStudentController implements Initializable {
     public Label nextofkinerror;
     public Label addresserror;
     public Label gendererror;
+    public Label SessionError;
     public Label classerror;
+    public Label tagerror;
     public Label PhoneNoError;
     public Label NickNameError;
     public Label HobbiesError;
@@ -88,40 +105,16 @@ public class RegisterStudentController implements Initializable {
     public ImageView StudentPhoto;
     public ImageView MotherPicture;
     public ImageView FatherPicture;
-    BufferedImage bufferedImage;
-    Connection conn;
-
-
-
+    private BufferedImage bufferedImage;
 
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        conn= SqlConnection.connector();
-        if(conn!=null){
-            String QUERY= "Select * from SessionTable";
-            try {
-
-                PreparedStatement preparedStatement=conn.prepareStatement(QUERY);
-                ResultSet resultSet=preparedStatement.executeQuery();
-                while (resultSet.next()){
-                    sessionlist= FXCollections.observableArrayList();
-                    System.out.println("[looping]"+ sessionlist);
-                    sessionlist.addAll(resultSet.getString("sessionname"));
-                    ClassComboBox.getItems().addAll(sessionlist);
-
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }else{
-//            boolean result=new ConnectionError().Connection(conn);
-//            if (result==true){
-//                RegisterationWindow.window.close();
-//            }
-        }
-
+        classCombobox.getItems().addAll("JSS 1","JSS 2","JSS 3","SS 1","SS 2","SS 3");
+        tagComboBox.getItems().addAll("DAY","BOARDER");
+        ProgressIndicator progressIndicator=new ProgressIndicator();
+        new ClassThread(SessionComboBox,progressIndicator).start();
         //Initializing combobox
         System.out.println("[Initializing()]: Initializing ComboBox");
         System.out.println("[Initializing()]: "+ sessionlist);
@@ -142,14 +135,16 @@ public class RegisterStudentController implements Initializable {
         );
         file=fileChooser.showOpenDialog(new Stage());
         System.out.println(file);
-        bufferedImage=null;
-        try {
-            bufferedImage= ImageIO.read(file);
-           Image image= SwingFXUtils.toFXImage(bufferedImage,null);
-           StudentPhoto.setImage(image);
+        if (file!=null){
+            bufferedImage=null;
+            try {
+                bufferedImage= ImageIO.read(file);
+                Image image= SwingFXUtils.toFXImage(bufferedImage,null);
+                StudentPhoto.setImage(image);
 
-        } catch (IOException e) {
-            e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
 
@@ -164,10 +159,11 @@ public class RegisterStudentController implements Initializable {
                 new FileChooser.ExtensionFilter("JPG","*.JPG"));
 //        Image Processing
         MotherImageFile=fileChooser.showOpenDialog(new Stage());
-        BufferedImage bufferedImage=ImageIO.read(MotherImageFile);
-        Image image=SwingFXUtils.toFXImage(bufferedImage,null);
-        MotherPicture.setImage(image);
-
+        if (MotherImageFile!=null){
+            BufferedImage bufferedImage=ImageIO.read(MotherImageFile);
+            Image image=SwingFXUtils.toFXImage(bufferedImage,null);
+            MotherPicture.setImage(image);
+        }
     }
 
     public void fatherPhotoButtonClicked() throws IOException {
@@ -178,11 +174,11 @@ public class RegisterStudentController implements Initializable {
                 new FileChooser.ExtensionFilter("JPG","*.JPG"));
 //        Image Processing
         FatherImageFile=fileChooser.showOpenDialog(new Stage());
-        BufferedImage bufferedImage=ImageIO.read(FatherImageFile);
-        Image image=SwingFXUtils.toFXImage(bufferedImage,null);
-        FatherPicture.setImage(image);
-
-
+        if (FatherImageFile!=null){
+            BufferedImage bufferedImage=ImageIO.read(FatherImageFile);
+            Image image=SwingFXUtils.toFXImage(bufferedImage,null);
+            FatherPicture.setImage(image);
+        }
     }
     public void RegButtonClicked(){
         /////////////////////////////////////////////////////////////////
@@ -191,8 +187,8 @@ public class RegisterStudentController implements Initializable {
         //getting data
         System.out.println("[RegButtonClick()]: getting text");
         studentname=StudentName.getText();
-        if(StudentName.getText().isEmpty()){
-            nameerror.setText("class field is empty");
+        if(studentname.isEmpty()||!studentname.matches("^[A-z[ ]a-z]*$")){
+            nameerror.setText("invalid name");
             nameerror.setVisible(true);
         }else {
             nameerror.setVisible(false);
@@ -247,21 +243,40 @@ public class RegisterStudentController implements Initializable {
         else{
             addresserror.setVisible(false);
         }
-        System.out.println("[RegButtonClick()]: Getting Class Combo value");
-        clas=ClassComboBox.getValue();
+        System.out.println("[RegButtonClick()]: Getting session Combo value");
+        session=SessionComboBox.getValue();
+        if(session==null){
+            SessionError.setVisible(true);
+        }else {
+            SessionError.setVisible(false);
+        }
+        clas=classCombobox.getValue();
         if(clas==null){
             classerror.setVisible(true);
         }else {
             classerror.setVisible(false);
         }
+        tag=tagComboBox.getValue();
+        if(tag==null){
+            tagerror.setVisible(true);
+        }else {
+            tagerror.setVisible(false);
+        }
 
         if (Female.isSelected()){
+            gendererror.setVisible(false);
             System.out.println("[RegButtonClick()]: Female selected");
             Gender="Female";
+        }else {
+            gendererror.setText("*");
+            gendererror.setVisible(true);
         }
         if (Male.isSelected()){
+            gendererror.setVisible(false);
             System.out.println("[RegButtonClick()]: Male Selected");
             Gender="Male";
+        }else {
+            gendererror.setVisible(true);
         }
 
         if(!Male.isSelected()&&!Female.isSelected()){
@@ -270,22 +285,14 @@ public class RegisterStudentController implements Initializable {
             gendererror.setVisible(false);
         }
 
-
-
-
         System.out.println("[RegButtonClick()]: Getting PhoneNo");
-        try {
-            PhoneNo = Float.parseFloat(PhoneNumberTextField.getText());
+        PhoneNo=PhoneNumberTextField.getText();
             if(PhoneNumberTextField.getText().isEmpty()){
-
                 PhoneNoError.setVisible(true);
             }else{
                 PhoneNoError.setVisible(false);
             }
-        }catch(NumberFormatException e){
-            System.out.println("[RegButtonClick()]: Phone number input error");
-            PhoneNoError.setVisible(true);
-        }
+
 
         System.out.println("[RegButtonClick()]: Getting Nickname");
          NickName=NickNameTextField.getText();
@@ -353,35 +360,96 @@ public class RegisterStudentController implements Initializable {
 
 ///////////////Checked//////////////////////////////////////////////////////////////////////////////////////
 
-        if (conn==null){
-//            boolean result=new ConnectionError().Connection(conn);
-//            if (result==true){
-//                RegisterationWindow.window.close();
-//            }
-//            System.out.println("Connection Error");
-
-        }else{
-
             if(!StudentName.getText().isEmpty() && !Age.getText().isEmpty()  && !FatherName.getText().isEmpty()
                     && !MotherName.getText().isEmpty()&& !NextOfKin.getText().isEmpty()&& !Address.getText().isEmpty()
                     &&!PhoneNumberTextField.getText().isEmpty() && !NickNameTextField.getText().isEmpty()&&
                     !HobbiesTextField.getText().isEmpty() && !TurnOnTextField.getText().isEmpty()
                     && !TurnOffTextField.getText().isEmpty() && !ClubTextField.getText().isEmpty()
-                    && !RoleModelTextField.getText().isEmpty() && !FutureAmbitionTextField.getText().isEmpty() &&
-                    !Age.getText().matches("^[a-zA-Z]*$") &&  !PhoneNumberTextField.getText().matches("^[a-zA-Z]*$")
-                    && !clas.isEmpty() && Female.isSelected() || Male.isSelected() || file!=null
-            )  {
-
-                // Registration Thread
-                new RegisterStudentThread(studentname,age,fathername,mothername,nextofkin,address,PhoneNo,
-                        NickName,Hobbies,TurnOn,TurnOff,Club,RoleModel,FutureAmbition,Gender,clas,file,FatherImageFile,MotherImageFile).start();
+                    && !RoleModelTextField.getText().isEmpty() && !FutureAmbitionTextField.getText().isEmpty()&&
+                    age!=0 &&  !PhoneNumberTextField.getText().matches("^[a-zA-Z]*$")&&studentname.matches("^[A-Z[ ]a-z]*$")
+                    && clas!=null&& file!=null &&tag!=null
+            ){
+                if (Female.isSelected() || Male.isSelected()){
+                    // Registration Thread
+                    new RegisterStudentThread(studentname,age,fathername,mothername,nextofkin,address,PhoneNo,NickName,Hobbies,TurnOn,TurnOff,Club,RoleModel,FutureAmbition,Gender,session,file,FatherImageFile,MotherImageFile,clas,tag).start();
+                }
             }
+    }
+    //////////This class get the information sessions and set the value gotten to the Combobox passed in from the parent class
+    //the progressbar indicate the progress
+    public class ClassThread extends Thread {
+        private JFXComboBox<String> clas;
+        private ProgressIndicator pgb;
+        public ClassThread(JFXComboBox<String> comb, ProgressIndicator progressBar) {
+            this.clas = comb;
+            this.pgb = progressBar;
+        }
 
+        @Override
+        public void run() {
+
+            System.out.println("[ClassThread]: setting up okhttp client");
+            OkHttpClient client = new OkHttpClient();
+
+            System.out.println("[ClassThread]: setting up okhttp client request");
+            Request request = new Request.Builder()
+                    .url("http://localhost:8080/retrieveinformationsession")
+                    .addHeader("Authorization", "Bearer " + LogInModel.token)
+                    .build();
+
+            try {
+                Response response = client.newCall(request).execute();
+                System.out.println("[ClassThread]: " + response);
+                if (response.code() == 200 || response.code() == 212 || response.code() == 201) {
+
+                    System.out.println("[ClassThread]: session retrieved");
+                    ResponseBody body = response.body();
+                    try {
+                        byte[] bytes = body.bytes();
+                        //removing bracket from response
+                        String data = new String(bytes, "UTF-8");
+                        String data2 = data.replace(']', ' ');
+                        String data3 = data2.replace('[', ' ');
+                        String data4 = data3.replaceAll(" ", "");
+                        List<String> list = Arrays.stream(data4.split(",")).collect(Collectors.toList());
+
+                        Platform.runLater(() -> {
+                            clas.getItems().addAll(list);
+                        });
+                        System.out.println(data);
+                        response.close();
+                        Platform.runLater(() -> {
+                            pgb.setProgress(100);
+                        });
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                } else {
+                    //Display an Alert dialog
+                    Platform.runLater(() -> {
+                        boolean error = new ConnectionError().Connection("server:error " + response.code() + " Unable to get session,CHECK INTERNET CONNECTION");
+                        if (error) {
+                            SelectInformationSesssionWindow.StudentWindow.close();
+                            System.out.println("[ClassThread]--> server error,unable to get session");
+                        }
+                    });
+                }
+            } catch (IOException e) {
+                //Display an Alert dialog
+                Platform.runLater(() -> {
+                    boolean error = new ConnectionError().Connection("Unable to establish connection,CHECK INTERNET CONNECTION");
+                    if (error) {
+                        SelectInformationSesssionWindow.StudentWindow.close();
+                        System.out.println("[ClassThread]--> Connection Error,Window close");
+                    }
+                });
+                System.out.println("[ClassThread]: Unable to get session information from server");
+                e.printStackTrace();
+            }
 
         }
 
-
-
     }
-
 }

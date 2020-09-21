@@ -1,6 +1,8 @@
 package sample.LoginPage;
 
 
+import com.jfoenix.controls.JFXPasswordField;
+import com.jfoenix.controls.JFXTextField;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
@@ -11,6 +13,7 @@ import javafx.scene.control.TextField;
 
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import sample.ConnectionError;
 import sample.LoginPage.DashBoard.DashboardController;
 import sample.Main;
 
@@ -20,48 +23,34 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class Controller extends Main implements Initializable {
-    Stage window2;
     public Button LogInButton;
-    public TextField usernameTextField;
-    public TextField passwordTextField;
-
-    LogInModel loginmodel;
+    public JFXTextField usernameTextField;
+    public JFXPasswordField passwordTextField;
     public Label loginError;
 
 
     public void LogInButtonClicked() throws IOException {
-
-goToDashBoard();
+        goToDashBoard();
     }
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        loginmodel = new LogInModel();
 
     }
 
   public void goToDashBoard() throws IOException {
-        loginmodel.isDBconnected();
-        loginError.setVisible(false);
         String email = usernameTextField.getText();
         String passwd = passwordTextField.getText();
-        if (loginmodel.loginQuery(email, passwd)) {
-            Parent root;
-            root = FXMLLoader.load(getClass().getResource("DashBoard/DB.fxml"));
-            window2 = new Stage();
-            window2.initModality(Modality.APPLICATION_MODAL);
-            window2.setTitle("welcome to management Board");
-            window2.setMaximized(true);
-            window2.setMinWidth(800);
-            window2.setMinHeight(700);
-            Scene scene = new Scene(root,1200,720);
-            DashboardController dashboardController=new DashboardController();
-            window2.setScene(scene);
-            window2.show();
-        } else {
-            loginError.setVisible(true);
-            loginError.setText("Invalid Credentials");
+        if (email.isEmpty()||passwd.isEmpty()){
+            new ConnectionError().Connection("One of the field is missing");
         }
+        if (email.contains("/")){
+            new ConnectionError().Connection("Invalid username,check for invalid character");
+        }
+        if (!email.isEmpty()&&!passwd.isEmpty()&&!email.contains("!)*?+*&^%$!?><")){
+            new LogInModel(email,passwd,loginError).start();
+        }
+
     }
 }

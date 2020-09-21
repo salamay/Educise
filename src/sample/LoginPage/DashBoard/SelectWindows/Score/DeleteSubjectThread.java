@@ -7,6 +7,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import sample.ConnectionError;
+import sample.LoginPage.LogInModel;
 
 import java.io.IOException;
 
@@ -32,7 +33,7 @@ public class DeleteSubjectThread extends Thread {
         System.out.println("[DeleteSubjectThread]-->Preparing to send Request");
         OkHttpClient client=new OkHttpClient();
         Request request=new Request.Builder()
-                .addHeader("Authorization","Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzYWxhbWF5IiwiaWF0IjoxNTk4NTA4NTczLCJleHAiOjE1OTg2ODg1NzN9.9nK-QCA6cxUmsU1qBiE8CEhiAMoBqfLuSehQQA9yJbU")
+                .addHeader("Authorization","Bearer "+ LogInModel.token)
                 .url("http://localhost:8080/deletesubject/"+subject+"/"+session+"/"+name)
                 .build();
         try {
@@ -47,18 +48,38 @@ public class DeleteSubjectThread extends Thread {
                 });
             }else {
                 Platform.runLater(()->{
-                    boolean error=new ConnectionError().Connection("server return error "+response.code()+": Unable to  get data:CHECK INTERNET CONNECTION");
+                    boolean error=new ConnectionError().Connection("server return error "+response.code()+": Unable to delete subject");
                     if (error){
-                        System.out.println("[GetScoreThread]--> Connection Error,Window close");
+                        System.out.println("[InsertSubjectThread]--> server error,unable to delete subject");
                     }
                 });
             }
+            if (response.code()==422){
+                //Display alert dialog
+                Platform.runLater(()->{
+                    boolean error=new ConnectionError().Connection("server return error "+response.code()+": Server cannot process your request,check for invalid characters");
+                    if (error){
+                        System.out.println("[InsertSubjectThread]--> Server error ,server cannot process request");
+                    }
+                });
+                response.close();
+            }
+            if (response.code()==400){
+                //Display alert dialog
+                Platform.runLater(()->{
+                    boolean error=new ConnectionError().Connection("server return error "+response.code()+": Bad request,check field for invalid characters");
+                    if (error){
+                        System.out.println("[InsertSubjectThread]--> server error,bad request");
+                    }
+                });
+                response.close();
+            }
         } catch (IOException e) {
-            System.out.println("[DeleteSubjectThread]-->  Unable to save subject:Connection Error");
+            System.out.println("[InsertSubjectThread]--> Unable to save subject:Connection Error");
             Platform.runLater(()->{
                 boolean error=new ConnectionError().Connection("Unable to establish:CHECK INTERNET CONNECTION");
                 if (error){
-                    System.out.println("[DeleteSubjectThread]--> Connection Error,Window close");
+                    System.out.println("[InsertSubjectThread]--> Connection error,unable to insert subject");
                 }
             });
             e.printStackTrace();

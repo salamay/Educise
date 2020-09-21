@@ -15,6 +15,7 @@ import javafx.scene.text.FontWeight;
 import okhttp3.*;
 import sample.ConnectionError;
 import sample.LoginPage.DashBoard.SelectWindows.Registeration.LoadingWindow;
+import sample.LoginPage.LogInModel;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -89,7 +90,7 @@ public class StudentSelectParentController implements Initializable {
             System.out.println("[ParentInfoThread]: Making request");
             Request request=new Request.Builder()
                     .url("http://localhost:8080/getparentinformation/"+classSelected+"/"+parentname)
-                    .addHeader("Authorization","Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzYWxhbWF5IiwiaWF0IjoxNTk4NTA5MDU2LCJleHAiOjE1OTg2ODkwNTZ9.rJnYfPefYX8tapQkTmyKuv15tprmJEyYl6FHvB21AZg")
+                    .addHeader("Authorization","Bearer "+ LogInModel.token)
                     .build();
 
             try {
@@ -147,6 +148,7 @@ public class StudentSelectParentController implements Initializable {
                                  imageView.setSmooth(true);
                                  Label label=new Label();
                                  label.setFont(Font.font("Algerian",FontWeight.MEDIUM,13));
+                                 label.setStyle("-fx-text-fill:#499954");
                                  File child=new File(System.getProperty("user.dir")+"/MyChildSchool/child"+i);
                                  try {
                                      FileOutputStream cout = new FileOutputStream(child);
@@ -155,8 +157,8 @@ public class StudentSelectParentController implements Initializable {
                                      Image image=SwingFXUtils.toFXImage(bufferedImage,null);
                                      imageView.setImage(image);
                                      label.setText(childnames.get(column));
-                                     gridPane.setPadding(new Insets(10,10,10,10));
                                      gridPane.add(imageView,column,row);
+                                     gridPane.setVgap(20);
                                      gridPane.add(label,column,row+2);
                                  } catch (IOException e) {
                                      e.printStackTrace();
@@ -164,8 +166,8 @@ public class StudentSelectParentController implements Initializable {
                              }
                          }
                        });
-                    }{
-
+                    }else {
+                        Files.createDirectories(path);
                     }
                 }else {
                     //Display an Alert dialog
@@ -176,6 +178,17 @@ public class StudentSelectParentController implements Initializable {
                             System.out.println("[SelectParent]--> Connection Error,Window close");
                         }
                     });
+                    response.close();
+                }
+                if (response.code()==404){
+                    Platform.runLater(()->{
+                        boolean error=new ConnectionError().Connection("Server:error"+response.code()+",Parent information not found");
+                        if (error){
+                            SelectParent.window1.close();
+                            System.out.println("[SelectParent]--> Connection Error,Window close");
+                        }
+                    });
+                    response.close();
                 }
             } catch (IOException e) {
                 //Display an Alert dialog

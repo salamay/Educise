@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder;
 import javafx.application.Platform;
 import okhttp3.*;
 import sample.ConnectionError;
+import sample.LoginPage.LogInModel;
 
 import java.io.*;
 
@@ -18,7 +19,7 @@ public class RegisterStudentThread extends  Thread {
     private File NotAvailableFile = new File("src/image/not_available.jpg");
     private double counter = 0.0;
     private JSON json;
-    private String clas;
+    private String session;
     private LoadingWindow loadingWindow;
 
     public RegisterStudentThread() {
@@ -26,10 +27,10 @@ public class RegisterStudentThread extends  Thread {
     }
 
     public RegisterStudentThread(String studentname, int age, String fathername, String mothername, String NextOfKin,
-                                 String address, float PhoneNo, String NickName, String Hobbies, String TurnOn,
-                                 String TurnOff, String Club, String RoleModel, String FutureAmbition, String Gender, String clas,
-                                 File file, File FatherPicture, File Mother) {
-        this.clas = clas;
+                                 String address, String PhoneNo, String NickName, String Hobbies, String TurnOn,
+                                 String TurnOff, String Club, String RoleModel, String FutureAmbition, String Gender, String session,
+                                 File file, File FatherPicture, File Mother,String clas,String tag) {
+        this.session = session;
         // setting the json parameterJSON object
         json = new JSON();
         json.setStudentname(studentname);
@@ -47,6 +48,8 @@ public class RegisterStudentThread extends  Thread {
         json.setRolemodel(RoleModel);
         json.setFutureambition(FutureAmbition);
         json.setGender(Gender);
+        json.setClas(clas);
+        json.setTag(tag);
         this.file = file;
         this.FatherPictureFile = FatherPicture;
         this.MotherPictureFile = Mother;
@@ -106,9 +109,9 @@ public class RegisterStudentThread extends  Thread {
             System.out.println("[RegisterstudentThread]: "+" Finished preparing request body");
             System.out.println("[RegisterstudentThread]: "+"sending request");
             Request  request=new Request.Builder()
-                    .url("http://localhost:8080/register/"+clas)
+                    .url("http://localhost:8080/register/"+session)
                     .post(requestBody)
-                    .addHeader("Authorization","Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzYWxhbWF5IiwiaWF0IjoxNTk4NTA5MDU2LCJleHAiOjE1OTg2ODkwNTZ9.rJnYfPefYX8tapQkTmyKuv15tprmJEyYl6FHvB21AZg")
+                    .addHeader("Authorization","Bearer "+ LogInModel.token)
                     .build();
             try {
 
@@ -130,17 +133,17 @@ public class RegisterStudentThread extends  Thread {
                         LoadingWindow.window.close();
                         boolean error=new ConnectionError().Connection("server:error "+response.code()+" Unable to Register Student,CHECK INTERNET CONNECTION");
                         if (error){
-                            RegisterationWindow.window.close();
                             System.out.println("[RegisterstudentThread]--> Connection Error,Window close");
                         }
                     });
+                    response.close();
                 }
             } catch (IOException e) {
                 Platform.runLater(()->{
                     LoadingWindow.window.close();
                     boolean error=new ConnectionError().Connection("Unable to establish connection,CHECK INTERNET CONNECTION");
                     if (error){
-                        RegisterationWindow.window.close();
+
                         System.out.println("[RegisterstudentThread]--> Connection Error,Window close");
                     }
                 });
@@ -148,24 +151,7 @@ public class RegisterStudentThread extends  Thread {
                 e.printStackTrace();
             }
         ////////////////////////////Preparing request end////////////////////////////////////
-            /////////////////////////////////////////////////////////////
-
-            //Increase the progress bar
-//            while (true) {
-//                System.out.println(counter);
-//                try {
-//                    Thread.sleep(100);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//                Platform.runLater(() -> {
-//
-//                });
-//                counter += 0.01;
-//                if (counter > 1) {
-//                    break;
-//                }
-//            }
+            ///////////////////////////////////////////////////////////
 
     }
 }

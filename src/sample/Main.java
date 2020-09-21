@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
-    Stage window1;
+    public static Stage window1;
     @Override
     public void start(Stage primaryStage) throws Exception{
 

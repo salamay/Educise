@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -26,8 +27,8 @@ public class ConnectionError {
             }else {
                 label.setStyle("-fx-text-fill:#FD5B6A;");
             }
-            label.setFont(Font.font(13));
             label.setText(message);
+            label.setFont(Font.font("Verdana", FontWeight.BOLD,14));
             label.setAlignment(Pos.CENTER);
             window.initStyle(StageStyle.UNDECORATED);
             window.initModality(Modality.APPLICATION_MODAL);
@@ -47,7 +48,7 @@ public class ConnectionError {
             String style="-fx-background-radius: 20 20 20 20; -fx-background-color:#0066CB;";
             button.setStyle(style);
             vbox.getChildren().addAll(label, button);
-            Scene scene = new Scene(vbox, 600, 80);
+            Scene scene = new Scene(vbox, 800, 80);
             window.initStyle(StageStyle.UNDECORATED);
             window.setScene(scene);
             window.centerOnScreen();

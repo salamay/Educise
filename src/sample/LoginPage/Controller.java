@@ -45,10 +45,10 @@ public class Controller extends Main implements Initializable {
         if (email.isEmpty()||passwd.isEmpty()){
             new ConnectionError().Connection("One of the field is missing");
         }
-        if (email.contains("/")){
-            new ConnectionError().Connection("Invalid username,check for invalid character");
+        if (!email.matches("^[A-Za-z0-9]*$")){
+            new ConnectionError().Connection("Invalid email,check for invalid character");
         }
-        if (!email.isEmpty()&&!passwd.isEmpty()&&!email.contains("!)*?+*&^%$!?><")){
+        if (!email.isEmpty()&&!passwd.isEmpty()&&email.matches("^[A-Za-z0-9]*$")){
             new LogInModel(email,passwd,loginError).start();
         }
 

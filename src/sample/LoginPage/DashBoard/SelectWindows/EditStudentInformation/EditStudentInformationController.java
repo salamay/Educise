@@ -1,4 +1,4 @@
-package sample.LoginPage.DashBoard.SelectWindows.Information;
+package sample.LoginPage.DashBoard.SelectWindows.EditStudentInformation;
 
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXListView;
@@ -14,8 +14,11 @@ import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import sample.ConnectionError;
+import sample.LoginPage.DashBoard.SelectWindows.Information.ClassNameThread;
+import sample.LoginPage.DashBoard.SelectWindows.Information.InformationWindow;
+import sample.LoginPage.DashBoard.SelectWindows.Information.SelectInformationSessionController;
+import sample.LoginPage.DashBoard.SelectWindows.Information.SelectInformationSesssionWindow;
 import sample.LoginPage.LogInModel;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
@@ -23,14 +26,11 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-
-//This class is a contoller for SudentSelectClassInfo that when it load  get list of session from the ClassThread class
-public class SelectInformationSessionController implements Initializable {
-
-    public JFXComboBox<String> Clas;
-    public VBox vbox;
-    public String clas;
+public class EditStudentInformationController implements Initializable {
     public ProgressIndicator ProgressBar;
+    public JFXComboBox<String> Clas;
+    public String clas;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         ////////////Starting to get sessions from server
@@ -39,7 +39,7 @@ public class SelectInformationSessionController implements Initializable {
         Clas.setOnAction((e) -> {
             //on session selected ,this displays a listview
             clas = Clas.getSelectionModel().getSelectedItem();
-            System.out.println("[ClassThread]: ClassThreadFinished");
+            System.out.println("[EditStudentInformation]: ClassThreadFinished");
             //Creating Window
             JFXListView<String> listview;
             ScrollPane layout = new ScrollPane();
@@ -50,7 +50,8 @@ public class SelectInformationSessionController implements Initializable {
             listview.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
             listview.isExpanded();
             listview.getSelectionModel().selectedItemProperty().addListener((v, OldValue, NewValue) -> {
-                new InformationWindow(clas, NewValue);
+                EditstudentInformationWindow.StudentWindow.close();
+                new EditStudentInformationLayoutWindow().loadWindow(clas,NewValue);
             });
             Label label = new Label("Select Student");
             VBox box = new VBox();
@@ -61,13 +62,13 @@ public class SelectInformationSessionController implements Initializable {
             layout.setContent(box);
             layout.setPadding(new Insets(10, 10, 10, 10));
             Scene scene = new Scene(layout);
-            SelectInformationSesssionWindow.StudentWindow.setScene(scene);
+            EditstudentInformationWindow.StudentWindow.setScene(scene);
             ///////////////////////////////////////////////////////////////////////
             System.out.println("[Class]: " + clas);
             ////Starting to get name from the session selected table ////////
             new ClassNameThread(clas, listview, SelectInformationSesssionWindow.StudentWindow).start();
             ///Starting to get name from session selected end/////
-            System.out.println("[ClassNamethread]: ClassThreadFinished");
+            System.out.println("[EditStudentInformation]: ClassThreadFinished");
         });
     }
 
@@ -116,9 +117,9 @@ public class SelectInformationSessionController implements Initializable {
                         });
                         System.out.println(data);
 
-                            Platform.runLater(() -> {
-                                pgb.setProgress(1);
-                            });
+                        Platform.runLater(() -> {
+                            pgb.setProgress(100);
+                        });
 
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -129,7 +130,7 @@ public class SelectInformationSessionController implements Initializable {
                     Platform.runLater(() -> {
                         boolean error = new ConnectionError().Connection("server:error " + response.code() + " Unable to get session,CHECK INTERNET CONNECTION");
                         if (error) {
-                            SelectInformationSesssionWindow.StudentWindow.close();
+                            EditstudentInformationWindow.StudentWindow.close();
                             System.out.println("[ClassThread]--> server error,unable to get session");
                         }
                     });
@@ -140,7 +141,7 @@ public class SelectInformationSessionController implements Initializable {
                 Platform.runLater(() -> {
                     boolean error = new ConnectionError().Connection("Unable to establish connection,CHECK INTERNET CONNECTION");
                     if (error) {
-                        SelectInformationSesssionWindow.StudentWindow.close();
+                        EditstudentInformationWindow.StudentWindow.close();
                         System.out.println("[ClassThread]--> Connection Error,Window close");
                     }
                 });

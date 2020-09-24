@@ -19,8 +19,9 @@ public class SchoolFeeWindow {
         window.initModality(Modality.APPLICATION_MODAL);
         window.setMinHeight(600);
         window.setMinWidth(1000);
+        window.isMaximized();
         window.setMaximized(true);
-        window.setResizable(true);
+        window.setResizable(false);
         window.initModality(Modality.APPLICATION_MODAL);
         window.setScene(scene);
         window.show();

@@ -33,26 +33,13 @@ public class SchoolFeeWindowController implements Initializable {
     public JFXComboBox<String> classcombobox;
     public JFXComboBox<String> termcombobox;
     public JFXComboBox<String> sessioncombobox;
-    public JFXComboBox<String> modeofpaymentcombobox;
     public JFXComboBox<String> tagcombobox;
-    public JFXTextField namefield;
-    public JFXTextField amountfield;
-    public JFXTextField datefield;
-    public JFXTextField depositorname;
-    public JFXTextField transactionidfield;
     public TextField minimumamount;
-    public JFXButton savebutton;
     public JFXButton fetchbutton;
     public TableView<Fee> tableview;
     public Label classerror;
     public Label termerror;
     public Label yearerror;
-    public Label modeofpaymenterror;
-    public Label nameerror;
-    public Label amounterror;
-    public Label dateerror;
-    public Label depositorerror;
-    public Label transactioniderror;
     public Label tagerror;
     private String clas;
     private String term;
@@ -80,9 +67,8 @@ public class SchoolFeeWindowController implements Initializable {
         classcombobox.getItems().addAll("Nursery 1","Nursery 2","Primary 1","Primary 2","Primary 3","Primary 4","Primary 5","Jss 1","Jss 2","Jss 3","SS 1","SS 2","SS 3");
         tagcombobox.getItems().addAll("DAY","BOARDER");
         new ClassThread(sessioncombobox,null).start();
-        termcombobox.getItems().addAll("1","2","3");
-
-        modeofpaymentcombobox.getItems().addAll("Bank Slip","Bursary","Bank Transfer");
+        termcombobox.getItems().addAll("Cancel","1","2","3");
+        termcombobox.getSelectionModel().selectFirst();
         ////////Set table view Editable
         tableview.setEditable(true);
         //////////////////////////////////////////////////Setting up table column
@@ -248,9 +234,9 @@ public class SchoolFeeWindowController implements Initializable {
         //////whenever the user want to input schoolfee information,the term is crucial,it must be first specified before
         /////other column will be ready to accept data
         termcolumn.setOnEditCommit((ce)->{
-            String newvalue=ce.getNewValue().replaceAll("/&?","");
+            String newvalue=ce.getNewValue();
             System.out.println("SchoolFeeWindowController: Term: "+newvalue);
-            if (!newvalue.isEmpty()){
+            if (!newvalue.isEmpty()&&newvalue.matches("^[0-9]*$")){
                 //get the student name in the selected row
                 String studentnameInTheColumn=ce.getRowValue().getStudentname();
                 System.out.println("SchoolFeeWindowController: student name: "+studentnameInTheColumn);
@@ -268,123 +254,13 @@ public class SchoolFeeWindowController implements Initializable {
                 new insertTerm(studentnameInTheColumn,session,clas,tag,newvalue,ce,termcolumn).start();
             }else {
                 ce.getRowValue().setTerm(null);
-                boolean err=new ConnectionError().Connection("Please provide a value to the field");
-                System.out.println("SchoolFeeWindowController: Please provide a value to the field");
+                boolean err=new ConnectionError().Connection("Please provide a number to the field");
+                System.out.println("SchoolFeeWindowController: Please provide a anumber to the field");
             }
         });
         tableview.getColumns().addAll(namecolumn,amountcolumn,classcolumn,tagcolumn,termcolumn,yearcolumn,modeofpaymentcolumn,transactionidcolumn,datecolumn,depositorcolumn);
     }
 
-    public void SaveButtonClicked() throws IOException {
-        System.out.println("SchoolFeeWindowController: Save button pressed-->getting input");
-        //getting value
-        clas=classcombobox.getValue();
-        session=sessioncombobox.getValue();
-        term=termcombobox.getValue();
-        modeofpayment=modeofpaymentcombobox.getValue();
-        //Checking input for error
-        //Checking class combo box
-        if (clas!=null){
-            classerror.setVisible(false);
-        }
-        else {
-            classerror.setVisible(true);
-        }
-        //Checking term combo box
-        if (term!=null){
-            termerror.setVisible(false);
-        }
-        else {
-            termerror.setVisible(true);
-        }
-        //Checking year combo box
-        if (session!=null){
-            yearerror.setVisible(false);
-        }
-        else {
-            yearerror.setVisible(true);
-        }
-        //Checking mode of payment combobox
-        if (modeofpayment!=null){
-            modeofpaymenterror.setVisible(false);
-        }
-        else {
-            modeofpaymenterror.setVisible(true);
-        }
-        //Checking name text field
-        if (namefield.getText().isEmpty()||!namefield.getText().matches("^[A-Z[ ]a-z]*$")){
-            nameerror.setVisible(true);
-        }else {
-            nameerror.setVisible(false);
-        }
-        //Checking amount text field
-        if (amountfield.getText().isEmpty()||!amountfield.getText().matches("^[0-9]*$")){
-            amounterror.setVisible(true);
-        }else {
-            amounterror.setVisible(false);
-        }
-        //Checking date text field
-        if (datefield.getText().isEmpty()&&datefield.getText().matches("^[a-zA-Z]*$")){
-            dateerror.setVisible(true);
-        }else {
-            dateerror.setVisible(false);
-        }
-        //Checking depositor text field
-        if (depositorname.getText().isEmpty()&&depositorname.getText().matches("^[0-9]*$")){
-            depositorerror.setVisible(true);
-        }else {
-            depositorerror.setVisible(false);
-        }
-        //Checking depositor text field
-        if (transactionidfield.getText().isEmpty()){
-            transactioniderror.setVisible(true);
-        }else {
-            transactioniderror.setVisible(false);
-        }
-        if (clas!=null&&term!=null&& session!=null&&modeofpayment!=null &&!namefield.getText().isEmpty() &&!amountfield.getText().isEmpty()&&!datefield.getText().isEmpty()&&!depositorname.getText().isEmpty()&&!transactionidfield.getText().isEmpty()){
-            new LoadingWindow();
-            studentname=namefield.getText();
-            amount=amountfield.getText();
-            date=datefield.getText();
-            depositor=depositorname.getText();
-            transactionid=transactionidfield.getText();
-            if (!studentname.matches("^[><}{+_)(*&^%$#@!]*$")&&!date.matches("^[A-Z[><}{+_)(*&^%$#@!]a-z]*$")&&!depositor.matches("^[/><}{+_)(*&^%$#@!]*$")&&!transactionid.matches("^[><}{+)(*&^%$#@!]*$")&&amount.matches("^[0-9]")){
-                System.out.println("SchoolFeeWindowController: All input are Ok");
-                System.out.println("SchoolFeeWindowController: Student name: "+studentname);
-                System.out.println("SchoolFeeWindowController: class: "+clas);
-                System.out.println("SchoolFeeWindowController: Term: "+term);
-                System.out.println("SchoolFeeWindowController: year: "+session);
-                System.out.println("SchoolFeeWindowController: Amount: "+amount);
-                System.out.println("SchoolFeeWindowController: Date: "+date);
-                System.out.println("SchoolFeeWindowController: Mode of payment: "+modeofpayment);
-                System.out.println("SchoolFeeWindowController: Depositor name: "+depositor);
-                ///////////////////////////////////Setting table data////////////////////////////////
-                System.out.println("SchoolFeeWindowController: Setting Table data ");
-                Fee fee=new Fee();
-                fee.setStudentname(studentname);
-                fee.setAmount(String.valueOf(amount));
-                fee.setClas(clas);
-                fee.setDate(date);
-                fee.setDepositorname(depositor);
-                fee.setModeofpayment(modeofpayment);
-                fee.setTerm(term);
-                fee.setYear(session);
-                fee.setId(transactionid);;
-                //Starting the thread to save data
-                //if everything goes right the thread set the table data
-                new SaveSchoolFeeThread(fee,tableview).start();
-                //Clearing the field
-                namefield.clear();
-                depositorname.clear();
-                amountfield.clear();
-                datefield.clear();
-            }else {
-                new ConnectionError().Connection("Invalid Character,detected");
-            }
-        }else {
-            new ConnectionError().Connection("Invalid input, Check your input");
-        }
-    }
 
     public void FetchButtonClicked() throws IOException {
         //Getting input
@@ -424,9 +300,11 @@ public class SchoolFeeWindowController implements Initializable {
         }
         //Checking data
         //if class,term and year is present,it will fetch the school fee connected with the term
-        if (clas!=null&&term!=null&& session!=null&&tag!=null){
+        if (clas!=null&&!term.contains("Cancel")&& session!=null&&tag!=null){
             new LoadingWindow();
             new getSchoolFeeThread(clas,term,session,tableview).start();
+        }else {
+            new ConnectionError().Connection("Select a term instead of cancel");
         }
 
     }
@@ -449,7 +327,6 @@ public class SchoolFeeWindowController implements Initializable {
         //Checking year combobox
         if (session!=null){
             yearerror.setVisible(false);
-            session=sessioncombobox.getSelectionModel().getSelectedItem();
         }
         else {
             yearerror.setVisible(true);
@@ -460,8 +337,11 @@ public class SchoolFeeWindowController implements Initializable {
         else {
             tagerror.setVisible(true);
         }
+        if (!term.equals("Cancel")){
+            new ConnectionError().Connection("Select 'Cancel' from term");
+        }
         //if only class and year is present, it will fetch the school fee for all the term
-        if (clas!=null && session!=null &&tag!=null && term==null){
+        if (clas!=null && session!=null &&tag!=null &&term.equals("Cancel")){
             new LoadingWindow();
             System.out.println("SchoolFeeWindowController:get button without term pressed--> getting all term schoolfees");
             new getSchoolFeeWithoutTermThread(clas,session,tag,tableview).start();
@@ -509,7 +389,10 @@ public class SchoolFeeWindowController implements Initializable {
         if (minimum==0){
             new ConnectionError().Connection("Please provide minimum amount");
         }
-        if (clas!=null && session!=null &&tag!=null && term!=null&&minimum!=0){
+        if (term.contains("Cancel")){
+            new ConnectionError().Connection("Select a term instead of 'cancel' ");
+        }
+        if (clas!=null && session!=null &&tag!=null && !term.contains("Cancel")&&minimum!=0){
             new LoadingWindow();
             System.out.println("SchoolFeeWindowController:Feth debtors button pressed--> getting debtors");
             new getDebtorsthread(clas,session,tag,term,minimum,tableview).start();
@@ -536,7 +419,7 @@ public class SchoolFeeWindowController implements Initializable {
     public void saveDataToSchoolfeetable(TableColumn<?, ?> column, TableColumn.CellEditEvent<Fee, ?> e){
         String newvalue=e.getNewValue().toString().replaceAll("/","-");
         System.out.println("SchoolFeeWindowController: entity: "+newvalue);
-       if (!newvalue.isEmpty()&&!newvalue.matches("^[/<>+_)(*&^%$#!}{}@]*$")){
+       if (!newvalue.isEmpty()&&newvalue.matches("^[A-Za-z[-/ ]0-9]*$")){
            //get the student name in the selected row
            String studentnameInTheColumn=e.getRowValue().getStudentname();
            System.out.println("SchoolFeeWindowController: student name: "+studentnameInTheColumn);
@@ -567,7 +450,7 @@ public class SchoolFeeWindowController implements Initializable {
     //if it present,then it proceed to the server
     private boolean CheckTermColumn(Fee rowvalue, TableColumn.CellEditEvent<Fee, String> e){
         System.out.println(e.getRowValue().getTerm());
-        if (e.getRowValue().getTerm()==null){
+        if (e.getRowValue().getTerm()==null||e.getRowValue().getTerm().contains(" ")||e.getRowValue().getTerm().isEmpty()){
             return true;
         }else {
             System.out.println("false"+rowvalue.getTerm());

@@ -56,13 +56,13 @@
                                     <Font size="10.0" />
                                  </font>
                               </Label>
-                              <JFXComboBox fx:id="addbuttonsessioncombobox" labelFloat="true" prefHeight="25.0" prefWidth="133.0" promptText="Select Session" />
+                              <JFXComboBox fx:id="addbuttonsessioncombobox" labelFloat="true" prefHeight="25.0" prefWidth="133.0" promptText="Select Session" style="-fx-background-color: #D5D5D5;" />
                               <Label alignment="CENTER" layoutX="20.0" layoutY="258.0" prefHeight="27.0" prefWidth="55.0" text="Term:" textAlignment="CENTER" textFill="#eee5e5">
                                  <font>
                                     <Font size="10.0" />
                                  </font>
                               </Label>
-                              <JFXComboBox fx:id="addbooktermcombobox" labelFloat="true" layoutX="20.0" layoutY="290.0" prefHeight="25.0" prefWidth="133.0" promptText="Select tem" />
+                              <JFXComboBox fx:id="addbooktermcombobox" labelFloat="true" layoutX="20.0" layoutY="290.0" prefHeight="25.0" prefWidth="133.0" promptText="Select tem" style="-fx-background-color: #D5D5D5;" />
                               <HBox alignment="CENTER" prefHeight="76.0" prefWidth="1170.0">
                                  <children>
                                     <JFXButton buttonType="RAISED" onAction="#addbookbuttonClicked" prefHeight="81.0" prefWidth="75.0" ripplerFill="#082ce1" styleClass="fetch" stylesheets="@../../../../../back.css" text=" " />
@@ -199,7 +199,7 @@
                         </Label>
                         <HBox layoutX="20.0" layoutY="20.0" prefHeight="46.0" prefWidth="1180.0" spacing="10.0">
                            <children>
-                              <JFXTextField fx:id="editbooktitletextfield" focusColor="#edeef2" prefHeight="25.0" prefWidth="452.0" promptText="Book title" style="-fx-background-color: #FFFFFF;" />
+                              <JFXTextField fx:id="editbooktitletextfield" focusColor="#edeef2" labelFloat="true" prefHeight="25.0" prefWidth="452.0" promptText="Book title" style="-fx-background-color: #FFFFFF;" />
                               <JFXButton onAction="#editbooksearchbuttonClicked" prefHeight="39.0" prefWidth="132.0" style="-fx-background-color: #0066CB; -fx-background-radius: 10 10 10 10;" text="Search Book" textFill="#f5e4e4" wrapText="true">
                                  <font>
                                     <Font name="System Bold" size="18.0" />
@@ -227,9 +227,9 @@
                               <JFXComboBox fx:id="editbooktermcombobox" focusColor="#eeeff2" labelFloat="true" prefHeight="34.0" prefWidth="196.0" promptText="Term" style="-fx-background-color: #FFFFFF;" />
                            </children>
                         </HBox>
-                        <JFXScrollPane prefHeight="392.0" prefWidth="1180.0">
+                        <JFXScrollPane prefHeight="270.0" prefWidth="1180.0">
                            <children>
-                              <TableView fx:id="editbooktableview" prefHeight="200.0" prefWidth="200.0">
+                              <TableView fx:id="editbooktableview" prefHeight="270.0" prefWidth="1180.0">
                                 <columns>
                                   <TableColumn fx:id="editbookidcolumn" prefWidth="90.0" text="ID" />
                                     <TableColumn fx:id="editbooktitlecolumn" prefWidth="295.0" text="Title" />
@@ -242,6 +242,7 @@
                               </TableView>
                            </children>
                         </JFXScrollPane>
+                        <JFXButton onAction="#editBookDeletButtonClicked" prefHeight="72.0" prefWidth="74.0" styleClass="delete" stylesheets="@../../../../../back.css" text=" " />
                      </children></VBox>
                </children></AnchorPane>
          </content>
@@ -285,7 +286,7 @@
                         </JFXScrollPane>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                            <children>
-                              <Label text="Total Book sold today:" textFill="#17d72d">
+                              <Label text="Total Book sold:" textFill="#17d72d">
                                  <font>
                                     <Font size="24.0" />
                                  </font>

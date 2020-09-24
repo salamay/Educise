@@ -63,6 +63,7 @@ public class CreatingSessionThread  extends Thread{
             if (response.code()==200||response.code()==201||response.code()==212||response.code()==202){
                 Platform.runLater(()->{
                     LoadingWindow.window.close();
+                    new ConnectionError().Connection("SUCCESS");
                 });
             }else{
                 System.out.println("[CreatingSessionThread]--> server return error "+response.code()+": Unable to get score");

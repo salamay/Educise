@@ -17,6 +17,7 @@ public class BookStoreWindow {
         window.initModality(Modality.APPLICATION_MODAL);
         window.setMaximized(true);
         window.setResizable(true);
+        window.isMaximized();
         window.initModality(Modality.APPLICATION_MODAL);
         window.setScene(scene);
         window.show();

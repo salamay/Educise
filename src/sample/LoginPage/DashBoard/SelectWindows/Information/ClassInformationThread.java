@@ -99,7 +99,7 @@ public class ClassInformationThread extends  Thread {
                     builder.serializeNulls();
                     Gson gson=builder.create();
                     RetrieveResponseEntity retrieveResponseEntity=gson.fromJson(data,RetrieveResponseEntity.class);
-                    System.out.println("[ClassInformationThread]"+retrieveResponseEntity.getAddress());
+                    System.out.println("[ClassInformationThread]"+retrieveResponseEntity.getFathername());
                     byte[] student=retrieveResponseEntity.getStudent();
                     byte[] father=retrieveResponseEntity.getFather();
                     byte[] mother=retrieveResponseEntity.getMother();
@@ -198,7 +198,7 @@ public class ClassInformationThread extends  Thread {
                         boolean error=new ConnectionError().Connection("server return error "+response.code()+": Unable to  get Information");
                         if (error){
                             InformationWindow.window1.close();
-                            System.out.println("[GetScoreThread]--> Connection Error,Window close");
+                            System.out.println("[ClassInformationThread]--> Connection Error,Window close");
                             response.close();
                         }
                     });
@@ -210,7 +210,7 @@ public class ClassInformationThread extends  Thread {
                         boolean error=new ConnectionError().Connection("server return error "+response.code()+": Information not found");
                         if (error){
                             InformationWindow.window1.close();
-                            System.out.println("[GetScoreThread]--> Connection Error,Window close");
+                            System.out.println("[ClassInformationThread]--> Connection Error,Window close");
                             response.close();
                         }
                     });
@@ -221,7 +221,7 @@ public class ClassInformationThread extends  Thread {
                     boolean error=new ConnectionError().Connection("Unable to establish,CHECK INTERNET CONNECTION");
                     if (error){
                         InformationWindow.window1.close();
-                        System.out.println("[SaveScoreThread]--> Connection Error,Window close");
+                        System.out.println("[ClassInformationThread]--> Connection Error,Window close");
                     }
                 });
                 System.out.println("[ClassInformationThread]: Request failed");

@@ -157,6 +157,7 @@ public class StudentSelectParentController implements Initializable {
                                      Image image=SwingFXUtils.toFXImage(bufferedImage,null);
                                      imageView.setImage(image);
                                      label.setText(childnames.get(column));
+                                     label.isWrapText();
                                      gridPane.add(imageView,column,row);
                                      gridPane.setVgap(20);
                                      gridPane.add(label,column,row+2);

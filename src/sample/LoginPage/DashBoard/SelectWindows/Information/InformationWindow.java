@@ -52,9 +52,8 @@ public class InformationWindow {
         image.setFitWidth(206);
         Label NameLabel=new Label("Name");
         NameLabel.setFont(Font.font("verdana",FontWeight.MEDIUM,30));
-        NameLabel.setStyle("-fx-text-fill: #ee1010 ");
-        hBox2.setMinHeight(Control.USE_COMPUTED_SIZE);
-        hBox2.setMinWidth(Control.USE_COMPUTED_SIZE);
+        NameLabel.setStyle("-fx-text-fill: #ee1010;");
+
         hBox2.setSpacing(10);
         hBox2.setPadding(new Insets(10,10,10,10));
         //Label Styles
@@ -62,14 +61,14 @@ public class InformationWindow {
 
         //Father Name And MotherName
         Label FatherName=new Label("Name");
-        FatherName.setStyle(labelstyle);
+        FatherName.setStyle("-fx-text-fill: #ee1010;");
+        FatherName.setFont(Font.font("verdana",FontWeight.MEDIUM,30));
         Label MotherName=new Label("Name");
-        MotherName.setStyle(labelstyle);
+        MotherName.setStyle("-fx-text-fill: #ee1010;");
+        MotherName.setFont(Font.font("verdana",FontWeight.MEDIUM,30));
 
         // layout
         hBox2.getChildren().addAll(image,NameLabel,FatherImage,FatherName,MotherImage,MotherName);
-        hBox2.setMinWidth(Control.USE_COMPUTED_SIZE);
-        hBox2.setMinHeight(Control.USE_COMPUTED_SIZE);
         String styles="-fx-background-image: url('image/schoolback.jpg');"+"-fx-background-size:70%;";
         hBox2.setStyle(styles);
         topVbox.getChildren().addAll(hbox,hBox2);
@@ -141,7 +140,7 @@ public class InformationWindow {
         Label addressLabel=new Label();
         addressLabel.setStyle(labelstyle);
         Label nextOfKinLabel=new Label();
-        NextOfKinLabel.setStyle(labelstyle);
+        nextOfKinLabel.setStyle(labelstyle);
         Label genderLabel=new Label();
         genderLabel.setStyle(labelstyle);
         Label clubLabel=new Label();

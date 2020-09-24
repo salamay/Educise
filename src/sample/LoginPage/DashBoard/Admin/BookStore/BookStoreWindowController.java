@@ -155,25 +155,8 @@ public class BookStoreWindowController implements Initializable {
         });
         editbookauthorcolumn.setCellFactory(TextFieldTableCell.forTableColumn());
         editbooksessioncolumn.setCellValueFactory(new PropertyValueFactory<>("year"));
-        editbooksessioncolumn.setOnEditCommit((e)->{
-            try {
-                EditBook(e);
-                e.getRowValue().setYear(e.getNewValue());
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        });
-        editbooksessioncolumn.setCellFactory(TextFieldTableCell.forTableColumn());
         editbooktermcolumn.setCellValueFactory(new PropertyValueFactory<>("term"));
-        editbooktermcolumn.setOnEditCommit((e)->{
-            try {
-                EditBook(e);
-                e.getRowValue().setTerm(e.getNewValue());
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        });
-        editbooktermcolumn.setCellFactory(TextFieldTableCell.forTableColumn());
+
 
         editbookcopiescolumn.setCellValueFactory(new PropertyValueFactory<>("copies"));
         editbookcopiescolumn.setOnEditCommit((e)->{
@@ -347,9 +330,13 @@ public class BookStoreWindowController implements Initializable {
         if (!buyer.matches("^[A-Z[ ]a-z]*$")){
             new ConnectionError().Connection("Name of Buyer contains invalid character");
         }
+
         //This get the selected item in the table and deduct 1 from the number of copies from the server
         ObservableList<Book> bookselected = SellBookTableView.getSelectionModel().getSelectedItems();
-        if (!bookselected.isEmpty() && bookselected != null && !buyer.isEmpty() &&buyer!=null &&buyer.matches("^[A-Za-z]*$")&&localdate!=null) {
+        if (bookselected.get(0)==null){
+            new ConnectionError().Connection("Select a book");
+        }
+        if (!bookselected.isEmpty() && bookselected != null && !buyer.isEmpty() &&buyer!=null &&buyer.matches("^[A-Z[ ]a-z]*$")&&localdate!=null) {
             if (bookselected.get(0).getCopies()==0){
                 new ConnectionError().Connection(" 0 "+bookselected.get(0).getTitle()+" left in store");
             }else {
@@ -395,7 +382,7 @@ public class BookStoreWindowController implements Initializable {
         String columnname=e.getTableColumn().getText();
         int id=e.getRowValue().getId();
         System.out.println("[Editing book]: entity:"+entity+"\n"+"column:"+columnname+"\n"+"id:"+id);
-        if (entity!=null &&entity.matches("^[A-Z[ ]a-z0-9]*$")&&id!=0){
+        if (entity!=null &&entity.matches("^[A-Z[- ]a-z0-9]*$")&&id!=0){
             new LoadingWindow();
             EditBookRequest editBookRequest=new EditBookRequest();
             editBookRequest.setEntity(entity);
@@ -408,6 +395,19 @@ public class BookStoreWindowController implements Initializable {
             System.out.println("EditBook: Please provide a valid input for the field");
         }
     }
+    /////Delete book
+    public void editBookDeletButtonClicked() throws IOException {
+        ObservableList<Book> bookselected=editbooktableview.getSelectionModel().getSelectedItems();
+        if (bookselected.get(0)==null||bookselected.get(0).getId()==0){
+            new ConnectionError().Connection("please select book to delete");
+        }
+
+        if (bookselected.get(0)!=null&&bookselected.get(0).getId()!=0){
+            new LoadingWindow();
+            new DeleteBook(bookselected.get(0).getId(),editbooktableview).start();
+        }
+    }
+
     //Editbook End
 
     ///////////////////////////////////////////////////History tab view//////////////////////////////////////////////////////////////////

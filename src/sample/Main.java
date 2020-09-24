@@ -19,7 +19,7 @@ public class Main extends Application {
         Scene scene=new Scene(root,1200,700);
         window1.setScene(scene);
         window1.setMaximized(true);
-        window1.setResizable(true);
+        window1.setResizable(false);
         window1.show();
     }
 

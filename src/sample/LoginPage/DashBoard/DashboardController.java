@@ -9,6 +9,7 @@ import javafx.util.Duration;
 import sample.ConnectionError;
 import sample.LoginPage.DashBoard.Admin.AdminWindow;
 import sample.LoginPage.DashBoard.SelectWindows.AcademicSession.SelectAcademicSession;
+import sample.LoginPage.DashBoard.SelectWindows.EditStudentInformation.EditstudentInformationWindow;
 import sample.LoginPage.DashBoard.SelectWindows.Information.SelectInformationSesssionWindow;
 import sample.LoginPage.DashBoard.SelectWindows.Parent.SelectParent;
 import sample.LoginPage.DashBoard.SelectWindows.Score.StudentSelectAssessmentSessionWindow;
@@ -20,19 +21,19 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class DashboardController implements Initializable {
-    public JFXButton studentinfobutton;
-    public JFXButton teacherinfobutton;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        teacherinfobutton.setOnAction((e)->{
-            new ConnectionError().Connection("Not available");
-        });
+
 
     }
 
     public void StudentButtonClicked() throws IOException {
      new SelectInformationSesssionWindow();
 
+    }
+    public void EditStudentInformationButtonClicked(){
+        new EditstudentInformationWindow();
     }
 
     public void NewStudentButtonClicked() throws IOException {
@@ -43,9 +44,9 @@ public class DashboardController implements Initializable {
         new ConnectionError().Connection("Not available");
         //new NewTeacherWindow();
     }
-
-    public void Student_Score_Clicked() throws IOException {
-
+    public void NewTeacherButtonClickedtwo() throws IOException {
+        new ConnectionError().Connection("Not available");
+        //new NewTeacherWindow();
     }
 
     public void CreateStudentSessionClicked() throws IOException {
@@ -59,14 +60,19 @@ public class DashboardController implements Initializable {
     public void ParentPortalClicked() throws IOException {
         new SelectParent();
     }
+    public void ParentPortalClickedtwo() throws IOException {
+        new SelectParent();
+    }
+
     public void AdminButtonClicked() throws IOException {
         new AdminWindow();
     }
     ///on over method
     public void StundenInfoButtonOnDragExited(){
         System.out.println("Mouse status:On drag over");
-        scaleTransition(studentinfobutton);
+       // scaleTransition(studentinfobutton);
     }
+
     public void StundenInfoButtonOnDragReleased(){
 
     }

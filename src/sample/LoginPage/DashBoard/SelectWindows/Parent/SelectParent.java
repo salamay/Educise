@@ -83,12 +83,9 @@ public class SelectParent {
             vBox.setSpacing(10);
             vBox.setMinHeight(700);
             vBox.setMinWidth(1000);
-            ParentSearch = new JFXComboBox<>();
-            ParentSearch.setEditable(true);
-            ParentSearch.setMinWidth(Control.USE_COMPUTED_SIZE);
+
             HBox hBox = new HBox();
             Label Label = new Label("Search parent name");
-            hBox.getChildren().addAll(Label, ParentSearch);
             ListView<String> Parentlist = new ListView<>();
             Parentlist.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 /////////////////  parent name list view On Mouse Clicked//////////////
@@ -151,8 +148,7 @@ public class SelectParent {
             try {
                 Response response = client.newCall(request).execute();
                 System.out.println("[Retrieving information session]: "+response);
-                if (response.code()==200|| response.code()==212){
-
+                if (response.code()==200|| response.code()==212 ||response.code()==202 ||response.code()==201){
                     System.out.println("[Retrieving information session]: session retrieved");
                     ResponseBody body=response.body();
                     try {

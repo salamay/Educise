@@ -82,7 +82,7 @@ public class LogInModel extends Thread{
                         window2.setMinHeight(700);
                         window2.setMaximized(true);
                         window2.isMaximized();
-                        window2.isResizable();
+                        window2.setResizable(false);
                         Scene scene = new Scene(root,1200,700);
                         window2.setScene(scene);
                         window2.show();

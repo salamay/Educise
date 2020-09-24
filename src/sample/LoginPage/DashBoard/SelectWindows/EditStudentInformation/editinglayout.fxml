@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import com.jfoenix.controls.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="700.0" prefWidth="1200.0" style="-fx-background-color: #D5D5D5;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.LoginPage.DashBoard.SelectWindows.EditStudentInformation.EditingLayoutController">
+   <children>
+      <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="700.0" prefWidth="1200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="700.0" prefWidth="1200.0">
+               <children>
+                  <VBox alignment="TOP_CENTER" prefHeight="700.0" prefWidth="1200.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="3.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="4.0">
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                     <children>
+                        <Label style="-fx-background-color: #D5D5D5;" text="Edit student information">
+                           <font>
+                              <Font name="System Bold" size="24.0" />
+                           </font>
+                        </Label>
+                        <TableView fx:id="tableView" prefHeight="340.0" prefWidth="1175.0">
+                          <columns>
+                              <TableColumn fx:id="idcolumn" prefWidth="57.0" text="id" />
+                            <TableColumn fx:id="studentnamecolumn" prefWidth="359.0" text="Student name" />
+                            <TableColumn fx:id="studentclasscolumn" prefWidth="134.0" text="Student class" />
+                              <TableColumn fx:id="phonenumbercolumn" minWidth="7.0" prefWidth="140.0" text="Phone no" />
+                              <TableColumn fx:id="nicknamecolumn" minWidth="7.0" prefWidth="136.0" text="Nickname" />
+                              <TableColumn fx:id="hobbiescolumn" minWidth="7.0" prefWidth="133.0" text="Hobbies" />
+                              <TableColumn fx:id="turnoncolumn" minWidth="7.0" prefWidth="107.0" text="Turn on" />
+                              <TableColumn fx:id="turnoffcolumn" minWidth="7.0" prefWidth="89.0" text="Turn off" />
+                              <TableColumn fx:id="gendercolumn" minWidth="7.0" text="Gender" />
+                              <TableColumn fx:id="clubcolumn" minWidth="7.0" prefWidth="105.0" text="Club" />
+                              <TableColumn fx:id="rolemodelcolumn" minWidth="7.0" prefWidth="90.0" text="Role model" />
+                              <TableColumn fx:id="fathernamecolumn" minWidth="7.0" prefWidth="120.0" text="Father name" />
+                              <TableColumn fx:id="mothernamecolumn" minWidth="7.0" prefWidth="120.0" text="Mother name" />
+                              <TableColumn fx:id="agecolumn" minWidth="7.0" prefWidth="30.0" text="age" />
+                              <TableColumn fx:id="nextofkincolumn" minWidth="7.0" prefWidth="120.0" text="Next of kin" />
+                              <TableColumn fx:id="addresscolumn" minWidth="7.0" prefWidth="120.0" text="Address" />
+                              <TableColumn fx:id="tagcolumn" minWidth="7.0" prefWidth="70.0" text="Tag" />
+                              <TableColumn fx:id="futureambitioncolumn" minWidth="7.0" prefWidth="100.0" text="Future ambition" />
+                          </columns>
+                        </TableView>
+                        <Label text="Change picture" wrapText="true">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <JFXButton onAction="#deleteStudent" prefHeight="55.0" prefWidth="63.0" styleClass="delete" stylesheets="@../../../../../back.css" text="  " />
+                        <HBox prefHeight="156.0" prefWidth="1175.0" spacing="10.0">
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                           <children>
+                              <JFXButton onAction="#changeStudentButton" prefHeight="46.0" prefWidth="178.0" style="-fx-background-color: #0066CB; -fx-background-radius: 20 20 20 20;" text="Change student picture" textFill="#f5eded" wrapText="true">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </JFXButton>
+                              <ImageView fx:id="studentpicture" fitHeight="150.0" fitWidth="180.0" pickOnBounds="true" preserveRatio="true" />
+                              <JFXButton layoutX="20.0" layoutY="20.0" onAction="#changeFatherPicture" prefHeight="46.0" prefWidth="179.0" style="-fx-background-color: #0066CB; -fx-background-radius: 20 20 20 20;" text="Change father picture" textFill="#f5eded" wrapText="true">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </JFXButton>
+                              <ImageView fx:id="fatherpicture" fitHeight="150.0" fitWidth="173.0" layoutX="268.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true" />
+                              <JFXButton layoutX="433.0" layoutY="20.0" onAction="#changeMotherPicture" prefHeight="46.0" prefWidth="177.0" style="-fx-background-color: #0066CB; -fx-background-radius: 20 20 20 20;" text="Change mother picture" textFill="#f5eded" wrapText="true">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </JFXButton>
+                              <ImageView fx:id="motherpicture" fitHeight="150.0" fitWidth="178.0" layoutX="258.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </AnchorPane>
+        </content>
+      </ScrollPane>
+   </children>
+</AnchorPane>

@@ -14,25 +14,12 @@ public class Scores {
     private double TenthCa;
     private double Exam;
     private double Cumulative;
-    public  Scores(){
-        Subject ="";
-        FirstCa =0.0;
-        SecondCa = 0.0;
-        ThirdCa = 0.0;
-        FourthCa = 0.0;
-        FifthCa = 0.0;
-        SixthCa = 0.0;
-        SeventhCa = 0.0;
-        EightCa = 0.0;
-        NinthCa = 0.0;
-        TenthCa = 0.0;
-        Exam = 0.0;
-        Cumulative = 0.0;
+    private String term;
 
+    public Scores() {
     }
-    public Scores(String subject, Double firstCa, Double secondCa, Double thirdCa, Double fourthCa, Double fifthCa,
-                  Double sixthCa, Double seventhCa, Double eightCa, Double ninthCa, Double tenthCa, Double exam,
-                  Double cumulative) {
+
+    public Scores(String subject, double firstCa, double secondCa, double thirdCa, double fourthCa, double fifthCa, double sixthCa, double seventhCa, double eightCa, double ninthCa, double tenthCa, double exam, double cumulative, String term) {
         Subject = subject;
         FirstCa = firstCa;
         SecondCa = secondCa;
@@ -46,6 +33,7 @@ public class Scores {
         TenthCa = tenthCa;
         Exam = exam;
         Cumulative = cumulative;
+        this.term = term;
     }
 
     public String getSubject() {
@@ -56,99 +44,109 @@ public class Scores {
         Subject = subject;
     }
 
-    public Double getFirstCa() {
+
+    public double getFirstCa() {
         return FirstCa;
     }
 
-    public void setFirstCa(Double firstCa) {
+    public void setFirstCa(double firstCa) {
         FirstCa = firstCa;
     }
 
-    public Double getSecondCa() {
+    public double getSecondCa() {
         return SecondCa;
     }
 
-    public void setSecondCa(Double secondCa) {
+    public void setSecondCa(double secondCa) {
         SecondCa = secondCa;
     }
 
-    public Double getThirdCa() {
+    public double getThirdCa() {
         return ThirdCa;
     }
 
-    public void setThirdCa(Double thirdCa) {
+    public void setThirdCa(double thirdCa) {
         ThirdCa = thirdCa;
     }
 
-    public Double getFourthCa() {
+    public double getFourthCa() {
         return FourthCa;
     }
 
-    public void setFourthCa(Double fourthCa) {
+    public void setFourthCa(double fourthCa) {
         FourthCa = fourthCa;
     }
 
-    public Double getFifthCa() {
+    public double getFifthCa() {
         return FifthCa;
     }
 
-    public void setFifthCa(Double fifthCa) {
+    public void setFifthCa(double fifthCa) {
         FifthCa = fifthCa;
     }
 
-    public Double getSixthCa() {
+    public double getSixthCa() {
         return SixthCa;
     }
 
-    public void setSixthCa(Double sixthCa) {
+    public void setSixthCa(double sixthCa) {
         SixthCa = sixthCa;
     }
 
-    public Double getSeventhCa() {
+    public double getSeventhCa() {
         return SeventhCa;
     }
 
-    public void setSeventhCa(Double seventhCa) {
+    public void setSeventhCa(double seventhCa) {
         SeventhCa = seventhCa;
     }
 
-    public Double getEightCa() {
+    public double getEightCa() {
         return EightCa;
     }
 
-    public void setEightCa(Double eigthCa) {
-        EightCa = eigthCa;
+    public void setEightCa(double eightCa) {
+        EightCa = eightCa;
     }
 
-    public Double getNinthCa() {
+    public double getNinthCa() {
         return NinthCa;
     }
 
-    public void setNinethCa(Double ninethCa) {
-        NinthCa = ninethCa;
+    public void setNinthCa(double ninthCa) {
+        NinthCa = ninthCa;
     }
 
-    public Double getTenthCa() {
+    public double getTenthCa() {
         return TenthCa;
     }
 
-    public void setTenthCa(Double tenthCa) {
+    public void setTenthCa(double tenthCa) {
         TenthCa = tenthCa;
     }
 
-    public Double getExam() {
+    public double getExam() {
         return Exam;
     }
 
-    public void setExam(Double exam) {
+    public void setExam(double exam) {
         Exam = exam;
     }
 
-    public Double getCumulative() {
+    public double getCumulative() {
         return Cumulative;
     }
 
-    public void setCumulative(Double cummulative) {
-        Cumulative = cummulative;
+    public void setCumulative(double cumulative) {
+        Cumulative = cumulative;
     }
+
+    public String getTerm() {
+        return term;
+    }
+
+    public void setTerm(String term) {
+        this.term = term;
+    }
+
 }

@@ -1,4 +1,4 @@
-package sample.LoginPage.DashBoard.SelectWindows.Registeration;
+package sample.LoginPage.DashBoard.SelectWindows.EditStudentInformation;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -8,6 +8,7 @@ import javafx.scene.control.TableView;
 import okhttp3.*;
 import sample.ConnectionError;
 import sample.LoginPage.DashBoard.SelectWindows.EditStudentInformation.InformationEntity;
+import sample.LoginPage.DashBoard.SelectWindows.Registeration.LoadingWindow;
 import sample.LoginPage.LogInModel;
 
 import java.io.IOException;
@@ -15,14 +16,14 @@ import java.io.IOException;
 public class EditInformation extends Thread {
 
     private String newValue;
-    private String oldValue;
+    private int id;
     private String column;
     private String session;
     private String studentname;
     private TableView<InformationEntity> tableView;
-    public EditInformation(String newValue, String oldValue, String column, String session, String studentname, TableView<InformationEntity> tableView) {
+    public EditInformation(String newValue, int id, String column, String session, String studentname, TableView<InformationEntity> tableView) {
         this.newValue=newValue;
-        this.oldValue=oldValue;
+        this.id=id;
         this.column=column.replaceAll(" ","");
         this.session=session;
         this.studentname=studentname;
@@ -32,7 +33,7 @@ public class EditInformation extends Thread {
     @Override
     public void run() {
         System.out.println("[EditInformation]: --> newValue: "+newValue);
-        System.out.println("[EditInformation]: --> oldvalue: "+oldValue);
+        System.out.println("[EditInformation]: --> id: "+id);
         System.out.println("[EditInformation]: --> column: "+column);
         System.out.println("[EditInformation]: --> session: "+session);
         System.out.println("[EditInformation]: --> studenname: "+studentname);
@@ -41,7 +42,7 @@ public class EditInformation extends Thread {
 
 
         Request request=new Request.Builder()
-                .url("http://localhost:8080/editstudentinformation/"+studentname+"/"+session+"/"+newValue+"/"+oldValue+"/"+column)
+                .url("http://localhost:8080/editstudentinformation/"+session+"/"+newValue+"/"+id+"/"+column)
                 .addHeader("Authorization","Bearer "+ LogInModel.token)
                 .build();
         try {

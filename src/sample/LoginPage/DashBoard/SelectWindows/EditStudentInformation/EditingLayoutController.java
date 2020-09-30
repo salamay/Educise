@@ -20,7 +20,6 @@ import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import sample.ConnectionError;
-import sample.LoginPage.DashBoard.SelectWindows.Registeration.EditInformation;
 import sample.LoginPage.DashBoard.SelectWindows.Registeration.LoadingWindow;
 import sample.LoginPage.LogInModel;
 import javax.imageio.ImageIO;
@@ -206,26 +205,21 @@ public class EditingLayoutController implements Initializable {
         });
 
         tagcolumn.setCellValueFactory(new PropertyValueFactory<>("tag"));
-        tagcolumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        tagcolumn.setOnEditCommit((e)->{
-            editColumn(tagcolumn,e);
-            e.getRowValue().setTag(e.getNewValue());
-            tableView.refresh();
-        });
         new RetrieveInformationThread().start();
     }
     public void editColumn(TableColumn<?, ?> column, TableColumn.CellEditEvent<InformationEntity, ?> e){
         //Getting field input
         System.out.println("[EditingLayoutController]:-->Getting filed input");
         String newValue=e.getNewValue().toString();
-        String oldValue=e.getOldValue().toString();
+        int id=e.getRowValue().getId();
         String columnname=column.getText();
         System.out.println("[EditingLayoutController]:-->new value: "+newValue);
-        System.out.println("[EditingLayoutController]:-->old value: "+oldValue);
+        System.out.println("[EditingLayoutController]:-->id: "+id);
         System.out.println("[EditingLayoutController]:-->column: "+columnname);
-        if (newValue!=null && oldValue!=null && columnname!=null && newValue.matches("^[A-Za-z[,. ]0-9]*$")){
+        if (newValue!=null && id!=0 && columnname!=null && newValue.matches("^[A-Za-z[,. ]0-9]*$")){
             System.out.println("[EditingLayoutController]:-->Starting thread");
-            new EditInformation(newValue,oldValue,columnname,session,studentname,tableView).start();
+            tableView.refresh();
+            new EditInformation(newValue,id,columnname,session,studentname,tableView).start();
         }else {
             new ConnectionError().Connection("Invalid symbols detected,please provide valid input");
         }
@@ -233,8 +227,8 @@ public class EditingLayoutController implements Initializable {
     }
     public void deleteStudent() throws IOException {
         ObservableList<InformationEntity> selecteditem=tableView.getSelectionModel().getSelectedItems();
-        System.out.println("[EditingLayoutController]: "+selecteditem.get(0).getId());
-        if (selecteditem.get(0).getId()!=0&&selecteditem.get(0)!=null){
+        if (selecteditem.get(0)!=null&&selecteditem.get(0).getId()!=0){
+            System.out.println("[EditingLayoutController]: "+selecteditem.get(0).getId());
             new LoadingWindow();
             new DeleteStudent(selecteditem.get(0).getId(),session,tableView).start();
         }else {

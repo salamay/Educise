@@ -6,6 +6,7 @@ public class UpdateScoreRequestEntity {
     private double score;
     private String subject;
     private String ca;
+    private String term;
 
     public UpdateScoreRequestEntity() {
     }
@@ -48,5 +49,13 @@ public class UpdateScoreRequestEntity {
 
     public void setCa(String ca) {
         this.ca = ca;
+    }
+
+    public String getTerm() {
+        return term;
+    }
+
+    public void setTerm(String term) {
+        this.term = term;
     }
 }

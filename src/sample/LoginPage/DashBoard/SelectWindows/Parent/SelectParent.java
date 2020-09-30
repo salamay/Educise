@@ -38,7 +38,6 @@ public class SelectParent {
     public static Stage window1;
     public JFXComboBox<String> Clas;
     public static String classSelected;
-    private JFXComboBox<String> ParentSearch;
     private ProgressIndicator progressBar;
     public static String parentname;
 
@@ -79,14 +78,8 @@ public class SelectParent {
  //////////////////////////////////////////////////////////////////////////////////////////////
         Clas.setOnAction(event -> {
             classSelected = Clas.getSelectionModel().getSelectedItem();
-            VBox vBox = new VBox();
-            vBox.setSpacing(10);
-            vBox.setMinHeight(700);
-            vBox.setMinWidth(1000);
-
-            HBox hBox = new HBox();
-            Label Label = new Label("Search parent name");
             ListView<String> Parentlist = new ListView<>();
+            Parentlist.setMinHeight(600);
             Parentlist.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 /////////////////  parent name list view On Mouse Clicked//////////////
             //the newValue variable is a static global variable that will be later reference in the studentParentController class
@@ -109,14 +102,12 @@ public class SelectParent {
             scrollPane.setFitToWidth(true);
             scrollPane.setPannable(true);
             scrollPane.setFitToHeight(true);
-            vBox.getChildren().addAll(hBox, Parentlist);
-            scrollPane.setContent(vBox);
+            scrollPane.setContent(Parentlist);
             Scene scene2 = new Scene(scrollPane);
             SelectParent.window1.setScene(scene2);
             //passing the session selected as an argument to the ParentList Class
             //this enable the database to know which session to fetch parent name
             new ParentListhread(classSelected, Parentlist).start();
-            ParentSearch.setOnAction(event2 -> System.out.println("Search"));
         });
 
     }

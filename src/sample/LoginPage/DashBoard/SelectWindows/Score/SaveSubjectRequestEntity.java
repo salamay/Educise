@@ -6,6 +6,7 @@ public class SaveSubjectRequestEntity {
     private String table;
     private String subject;
     private String oldsubject;
+    private String term;
 
     public SaveSubjectRequestEntity() {
     }
@@ -40,5 +41,13 @@ public class SaveSubjectRequestEntity {
 
     public void setOldsubject(String oldsubject) {
         this.oldsubject = oldsubject;
+    }
+
+    public String getTerm() {
+        return term;
+    }
+
+    public void setTerm(String term) {
+        this.term = term;
     }
 }

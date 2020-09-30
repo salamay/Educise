@@ -46,7 +46,10 @@ public class EditStudentInformationController implements Initializable {
             layout.setPannable(true);
             layout.setFitToHeight(true);
             layout.setFitToWidth(true);
+
             listview = new JFXListView<>();
+            listview.setExpanded(true);
+            listview.setMinHeight(600);
             listview.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
             listview.isExpanded();
             listview.getSelectionModel().selectedItemProperty().addListener((v, OldValue, NewValue) -> {

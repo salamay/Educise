@@ -2,9 +2,11 @@ package sample.LoginPage.DashBoard.Admin.SchoolFee;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.JFXTextArea;
+
 import javafx.application.Platform;
 import javafx.fxml.Initializable;
+
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
@@ -18,12 +20,23 @@ import sample.LoginPage.DashBoard.Admin.SchoolFee.getSchoolFees.debtors.getDebto
 import sample.LoginPage.DashBoard.Admin.SchoolFee.getSchoolFees.getSchoolFeeThread;
 import sample.LoginPage.DashBoard.Admin.SchoolFee.getSchoolFees.getSchoolFeeWithoutTermThread;
 import sample.LoginPage.DashBoard.Admin.SchoolFee.getSchoolFees.insertTerm;
-import sample.LoginPage.DashBoard.SelectWindows.Information.SelectInformationSesssionWindow;
 import sample.LoginPage.DashBoard.SelectWindows.Registeration.LoadingWindow;
 import sample.LoginPage.LogInModel;
 
+import javax.print.*;
+import javax.print.attribute.*;
+import javax.print.attribute.standard.MediaSizeName;
+import javax.print.attribute.standard.Sides;
+import javax.print.event.PrintJobEvent;
+import javax.print.event.PrintJobListener;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -51,17 +64,18 @@ public class SchoolFeeWindowController implements Initializable {
     private String date;
     private String depositor;
     private String transactionid;
-    //this column are made public and static so the it will be referenced from the insertTerm Thread
-    public static TableColumn<Fee,String> namecolumn;
-    public static TableColumn<Fee,String> amountcolumn;
-    public static TableColumn<Fee,String> yearcolumn;
-    public static TableColumn<Fee,String> modeofpaymentcolumn;
-    public static  TableColumn<Fee,String> tagcolumn;
-    public static TableColumn<Fee,String> classcolumn;
-    public static TableColumn<Fee,String> datecolumn;
-    public static TableColumn<Fee,String> depositorcolumn;
-    public static TableColumn<Fee,String> transactionidcolumn;
-    public static TableColumn<Fee,String> termcolumn;
+    public static byte[] pdf;
+    public TableColumn<Fee,String> namecolumn;
+    public TableColumn<Fee,String> amountcolumn;
+    public TableColumn<Fee,String> yearcolumn;
+    public TableColumn<Fee,String> modeofpaymentcolumn;
+    public TableColumn<Fee,String> tagcolumn;
+    public TableColumn<Fee,String> classcolumn;
+    public TableColumn<Fee,String> datecolumn;
+    public TableColumn<Fee,String> depositorcolumn;
+    public TableColumn<Fee,String> transactionidcolumn;
+    public TableColumn<Fee,String> termcolumn;
+    public JFXTextArea printingTextArea;
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         classcombobox.getItems().addAll("Nursery 1","Nursery 2","Primary 1","Primary 2","Primary 3","Primary 4","Primary 5","Jss 1","Jss 2","Jss 3","SS 1","SS 2","SS 3");
@@ -96,6 +110,7 @@ public class SchoolFeeWindowController implements Initializable {
             }else {
                 boolean error=new ConnectionError().Connection("Pls enter term field first");
                 System.out.println("Pls enter term field first");
+                tableview.getColumns().clear();
             }
         });
         //Class column
@@ -113,30 +128,18 @@ public class SchoolFeeWindowController implements Initializable {
             }else {
                 boolean error=new ConnectionError().Connection("Pls enter term field first");
                 System.out.println("Pls enter term field first");
+                tableview.getColumns().clear();
             }
         });
 
         //Year column
         yearcolumn=new TableColumn<>("Year");
-        yearcolumn.setMinWidth(50);
+        yearcolumn.setMinWidth(100);
         yearcolumn.setCellValueFactory(new PropertyValueFactory<>("year"));
-        yearcolumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        yearcolumn.setOnEditCommit((e)->{
-            //get the row value
-            Fee rowvalue=e.getRowValue();
-            boolean state=CheckTermColumn(rowvalue,e);
-            if (!state){
-                saveDataToSchoolfeetable(yearcolumn,e);
-                e.getRowValue().setYear(e.getNewValue());
-            }else {
-                boolean error=new ConnectionError().Connection("Pls enter term field first");
-                System.out.println("Pls enter term field first");
-            }
-        });
 
         //Class column
         modeofpaymentcolumn=new TableColumn<>("Mode of payment");
-        modeofpaymentcolumn.setMinWidth(150);
+        modeofpaymentcolumn.setMinWidth(120);
         modeofpaymentcolumn.setCellValueFactory(new PropertyValueFactory<>("modeofpayment"));
         modeofpaymentcolumn.setCellFactory(TextFieldTableCell.forTableColumn());
         modeofpaymentcolumn.setOnEditCommit((e)->{
@@ -149,6 +152,7 @@ public class SchoolFeeWindowController implements Initializable {
             }else {
                 boolean error=new ConnectionError().Connection("Pls enter term field first");
                 System.out.println("Pls enter term field first");
+                tableview.getColumns().clear();
             }
 
         });
@@ -156,24 +160,10 @@ public class SchoolFeeWindowController implements Initializable {
         tagcolumn=new TableColumn<>("Tag");
         tagcolumn.setMinWidth(10);
         tagcolumn.setCellValueFactory(new PropertyValueFactory<>("tag"));
-        tagcolumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        tagcolumn.setOnEditCommit((e)->{
-
-            //get the row value
-            Fee rowvalue=e.getRowValue();
-            boolean state=CheckTermColumn(rowvalue,e);
-            if (!state){
-                saveDataToSchoolfeetable(tagcolumn,e);
-                e.getRowValue().setTag(e.getNewValue());
-            }else {
-                boolean error=new ConnectionError().Connection("Pls enter term field first");
-                System.out.println("Pls enter term field first");
-            }
-        });
 
         //datecolumn column
         datecolumn=new TableColumn<>("payment date");
-        datecolumn.setMinWidth(60);
+        datecolumn.setMinWidth(100);
         datecolumn.setCellValueFactory(new PropertyValueFactory<>("date"));
         datecolumn.setCellFactory(TextFieldTableCell.forTableColumn());
         datecolumn.setOnEditCommit((e)->{
@@ -186,6 +176,7 @@ public class SchoolFeeWindowController implements Initializable {
             }else {
                 boolean error=new ConnectionError().Connection("Pls enter term field first");
                 System.out.println("Pls enter term field first");
+                tableview.getColumns().clear();
             }
         });
 
@@ -204,6 +195,7 @@ public class SchoolFeeWindowController implements Initializable {
             }else {
                 boolean error=new ConnectionError().Connection("Pls enter term field first");
                 System.out.println("Pls enter term field first");
+                tableview.getColumns().clear();
             }
         });
 
@@ -222,6 +214,7 @@ public class SchoolFeeWindowController implements Initializable {
             }else {
                 boolean error=new ConnectionError().Connection("Pls enter term field first");
                 System.out.println("Pls enter term field first");
+                tableview.getColumns().clear();
             }
         });
 
@@ -256,6 +249,7 @@ public class SchoolFeeWindowController implements Initializable {
                 ce.getRowValue().setTerm(null);
                 boolean err=new ConnectionError().Connection("Please provide a number to the field");
                 System.out.println("SchoolFeeWindowController: Please provide a anumber to the field");
+                tableview.getColumns().clear();
             }
         });
         tableview.getColumns().addAll(namecolumn,amountcolumn,classcolumn,tagcolumn,termcolumn,yearcolumn,modeofpaymentcolumn,transactionidcolumn,datecolumn,depositorcolumn);
@@ -383,7 +377,9 @@ public class SchoolFeeWindowController implements Initializable {
         else {
             yearerror.setVisible(true);
         }
-        if (tag!=null||tag.isEmpty()){
+        if (tag!=null){
+            tagerror.setVisible(false);
+        }else {
             tagerror.setVisible(true);
         }
         if (minimum==0){
@@ -396,22 +392,192 @@ public class SchoolFeeWindowController implements Initializable {
             new LoadingWindow();
             System.out.println("SchoolFeeWindowController:Feth debtors button pressed--> getting debtors");
             new getDebtorsthread(clas,session,tag,term,minimum,tableview).start();
+        }else{
+            new ConnectionError().Connection("Please provide the requirement information");
+        }
+    }
+    public  void printButtonClicked() throws IOException {
+
+        System.out.println("[SchoolFeeWindowController]: Printing debtors");
+        System.out.println("[SchoolFeeWindowController]: Pdf: "+pdf);
+        if (pdf!=null){
+            Path path= Paths.get(System.getProperty("user.dir")+"/MyChildSchool");
+            try {
+                Files.createDirectories(path);
+                if (Files.exists(path)){
+                    File pdffile=new File(path+"/debtors.pdf");
+                    FileOutputStream fileOutputStream=new FileOutputStream(pdffile);
+                    fileOutputStream.write(pdf);
+                    fileOutputStream.close();
+                    fileOutputStream.flush();
+                    FileInputStream fileInputStream=new FileInputStream(pdffile);
+                    DocFlavor flavor=DocFlavor.INPUT_STREAM.AUTOSENSE;
+                    PrintRequestAttributeSet asset=new HashPrintRequestAttributeSet();
+                    asset.add(MediaSizeName.ISO_A4);
+                    asset.add(Sides.DUPLEX);
+                    PrintService[] printsServices=PrintServiceLookup.lookupPrintServices(flavor,null);
+                    PrintService defaultPrintService=PrintServiceLookup.lookupDefaultPrintService();
+                    for (int i=0;i<printsServices.length;i++){
+                        System.out.println("[SchoolFeeWindowController]: Printers: "+printsServices[i].getName());
+                    }
+                    if (printsServices.length==0){
+                       if (defaultPrintService!=null){
+                           new LoadingWindow();
+                           System.out.println("[SchoolFeeWindowController]: Using default printer");
+                           Doc debtors=new SimpleDoc(fileInputStream,flavor,null);
+                           DocPrintJob job=defaultPrintService.createPrintJob();
+                           System.out.println("[SchoolFeeWindowController]: default printer: "+defaultPrintService.getName());
+                           if (job!=null){
+                               job.addPrintJobListener(new PrintJobListener() {
+                                   @Override
+                                   public void printDataTransferCompleted(PrintJobEvent pje) {
+                                       System.out.println("[SchoolFeeWindowController]: Status: "+pje.getPrintEventType()+": Data Transfer completed");
+                                       printingTextArea.setText(pje.getPrintEventType()+": Data transfer completed\n");
+                                       LoadingWindow.window.close();
+                                   }
+
+                                   @Override
+                                   public void printJobCompleted(PrintJobEvent pje) {
+                                       System.out.println("[SchoolFeeWindowController]: Status: "+pje.getPrintEventType()+": print Job completed");
+                                       printingTextArea.setText(pje.getPrintEventType()+": Print job completed\n");
+                                       LoadingWindow.window.close();
+                                   }
+
+                                   @Override
+                                   public void printJobFailed(PrintJobEvent pje) {
+                                       System.out.println("[SchoolFeeWindowController]: Status: "+pje.getPrintEventType()+": Print job failed");
+                                       printingTextArea.setText(pje.getPrintEventType()+": Print job failed\n");
+                                       LoadingWindow.window.close();
+                                   }
+
+                                   @Override
+                                   public void printJobCanceled(PrintJobEvent pje) {
+                                       System.out.println("[SchoolFeeWindowController]: Status: "+pje.getPrintEventType()+": Print job cancel");
+                                       printingTextArea.setText(pje.getPrintEventType()+": Print job cancelled\n");
+                                       LoadingWindow.window.close();
+                                   }
+
+                                   @Override
+                                   public void printJobNoMoreEvents(PrintJobEvent pje) {
+                                       LoadingWindow.window.close();
+                                   }
+
+                                   @Override
+                                   public void printJobRequiresAttention(PrintJobEvent pje) {
+                                       LoadingWindow.window.close();
+                                   }
+                               });
+                               try {
+                                   System.out.println("[SchoolFeeWindowController]: Doc: "+debtors.getStreamForBytes());
+                                   job.print(debtors,asset);
+                                   System.out.println("[SchoolFeeWindowController]: Printed");
+                                   LoadingWindow.window.close();
+                               } catch (PrintException e) {
+                                   LoadingWindow.window.close();
+                                   e.printStackTrace();
+                               }
+                           }else {
+                               LoadingWindow.window.close();
+                               return;
+                           }
+                       }else {
+                           LoadingWindow.window.close();
+                           new ConnectionError().Connection("No default printer on this PC");
+                       }
+                    }else {
+                        System.out.println("[SchoolFeeWindowController]: geting all printers");
+                        PrintService service=ServiceUI.printDialog(null,200,200,printsServices,defaultPrintService,flavor,asset);
+                        if (service!=null){
+                            new LoadingWindow();
+                            Doc pdf=new SimpleDoc(fileInputStream,flavor,null);
+                            try {
+                                DocPrintJob job1=service.createPrintJob();
+                                if (job1!=null){
+                                    job1.addPrintJobListener(new PrintJobListener() {
+                                        @Override
+                                        public void printDataTransferCompleted(PrintJobEvent pje) {
+                                            System.out.println("[SchoolFeeWindowController]: Status: "+pje.getPrintEventType()+": Data Transfer completed");
+                                            printingTextArea.appendText(pje.getPrintEventType()+": Data transfer completed \n");
+                                            LoadingWindow.window.close();
+                                        }
+
+                                        @Override
+                                        public void printJobCompleted(PrintJobEvent pje) {
+                                            System.out.println("[SchoolFeeWindowController]: Status: "+pje.getPrintEventType()+": print Job completed");
+                                            printingTextArea.appendText(pje.getPrintEventType()+": Print job completed\n");
+                                            LoadingWindow.window.close();
+                                        }
+
+                                        @Override
+                                        public void printJobFailed(PrintJobEvent pje) {
+                                            System.out.println("[SchoolFeeWindowController]: Status: "+pje.getPrintEventType()+": Print job failed");
+                                            printingTextArea.appendText(pje.getPrintEventType()+": Print job failed\n");
+                                            LoadingWindow.window.close();
+                                        }
+
+                                        @Override
+                                        public void printJobCanceled(PrintJobEvent pje) {
+                                            System.out.println("[SchoolFeeWindowController]: Status: "+pje.getPrintEventType()+": Print job cancel");
+                                            printingTextArea.appendText(pje.getPrintEventType()+": Print job cancelled\n");
+                                            LoadingWindow.window.close();
+                                        }
+
+                                        @Override
+                                        public void printJobNoMoreEvents(PrintJobEvent pje) {
+                                            LoadingWindow.window.close();
+                                        }
+
+                                        @Override
+                                        public void printJobRequiresAttention(PrintJobEvent pje) {
+                                            LoadingWindow.window.close();
+                                        }
+                                    });
+                                    job1.print(pdf,asset);
+                                    LoadingWindow.window.close();
+                                }else {
+                                    LoadingWindow.window.close();
+                                }
+
+                            } catch (PrintException e) {
+                                LoadingWindow.window.close();
+                                e.printStackTrace();
+                            }
+                            System.out.println("[SchoolFeeWindowController]: Printed");
+                            LoadingWindow.window.close();
+                        }else {
+                            LoadingWindow.window.close();
+                            new ConnectionError().Connection("Printing cancelled");
+                        }
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }else {
+            LoadingWindow.window.close();
+            new ConnectionError().Connection("Document not found");
         }
     }
     public void deleteButtonClicked() throws IOException {
         ///this method will delete the data in the selected column and leave the name Column
         //getting value
         Fee fee=tableview.getSelectionModel().getSelectedItem();
-        System.out.println("FEE:name to delete-->"+fee.getStudentname());
-        System.out.println("FEE:-->"+fee.getTerm());
-        System.out.println("FEE:-->"+fee.getClas());
-        System.out.println("FEE:-->"+fee.getYear());
-        if (fee.getClas()!=null&&fee.getTerm()!=null&&fee.getYear()!=null&&fee.getStudentname()!=null){
-            new LoadingWindow();
-            new DeleteSchoolFee(clas,fee.getYear(),fee.getTerm(),fee.getStudentname(),tableview).start();
-        }else {
-            new ConnectionError().Connection("Selected items cannot be deleted,some importance field are missing");
-        }
+
+       if (fee!=null){
+           if (fee.getClas()!=null&&fee.getTerm()!=null&&fee.getYear()!=null&&fee.getStudentname()!=null){
+               System.out.println("FEE:name to delete-->"+fee.getStudentname());
+               System.out.println("FEE:-->"+fee.getTerm());
+               System.out.println("FEE:-->"+fee.getClas());
+               System.out.println("FEE:-->"+fee.getYear());
+               new LoadingWindow();
+               new DeleteSchoolFee(clas,fee.getYear(),fee.getTerm(),fee.getStudentname(),tableview).start();
+           }else {
+               new ConnectionError().Connection("Selected items cannot be deleted,some importance field are missing");
+           }
+
+       }else {
+           new ConnectionError().Connection("Please select a fee to delete");
+       }
 
     }
 

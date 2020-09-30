@@ -251,26 +251,26 @@
          <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="720.0" prefWidth="1200.0" style="-fx-background-color: #181D30;">
                <children>
-                  <VBox layoutY="-29.0" prefHeight="700.0" prefWidth="1200.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <VBox layoutY="-29.0" prefHeight="700.0" prefWidth="1200.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <HBox fx:id="historytophbox" prefHeight="225.0" prefWidth="1180.0" spacing="10.0">
+                        <HBox fx:id="historytophbox" prefHeight="156.0" prefWidth="1180.0" spacing="5.0">
                            <children>
-                              <VBox prefHeight="217.0" prefWidth="411.0" spacing="10.0">
+                              <VBox prefHeight="151.0" prefWidth="410.0" spacing="4.0">
                                  <children>
                                     <Label text="Select session:" textFill="WHITE" />
                                     <JFXComboBox fx:id="historysessioncombobox" labelFloat="true" prefHeight="25.0" prefWidth="153.0" promptText="Session" style="-fx-background-color: #FFFFFF;" />
                                     <Label layoutX="10.0" layoutY="10.0" text="Select term:" textFill="WHITE" />
                                     <JFXComboBox fx:id="historytermcombobox" labelFloat="true" layoutX="10.0" layoutY="27.0" prefHeight="25.0" prefWidth="153.0" promptText="Term" style="-fx-background-color: #FFFFFF;" />
-                                    <JFXButton onAction="#sortHistoryButtonClicked" prefHeight="51.0" prefWidth="218.0" style="-fx-background-color: #0066CB; -fx-background-radius: 10 10 10 10;" text="Get histories" textFill="#e4dede" wrapText="true">
+                                    <JFXButton onAction="#sortHistoryButtonClicked" prefHeight="38.0" prefWidth="218.0" style="-fx-background-color: #0066CB; -fx-background-radius: 10 10 10 10;" text="Get histories" textFill="#e4dede" wrapText="true">
                                        <font>
                                           <Font name="System Bold" size="24.0" />
                                        </font></JFXButton>
                                  </children>
                               </VBox>
                            </children></HBox>
-                        <JFXScrollPane prefHeight="423.0" prefWidth="1180.0">
+                        <JFXScrollPane prefHeight="363.0" prefWidth="1180.0">
                            <children>
-                              <TableView fx:id="historytableview" prefHeight="200.0" prefWidth="200.0">
+                              <TableView fx:id="historytableview" prefHeight="368.0" prefWidth="1180.0">
                                 <columns>
                                   <TableColumn fx:id="historyidcolumn" prefWidth="75.0" text="ID" />
                                   <TableColumn fx:id="historytitlecolumn" prefWidth="265.0" text="Title" />
@@ -284,7 +284,9 @@
                               </TableView>
                            </children>
                         </JFXScrollPane>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                        <JFXTextArea fx:id="bookhistorytextarea" prefHeight="71.0" prefWidth="1180.0" />
+                        <JFXButton onAction="#printHistory" prefHeight="103.0" prefWidth="75.0" styleClass="print" stylesheets="@../../../../../back.css" text="  " />
+                        <HBox alignment="CENTER" prefHeight="39.0" prefWidth="1180.0">
                            <children>
                               <Label text="Total Book sold:" textFill="#17d72d">
                                  <font>

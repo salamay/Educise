@@ -16,16 +16,18 @@ public class DeleteSubjectThread extends Thread {
     private String name;
     private String session;
     private TableView<Scores> tableview;
+    private String term;
 
-
-    public DeleteSubjectThread(String subject, String name, String session, TableView<Scores> tableview) {
+    public DeleteSubjectThread(String subject, String name, String session, TableView<Scores> tableview, String term) {
         this.subject=subject;
         this.name=name;
         this.session=session;
         this.tableview=tableview;
+        this.term=term;
         System.out.println("[DeleteSubjectThread]-->Subject: "+subject);
         System.out.println("[DeleteSubjectThread]-->session: "+session);
         System.out.println("[DeleteSubjectThread]-->student name: "+name);
+        System.out.println("[DeleteSubjectThread]-->term: "+term);
     }
 
     @Override
@@ -34,7 +36,7 @@ public class DeleteSubjectThread extends Thread {
         OkHttpClient client=new OkHttpClient();
         Request request=new Request.Builder()
                 .addHeader("Authorization","Bearer "+ LogInModel.token)
-                .url("http://localhost:8080/deletesubject/"+subject+"/"+session+"/"+name)
+                .url("http://localhost:8080/deletesubject/"+subject+"/"+session+"/"+name+"/"+term)
                 .build();
         try {
             Response response=client.newCall(request).execute();

@@ -21,12 +21,14 @@ public class UpdateSubjectThread extends Thread {
     private String Subject;
     private SaveSubjectRequestEntity saveSubjectRequestEntity;
     private String oldSubject;
-    public UpdateSubjectThread(String clas, String studentname, String Subject, String oldSubject) {
+    private String term;
+    public UpdateSubjectThread(String clas, String studentname, String Subject, String oldSubject,String term) {
         this.ScoreTable=clas;
         this.Studentname = studentname;
         this.Subject=Subject;
         this.oldSubject=oldSubject;
-        System.out.println("[UpdateSubjectThread]: Entity to store --> "+ ScoreTable+","+Studentname+","+Subject+",Old subject-->"+oldSubject);
+        this.term=term;
+        System.out.println("[UpdateSubjectThread]: Entity to store --> "+ ScoreTable+","+Studentname+","+Subject+",Old subject-->"+oldSubject+",term-->"+term);
     }
 
     @Override
@@ -36,6 +38,7 @@ public class UpdateSubjectThread extends Thread {
         saveSubjectRequestEntity.setTable(ScoreTable);
         saveSubjectRequestEntity.setSubject(Subject);
         saveSubjectRequestEntity.setOldsubject(oldSubject);
+        saveSubjectRequestEntity.setTerm(term);
         System.out.println("[UpdateSubjectThread]--> Preparing Json body");
         GsonBuilder builder=new GsonBuilder();
         builder.setPrettyPrinting();

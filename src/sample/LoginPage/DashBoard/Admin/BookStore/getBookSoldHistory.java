@@ -71,6 +71,11 @@ public class getBookSoldHistory extends Thread{
                         total+=Integer.parseInt(tableList.get(i).getAmountsold());
                     }
                     totalamount.setText(String.valueOf(total));
+                    if (!books.isEmpty()){
+                        //getting document and setting
+                        System.out.println("[getBookSoldHistory]: Document: "+books.get(books.size()-1).getPdfdocumentbytes());
+                        BookStoreWindowController.pdfdocumentbytes=books.get(books.size()-1).getPdfdocumentbytes();
+                    }
                 });
                 response.close();
             }else {
@@ -84,11 +89,13 @@ public class getBookSoldHistory extends Thread{
                 response.close();
             }
             if (response.code()==204){
-                LoadingWindow.window.close();
-                boolean error=new ConnectionError().Connection("No history found");
-                if (error){
-                    System.out.println("[getBookSoldHistory]--> Connection Error");
-                }
+              Platform.runLater(()->{
+                  LoadingWindow.window.close();
+                  boolean error=new ConnectionError().Connection("No history found");
+                  if (error){
+                      System.out.println("[getBookSoldHistory]--> Connection Error");
+                  }
+              });
                 response.close();
             }
         } catch (IOException e) {

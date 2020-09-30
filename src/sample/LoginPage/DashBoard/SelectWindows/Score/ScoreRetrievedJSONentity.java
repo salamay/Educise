@@ -15,7 +15,8 @@ public class ScoreRetrievedJSONentity {
     private double tenthca;
     private double exam;
     private double cumulative;
-
+    private String term;
+    private byte[] pdfdocumenbytes;
     public ScoreRetrievedJSONentity() {
     }
 
@@ -121,5 +122,21 @@ public class ScoreRetrievedJSONentity {
 
     public void setCumulative(double cumulative) {
         this.cumulative = cumulative;
+    }
+
+    public String getTerm() {
+        return term;
+    }
+
+    public void setTerm(String term) {
+        this.term = term;
+    }
+
+    public byte[] getPdfdocumenbytes() {
+        return pdfdocumenbytes;
+    }
+
+    public void setPdfdocumenbytes(byte[] pdfdocumenbytes) {
+        this.pdfdocumenbytes = pdfdocumenbytes;
     }
 }

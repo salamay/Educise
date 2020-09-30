@@ -18,12 +18,13 @@ public class UpdateScore extends Thread {
     private String Subject;
     //column instance here is the corresponding column you want to update,it correspond to a table in the databese
     private String column;
-
-    public UpdateScore(String scoreTable, String studentname, double data, String Subject, String column) {
+    private String term;
+    public UpdateScore(String scoreTable, String studentname, double data, String Subject, String column,String term) {
         this.Studentname = studentname;
         this.ScoreTable = scoreTable;
         this.data = data;
         this.Subject=Subject;
+        this.term=term;
         //remove white space to avoid sql sythax error
         this.column=column.replaceAll(" ","");
     }
@@ -37,6 +38,7 @@ public class UpdateScore extends Thread {
         updateScoreRequestEntity.setSubject(Subject);
         updateScoreRequestEntity.setCa(column);
         updateScoreRequestEntity.setScore(data);
+        updateScoreRequestEntity.setTerm(term);
         System.out.println("[UpdateScore]:Updating Score--> Preparing json body");
         GsonBuilder builder=new GsonBuilder();
         builder.setPrettyPrinting();
@@ -75,6 +77,7 @@ public class UpdateScore extends Thread {
             if (response.code()==422){
                 //Display alert dialog
                 Platform.runLater(()->{
+
                     boolean error=new ConnectionError().Connection("server return error "+response.code()+": Server cannot process your request,check for invalid characters");
                     if (error){
                         System.out.println("[UpdateScore]--> Server error ,server cannot process request");

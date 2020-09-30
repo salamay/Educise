@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import java.net.*?>
 <?import javafx.scene.text.*?>
 <?import com.jfoenix.controls.*?>
@@ -100,7 +101,8 @@
                         <Font name="System Bold" size="14.0" />
                     </font>
                 </Label>
-                <Region prefHeight="153.0" prefWidth="118.0" VBox.vgrow="NEVER" />
+            <JFXTextArea fx:id="printingTextArea" />
+            <JFXButton buttonType="RAISED" onAction="#printButtonClicked" prefHeight="57.0" prefWidth="57.0" styleClass="print" stylesheets="@../../../../../back.css" text=" " />
                 <JFXButton buttonType="RAISED" onAction="#deleteButtonClicked" prefHeight="76.0" prefWidth="77.0" styleClass="delete" stylesheets="@../../../../../back.css" text=" " />
             </children>
         </VBox>

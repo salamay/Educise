@@ -12,6 +12,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import sample.ConnectionError;
+import sample.LoginPage.DashBoard.SelectWindows.Registeration.LoadingWindow;
 import sample.LoginPage.LogInModel;
 
 import javax.imageio.ImageIO;
@@ -75,6 +76,13 @@ public class ClassInformationThread extends  Thread {
         }
         @Override
         public void run() {
+            Platform.runLater(()->{
+                try {
+                    new LoadingWindow();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
             OkHttpClient client=new OkHttpClient();
             Request request=new Request.Builder()
                     .url("http://localhost:8080/retrievestudentinformation/"+studentName+"/"+classname)
@@ -85,6 +93,9 @@ public class ClassInformationThread extends  Thread {
                  response=client.newCall(request).execute();
                 System.out.println("[ClassInformationThread]"+response);
                 if (response.code()==200||response.code()==202||response.code()==212||response.code()==201){
+                    Platform.runLater(()->{
+                        LoadingWindow.window.close();
+                    });
                     ResponseBody responseBody=response.body();
                     System.out.println("[ClassInformationThread]"+responseBody);
                     /////Retrieving and processing body,The response contains images and sting value
@@ -197,6 +208,7 @@ public class ClassInformationThread extends  Thread {
                     Platform.runLater(()->{
                         boolean error=new ConnectionError().Connection("server return error "+response.code()+": Unable to  get Information");
                         if (error){
+                            LoadingWindow.window.close();
                             InformationWindow.window1.close();
                             System.out.println("[ClassInformationThread]--> Connection Error,Window close");
                             response.close();
@@ -209,6 +221,7 @@ public class ClassInformationThread extends  Thread {
                     Platform.runLater(()->{
                         boolean error=new ConnectionError().Connection("server return error "+response.code()+": Information not found");
                         if (error){
+                            LoadingWindow.window.close();
                             InformationWindow.window1.close();
                             System.out.println("[ClassInformationThread]--> Connection Error,Window close");
                             response.close();
@@ -220,6 +233,7 @@ public class ClassInformationThread extends  Thread {
                 Platform.runLater(()->{
                     boolean error=new ConnectionError().Connection("Unable to establish,CHECK INTERNET CONNECTION");
                     if (error){
+                        LoadingWindow.window.close();
                         InformationWindow.window1.close();
                         System.out.println("[ClassInformationThread]--> Connection Error,Window close");
                     }

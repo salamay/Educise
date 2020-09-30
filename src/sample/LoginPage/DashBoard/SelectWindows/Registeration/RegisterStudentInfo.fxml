@@ -195,7 +195,7 @@
                 <JFXComboBox fx:id="tagComboBox" layoutX="1013.0" layoutY="266.0" prefHeight="25.0" prefWidth="144.0" promptText="Select Tag" GridPane.columnIndex="8" GridPane.rowIndex="12" />
                 <Label fx:id="tagerror" layoutX="1013.0" layoutY="324.0" text="select tag" textFill="#f51010" visible="false" GridPane.columnIndex="8" GridPane.rowIndex="13" />
                 <Label text="Tag:" GridPane.columnIndex="8" GridPane.rowIndex="11" />
-            <Label text="NOTE: if you can not provide information fo a pathicular field,the field must not be empty,instead you enter &quot;nil&quot;." textFill="#00a42f" GridPane.columnSpan="7" GridPane.rowIndex="15">
+            <Label prefHeight="74.0" prefWidth="757.0" text="NOTE: if you can not provide information fo a pathicular field,the field must not be empty,instead you enter &quot;nil&quot;." textFill="#00a42f" wrapText="true" GridPane.columnSpan="7" GridPane.rowIndex="15">
                <font>
                   <Font size="18.0" />
                </font>

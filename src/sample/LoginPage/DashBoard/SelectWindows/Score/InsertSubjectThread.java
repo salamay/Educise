@@ -15,14 +15,19 @@ public class InsertSubjectThread extends Thread {
     private String name;
     private String session;
     private TableView<Scores> tableView;
-    public InsertSubjectThread(String subject, String name, String session, TableView<Scores> tableView){
+    private String term;
+    public InsertSubjectThread(String subject, String name, String session, TableView<Scores> tableView, String term){
         this.subject=subject;
         this.name=name;
         this.session=session;
         this.tableView=tableView;
+        this.term=term;
         System.out.println("[InsertSubjectThread]-->Subject: "+subject);
         System.out.println("[InsertSubjectThread]-->session: "+session);
+        System.out.println("[InsertSubjectThread]-->student name: "+term);
         System.out.println("[InsertSubjectThread]-->student name: "+name);
+
+
     }
     @Override
     public void run() {
@@ -30,7 +35,7 @@ public class InsertSubjectThread extends Thread {
         OkHttpClient client=new OkHttpClient();
         Request request=new Request.Builder()
                 .addHeader("Authorization","Bearer "+ LogInModel.token)
-                .url("http://localhost:8080/insertsubject/"+subject+"/"+session+"/"+name)
+                .url("http://localhost:8080/insertsubject/"+subject+"/"+session+"/"+name+"/"+term)
                 .build();
         try {
             Response response=client.newCall(request).execute();
@@ -39,6 +44,7 @@ public class InsertSubjectThread extends Thread {
                 Platform.runLater(()->{
                     Scores scores=new Scores();
                     scores.setSubject(subject);
+                    scores.setTerm(term);
                     //Add the score to table row
                     tableView.getItems().add(scores);
                     response.close();
@@ -47,6 +53,7 @@ public class InsertSubjectThread extends Thread {
                 Platform.runLater(()->{
                     boolean error=new ConnectionError().Connection("server return error "+response.code()+": Unable to insert subject:check field for invalid characters");
                     if (error){
+                        tableView.getColumns().clear();
                         System.out.println("[InsertSubjectThread]--> server error,unable to insert subject");
                     }
                 });

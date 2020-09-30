@@ -1,9 +1,6 @@
 package sample.LoginPage.DashBoard.Admin.BookStore;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXDatePicker;
-import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
@@ -16,11 +13,15 @@ import sample.ConnectionError;
 import sample.LoginPage.DashBoard.Admin.SchoolFee.Fee;
 import sample.LoginPage.DashBoard.Admin.SchoolFee.saveDataIntoSchoolFeeTable;
 import sample.LoginPage.DashBoard.AreYouSure.AreYouSureWindow;
+import sample.LoginPage.DashBoard.Printing.PrinterManager;
 import sample.LoginPage.DashBoard.SelectWindows.Registeration.LoadingWindow;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 
@@ -76,9 +77,11 @@ public class BookStoreWindowController implements Initializable {
     public TableColumn<Book, String> historysessioncolumn;
     public TableColumn<Book, String> historytermcolumn;
     public TableColumn<Book, String> historybuyercolumn;
+    public JFXTextArea bookhistorytextarea;
     public JFXDatePicker datePicker;
     public Label dateselected;
     public Label totalamount;
+    public static byte[] pdfdocumentbytes;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -434,6 +437,24 @@ public class BookStoreWindowController implements Initializable {
             new LoadingWindow();
             new getBookSoldHistory(session,term,historytableview,date,totalamount).start();
         }
+    }
+//    public void historyDeleteButtonClicked() throws IOException {
+//        ObservableList<BookHistory> bookselectd=historytableview.getSelectionModel().getSelectedItems();
+//        if (bookselectd.get(0)==null||bookselectd.get(0).getId()==0){
+//            new ConnectionError().Connection("Please select a history to delete");
+//        }else {
+//            new LoadingWindow();
+//            new DeleteBookHistory(bookselectd,bookselectd.get(0).getId(),historytableview).start();
+//        }
+//
+//    }
+
+
+
+    public void printHistory(){
+        Path path= Paths.get(System.getProperty("user.dir")+"/MyChildSchool");
+        File pdffile=new File(path+"/bookhistory.pdf");
+        new PrinterManager(pdfdocumentbytes,pdffile,bookhistorytextarea).start();
     }
 
 

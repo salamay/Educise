@@ -31,6 +31,7 @@ public class DeleteStudent extends Thread {
         Request request=new Request.Builder()
                 .url("http://localhost:8080/deletestudent/"+id+"/"+session)
                 .addHeader("Authorization","Bearer "+ LogInModel.token)
+                .delete()
                 .build();
         try {
             Response response=client.newCall(request).execute();

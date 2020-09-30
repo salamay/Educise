@@ -81,12 +81,10 @@ public class InformationWindow {
         bdp.setMinHeight(Control.USE_COMPUTED_SIZE);
         HBox info=new HBox();
         Label label1=new Label("Personal details");
-        Label label2=new Label("Score Chart");
         label1.setFont(Font.font("Verdana",FontWeight.BOLD,24));
-        label2.setFont(Font.font("Verdana",FontWeight.BOLD,24));
         info.setMinHeight(Control.USE_COMPUTED_SIZE);
         info.setMinWidth(Control.USE_COMPUTED_SIZE);
-        info.getChildren().addAll(label1,label2);
+        info.getChildren().addAll(label1);
         bdp.setTop(info);
 
 

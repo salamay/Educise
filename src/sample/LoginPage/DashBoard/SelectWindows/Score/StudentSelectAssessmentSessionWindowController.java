@@ -1,7 +1,9 @@
 package sample.LoginPage.DashBoard.SelectWindows.Score;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXListView;
+import com.jfoenix.controls.JFXTextArea;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
@@ -21,12 +23,16 @@ import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import sample.ConnectionError;
+import sample.LoginPage.DashBoard.Printing.PrinterManager;
 import sample.LoginPage.DashBoard.SelectWindows.Information.ClassNameThread;
 import sample.LoginPage.DashBoard.SelectWindows.Information.ListViewNames;
 import sample.LoginPage.LogInModel;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -41,6 +47,7 @@ public class StudentSelectAssessmentSessionWindowController implements Initializ
     public String clas;
     TableView<Scores> tableview;
     public ProgressIndicator pgb;
+    public static byte[] pdfdocumentbytes;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -74,6 +81,8 @@ public class StudentSelectAssessmentSessionWindowController implements Initializ
             listvie.getSelectionModel().selectedItemProperty().addListener((v, OldValue,NewValue)->{
                 /////Score session here is the ComboBox on top of the screen,it loads the respective session score when its value is selected
                 ComboBox<String> ScoreSession=new ComboBox<>();
+                ComboBox<String> term=new ComboBox<>();
+                term.getItems().addAll("1","2","3");
                 ///This ScoreSession below is a combobox on top of the Table,it load the scores when its value is selected
                 new getScoreSessionThread(ScoreSession).start();
                 ScrollPane scrollpane=new ScrollPane();
@@ -87,6 +96,10 @@ public class StudentSelectAssessmentSessionWindowController implements Initializ
                 tableview.setPrefWidth(Control.USE_COMPUTED_SIZE);
 
                 //////////////Table column
+                TableColumn<Scores,String> termcolumn=new TableColumn<>("Term");
+                termcolumn.setMinWidth(10);
+                termcolumn.setCellValueFactory(new PropertyValueFactory<>("term"));
+
                 TableColumn<Scores,String> SubjectColumn=new TableColumn<>("Subject");
                 SubjectColumn.setMinWidth(100);
                 SubjectColumn.setCellValueFactory(new PropertyValueFactory<>("Subject"));
@@ -110,19 +123,10 @@ public class StudentSelectAssessmentSessionWindowController implements Initializ
                     //is the name of student selected
                     //Subjectinput is the enity to save,it is the Subject typed into the Subject Column
                     //oldvalue is the old value
-                    new UpdateSubjectThread(ScoreSessionvalue,NewValue,SubjectInput[0],oldValue).start();
-                });
-                ///////////////////////////////////ScoreSession Handler
-                //Score session is a combo box on top of the screen.It loads the score
-                //for respective student when clicked
-                ScoreSession.setOnAction((s)->{
-                    String ScoreSessionTable=ScoreSession.getSelectionModel().getSelectedItem();
-                    //this get the student selected score from database
-                    new GetScoreThread(ScoreSessionTable,NewValue,tableview).start();
+                    new UpdateSubjectThread(ScoreSessionvalue,NewValue,SubjectInput[0],oldValue,term.getValue()).start();
                 });
 
 
-                ////////////////////////////////////////////////////
 
                 TableColumn<Scores,Double> FirstCaColumn=new TableColumn<>("first ca");
                 FirstCaColumn.setMinWidth(100);
@@ -130,17 +134,18 @@ public class StudentSelectAssessmentSessionWindowController implements Initializ
                 FirstCaColumn.setCellFactory(TextFieldTableCell.forTableColumn(new DoubleStringConverter()));
                 final Double[] FirstCaInput = new Double[1];
                 FirstCaColumn.setOnEditCommit((de)->{
-                    de.getRowValue().setFirstCa(Double.parseDouble(String.valueOf(de.getNewValue())));
-                    FirstCaInput[0] =de.getNewValue();
-                    System.out.println(FirstCaInput[0]);
-                    String sub=tableview.getSelectionModel().getSelectedItem().getSubject();
-                    System.out.println("[SelectedRowSubject] subject= "+sub );
-                    String ScoreSessionvalue=ScoreSession.getSelectionModel().getSelectedItem();
-                    //This save input score to Database
-                    //scoresessionvalue here is the table name ,NewValue arg here is the name of student selected
-                    //FirstCaInput is the entity to save,it is the ca value typed into the FirstCa Column
-                    //sub is the subject
-                    new UpdateScore(ScoreSessionvalue,NewValue,FirstCaInput[0],sub,FirstCaColumn.getText()).start();
+                       de.getRowValue().setFirstCa(Double.parseDouble(String.valueOf(de.getNewValue())));
+                       FirstCaInput[0] =de.getNewValue();
+                       System.out.println(FirstCaInput[0]);
+                       String sub=tableview.getSelectionModel().getSelectedItem().getSubject();
+                       System.out.println("[SelectedRowSubject] subject= "+sub );
+                       String ScoreSessionvalue=ScoreSession.getSelectionModel().getSelectedItem();
+                       //This save input score to Database
+                       //scoresessionvalue here is the table name ,NewValue arg here is the name of student selected
+                       //FirstCaInput is the entity to save,it is the ca value typed into the FirstCa Column
+                       //sub is the subject
+                       new UpdateScore(ScoreSessionvalue,NewValue,FirstCaInput[0],sub,FirstCaColumn.getText(),term.getValue()).start();
+
                 });
 
                 TableColumn<Scores,Double> SecondCaColumn=new TableColumn<>("second ca");
@@ -159,7 +164,7 @@ public class StudentSelectAssessmentSessionWindowController implements Initializ
                     //scoresessionvalue here is the table name ,NewValue arg here is the name of student selected
                     //SecondCaInput is the entity to save,it is the ca value typed into the SecondCa Column
                     //sub is the subject
-                    new UpdateScore(ScoreSessionvalue,NewValue,SecondCaInput[0],sub,SecondCaColumn.getText()).start();
+                    new UpdateScore(ScoreSessionvalue,NewValue,SecondCaInput[0],sub,SecondCaColumn.getText(),term.getValue()).start();
                 });
 
                 TableColumn<Scores,Double> ThirdCaColumn=new TableColumn<>("third ca");
@@ -178,7 +183,7 @@ public class StudentSelectAssessmentSessionWindowController implements Initializ
                     //scoresessionvalue here is the table name ,NewValue arg here is the name of student selected
                     //ThirdCaInput is the entity to save,it is the ca value typed into the ThirdCa Column
                     //sub is the subject
-                    new UpdateScore(ScoreSessionvalue,NewValue,ThirdCaInput[0],sub,ThirdCaColumn.getText()).start();
+                    new UpdateScore(ScoreSessionvalue,NewValue,ThirdCaInput[0],sub,ThirdCaColumn.getText(),term.getValue()).start();
 
                 });
 
@@ -198,7 +203,7 @@ public class StudentSelectAssessmentSessionWindowController implements Initializ
                     //scoresessionvalue here is the table name ,NewValue arg here is the name of student selected
                     //ThirdCaInput is the entity to save,it is the ca value typed into the FourthCa Column
                     //sub is the subject
-                    new UpdateScore(ScoreSessionvalue,NewValue,FourthCaInput[0],sub,FourthCaColumn.getText()).start();
+                    new UpdateScore(ScoreSessionvalue,NewValue,FourthCaInput[0],sub,FourthCaColumn.getText(),term.getValue()).start();
                 });
 
                 TableColumn<Scores,Double> FifthCaColumn=new TableColumn<>("fifth ca");
@@ -217,7 +222,7 @@ public class StudentSelectAssessmentSessionWindowController implements Initializ
                     //scoresessionvalue here is the table name ,NewValue arg here is the name of student selected
                     //FifthCaInput is the entity to save,it is the ca value typed into the FifthCA Column
                     //sub is the subject
-                    new UpdateScore(ScoreSessionvalue,NewValue,FifthCaInput[0],sub,FifthCaColumn.getText()).start();
+                    new UpdateScore(ScoreSessionvalue,NewValue,FifthCaInput[0],sub,FifthCaColumn.getText(),term.getValue()).start();
                 });
 
                 TableColumn<Scores,Double> SixthCaColumn=new TableColumn<>("sixth ca");
@@ -236,7 +241,7 @@ public class StudentSelectAssessmentSessionWindowController implements Initializ
                     //scoresessionvalue here is the table name ,NewValue arg here is the name of student selected
                     //SixthCaInput is the entity to save,it is the ca value typed into the SixthXCa Column
                     //sub is the subject
-                    new UpdateScore(ScoreSessionvalue,NewValue,SixthCaInput[0],sub,SixthCaColumn.getText()).start();
+                    new UpdateScore(ScoreSessionvalue,NewValue,SixthCaInput[0],sub,SixthCaColumn.getText(),term.getValue()).start();
                 });
 
 
@@ -256,7 +261,7 @@ public class StudentSelectAssessmentSessionWindowController implements Initializ
                     //scoresessionvalue here is the table name ,NewValue arg here is the name of student selected
                     //SeventhCaInput is the entity to save,it is the ca value typed into the Seventh Column
                     //sub is the subject
-                    new UpdateScore(ScoreSessionvalue,NewValue,SeventhCaInput[0],sub,SeventhCaColumn.getText()).start();
+                    new UpdateScore(ScoreSessionvalue,NewValue,SeventhCaInput[0],sub,SeventhCaColumn.getText(),term.getValue()).start();
                 });
 
                 TableColumn<Scores,Double> EightCaColumn=new TableColumn<>("eight ca");
@@ -275,7 +280,7 @@ public class StudentSelectAssessmentSessionWindowController implements Initializ
                     //scoresessionvalue here is the table name ,NewValue arg here is the name of student selected
                     //EightCaInput is the entity to save,it is the ca value typed into the EightCa Column
                     //sub is the subject
-                    new UpdateScore(ScoreSessionvalue,NewValue,EightCaInput[0],sub,EightCaColumn.getText()).start();
+                    new UpdateScore(ScoreSessionvalue,NewValue,EightCaInput[0],sub,EightCaColumn.getText(),term.getValue()).start();
                 });
 
                 TableColumn<Scores,Double> NinethCaColumn=new TableColumn<>("ninth ca");
@@ -284,7 +289,7 @@ public class StudentSelectAssessmentSessionWindowController implements Initializ
                 NinethCaColumn.setCellFactory(TextFieldTableCell.forTableColumn(new DoubleStringConverter()));
                 final Double[] NinthCaInput = new Double[1];
                 NinethCaColumn.setOnEditCommit((de)->{
-                    de.getRowValue().setNinethCa(Double.parseDouble(String.valueOf(de.getNewValue())));
+                    de.getRowValue().setNinthCa(Double.parseDouble(String.valueOf(de.getNewValue())));
                     NinthCaInput[0] =de.getNewValue();
                     String sub=tableview.getSelectionModel().getSelectedItem().getSubject();
                     System.out.println("[SelectedRow] subject= "+sub );
@@ -294,7 +299,7 @@ public class StudentSelectAssessmentSessionWindowController implements Initializ
                     //scoresessionvalue here is the table name ,NewValue arg here is the name of student selected
                     //NinethCaInput is the entity to save,it is the ca value typed into the Nineth Column
                     //sub is the subject
-                    new UpdateScore(ScoreSessionvalue,NewValue,NinthCaInput[0],sub,NinethCaColumn.getText()).start();
+                    new UpdateScore(ScoreSessionvalue,NewValue,NinthCaInput[0],sub,NinethCaColumn.getText(),term.getValue()).start();
                 });
 
                 TableColumn<Scores,Double> TenthCaColumn=new TableColumn<>("tenth ca");
@@ -313,7 +318,7 @@ public class StudentSelectAssessmentSessionWindowController implements Initializ
                     //scoresessionvalue here is the table name ,NewValue arg here is the name of student selected
                     //TenthCaInput is the entity to save,it is the ca value typed into the TenthCa Column
                     //sub is the subject
-                    new UpdateScore(ScoreSessionvalue,NewValue,TenthCaInput[0],sub,TenthCaColumn.getText()).start();
+                    new UpdateScore(ScoreSessionvalue,NewValue,TenthCaInput[0],sub,TenthCaColumn.getText(),term.getValue()).start();
                 });
 
                 TableColumn<Scores,Double> ExamColumn=new TableColumn<>("Exam");
@@ -332,7 +337,7 @@ public class StudentSelectAssessmentSessionWindowController implements Initializ
                     //scoresessionvalue here is the table name ,NewValue arg here is the name of student selected
                     //ExamInput is the entity to save,it is the exam value typed into the Exam Column
                     //sub is the subject
-                    new UpdateScore(ScoreSessionvalue,NewValue,ExamInput[0],sub,ExamColumn.getText()).start();
+                    new UpdateScore(ScoreSessionvalue,NewValue,ExamInput[0],sub,ExamColumn.getText(),term.getValue()).start();
                 });
 
                 TableColumn<Scores,Double> CummulativeColumn=new TableColumn<>("Cummulative");
@@ -351,7 +356,7 @@ public class StudentSelectAssessmentSessionWindowController implements Initializ
                     //scoresessionvalue here is the table name ,NewValue arg hereis the name of student selected
                     //Cumlative Input is the entity to save,it is the cummulative value typed into the cummulative Column
                     //sub is the subject
-                    new UpdateScore(ScoreSessionvalue,NewValue,CumInput[0],sub,CummulativeColumn.getText()).start();
+                    new UpdateScore(ScoreSessionvalue,NewValue,CumInput[0],sub,CummulativeColumn.getText(),term.getValue()).start();
 
                 });
 
@@ -359,7 +364,7 @@ public class StudentSelectAssessmentSessionWindowController implements Initializ
                 //////////////////////////////////////////////////
                // tableview.setItems(GetScores());
                 tableview.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-                tableview.getColumns().addAll(SubjectColumn,FirstCaColumn,SecondCaColumn,ThirdCaColumn,FourthCaColumn,
+                tableview.getColumns().addAll(SubjectColumn,termcolumn,FirstCaColumn,SecondCaColumn,ThirdCaColumn,FourthCaColumn,
                         FifthCaColumn,SixthCaColumn,SeventhCaColumn,EightCaColumn,NinethCaColumn,TenthCaColumn,
                         ExamColumn,CummulativeColumn);
                 ///Button And EditText
@@ -385,7 +390,7 @@ public class StudentSelectAssessmentSessionWindowController implements Initializ
                     }
                     if (!sub.isEmpty() && sub.matches("^[A-Za-z]*$")&&ScoreSession.getValue()!=null){
                         ///This thread does the actual adding
-                        new InsertSubjectThread(sub,NewValue,ScoreSession.getSelectionModel().getSelectedItem(),tableview).start();
+                        new InsertSubjectThread(sub,NewValue,ScoreSession.getSelectionModel().getSelectedItem(),tableview,term.getValue()).start();
                         labelerror.setVisible(false);
                         subject.clear();
                     }
@@ -403,7 +408,7 @@ public class StudentSelectAssessmentSessionWindowController implements Initializ
                     }
                     if (ScoreSession.getValue()!=null||!ScoreSelected.isEmpty()){
                         //This Thread does the actual deleting
-                        new DeleteSubjectThread(ScoreSelected.get(0).getSubject(),NewValue,ScoreSession.getSelectionModel().getSelectedItem(),tableview).start();
+                        new DeleteSubjectThread(ScoreSelected.get(0).getSubject(),NewValue,ScoreSession.getSelectionModel().getSelectedItem(),tableview,term.getValue()).start();
                     }
                 });
                 DeleteButton.setMinWidth(100);
@@ -421,12 +426,36 @@ public class StudentSelectAssessmentSessionWindowController implements Initializ
                 ScorevBox.setPadding(new Insets(10,10,10,10));
                 ScorevBox.setSpacing(10);
                 ScoreSession.setPromptText("Select Session");
+                term.setPromptText("Select term");
                 Label label=new Label("Select Session:");
                 label.setStyle("-fx-text-fill:#D5D5D5;-fx-background-color:#004487;");
                 label.setFont(Font.font("Verdana", FontWeight.BOLD,24));
                 ScorevBox.setAlignment(Pos.TOP_CENTER);
+                JFXButton button=new JFXButton("get scores");
+                button.setStyle("-fx-background-color:#4C7B9E;-fx-text-fill:#FFFFFF;-fx-background-radius:10 10 10 10;");
+                button.setOnAction((butt)->{
+                    String ScoreSessionTable=ScoreSession.getValue();
+                    if (term.getValue()!=null&&ScoreSessionTable!=null){
+                        //this get the student selected score from database
+                        new GetScoreThread(ScoreSessionTable,NewValue,tableview,term.getValue()).start();
+                    }else {
+                        new ConnectionError().Connection("select term and session");
+                    }
+                });
+                JFXTextArea textArea=new JFXTextArea();
+                textArea.setMaxHeight(40);
+                textArea.setMinWidth(150);
 
-                ScorevBox.getChildren().addAll(label,ScoreSession,tableview,scoreHbox,vb);
+                JFXButton printbutton=new JFXButton(" ");
+                printbutton.setStyle("-fx-background-image: url('icon/drawable-xxxhdpi/ic_print_light_blue_700_18dp.png');-fx-background-size:100%, 100%;");
+                printbutton.setMinHeight(60);
+                printbutton.setMinWidth(60);
+                printbutton.setOnAction((print)->{
+                    Path path= Paths.get(System.getProperty("user.dir")+"/MyChildSchool");
+                    File pdffile=new File(path+"/studentscores.pdf");
+                    new PrinterManager(pdfdocumentbytes,pdffile,textArea).start();
+                });
+                ScorevBox.getChildren().addAll(label,ScoreSession,term,button,tableview,textArea,printbutton,scoreHbox,vb);
                 scrollpane.setContent(ScorevBox);
                 Scene scene=new Scene(scrollpane);
                 StudentSelectAssessmentSessionWindow.window.setMaximized(true);

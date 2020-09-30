@@ -10,6 +10,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.TableView;
 import okhttp3.*;
 import sample.ConnectionError;
+import sample.LoginPage.DashBoard.SelectWindows.Registeration.LoadingWindow;
 import sample.LoginPage.LogInModel;
 
 
@@ -26,19 +27,30 @@ public class GetScoreThread extends Thread {
     private String ScoreSessionTable;
     private String Name;
     private TableView<Scores> tableView;
-    public  GetScoreThread(String ScoreSessionValue,String Name,TableView<Scores>tableView){
+    private String term;
+    public  GetScoreThread(String ScoreSessionValue, String Name, TableView<Scores> tableView, String term){
         this.Name=Name;
         this.ScoreSessionTable=ScoreSessionValue;
         this.tableView=tableView;
+        this.term=term;
         System.out.println("[GetScoreThread]: "+Name);
+        System.out.println("[GetScoreThread]: "+term);
         System.out.println("[GetScoreThread]: "+ScoreSessionTable);
 
     }
     @Override
     public void run() {
+        Platform.runLater(()->{
+            try {
+                new LoadingWindow();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
         GetScoreRequestEntity getScoreRequestEntity=new GetScoreRequestEntity();
         getScoreRequestEntity.setName(Name);
         getScoreRequestEntity.setTable(ScoreSessionTable);
+        getScoreRequestEntity.setTerm(term);
         System.out.println("[GetScoreThread]--> Preparing Json body");
         GsonBuilder builder=new GsonBuilder();
         builder.setPrettyPrinting();
@@ -67,11 +79,13 @@ public class GetScoreThread extends Thread {
             System.out.println(response);
             System.out.println(response.body());
             if (response.code()==201||response.code()==200||response.code()==202){
+                Platform.runLater(()->{
+                    LoadingWindow.window.close();
+                });
                 System.out.println("[GetScoreThread]--> Response:"+response.body());
                 System.out.println("[GetScoreThread]--> Processing response");
                 byte[] bytes=response.body().bytes();
                 String raw=new String(bytes,"UTF-8");
-                System.out.println("[GetScoreThread]-->"+raw);
                 GsonBuilder builder1=new GsonBuilder();
                 builder1.setPrettyPrinting();
                 builder1.serializeNulls();
@@ -92,11 +106,15 @@ public class GetScoreThread extends Thread {
                             s.getSeventhca(),s.getSixthca(),
                             s.getEightca(),s.getNinthca(),
                             s.getTenthca(),s.getExam(),
-                            s.getCumulative()));
+                            s.getCumulative(),s.getTerm()));
                     tableView.setItems(scores);
                     response.close();
                 }
-
+                if (!listofscores.isEmpty()){
+                    //Document to be printed
+                    System.out.println("DOCUMENT: "+listofscores.get(listofscores.size()-1).getPdfdocumenbytes());
+                    StudentSelectAssessmentSessionWindowController.pdfdocumentbytes=listofscores.get(listofscores.size()-1).getPdfdocumenbytes();
+                }
             }else {
                 System.out.println(response);
                 response.close();
@@ -105,6 +123,7 @@ public class GetScoreThread extends Thread {
                 Platform.runLater(()->{
                     boolean error=new ConnectionError().Connection("server return error "+response.code()+": Unable to  get score");
                     if (error){
+                        tableView.getColumns().clear();
                             System.out.println("[GetScoreThread]--> Server error,unable to get score");
                     }
                 });
@@ -113,6 +132,7 @@ public class GetScoreThread extends Thread {
             if (response.code()==404){
                 //Display alert dialog
                 Platform.runLater(()->{
+                    LoadingWindow.window.close();
                     boolean error=new ConnectionError().Connection("server return error "+response.code()+": Score not found");
                     if (error){
                         System.out.println("[GetScoreThread]--> Score not found on the server");
@@ -123,6 +143,7 @@ public class GetScoreThread extends Thread {
             if (response.code()==422){
                 //Display alert dialog
                 Platform.runLater(()->{
+                    LoadingWindow.window.close();
                     boolean error=new ConnectionError().Connection("server return error "+response.code()+": Server cannot process your request,check fields for invalid character");
                     if (error){
                         System.out.println("[GetScoreThread]--> Connection Error,Window close");
@@ -133,6 +154,7 @@ public class GetScoreThread extends Thread {
         } catch (IOException e) {
             //Display an Alert dialog
             Platform.runLater(()->{
+                LoadingWindow.window.close();
                 boolean error=new ConnectionError().Connection("Unable to establish,CHECK INTERNET CONNECTION");
                 if (error){
                     System.out.println("[SaveScoreThread]--> Connection Error,Window close");

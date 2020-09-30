@@ -7,12 +7,14 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableView;
+import net.sf.jasperreports.engine.JasperPrint;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import sample.ConnectionError;
 import sample.LoginPage.DashBoard.Admin.SchoolFee.Fee;
+import sample.LoginPage.DashBoard.Admin.SchoolFee.SchoolFeeWindowController;
 import sample.LoginPage.DashBoard.SelectWindows.Registeration.LoadingWindow;
 import sample.LoginPage.LogInModel;
 
@@ -26,7 +28,6 @@ public class getDebtorsthread extends Thread{
     private String term;
     private int minimum;
     private TableView<Fee> tableview;
-
     public getDebtorsthread(String clas, String session, String tag, String term, int minimum, TableView<Fee> tableview) {
         this.clas=clas;
         this.session=session;
@@ -58,7 +59,6 @@ public class getDebtorsthread extends Thread{
                 ResponseBody responseBody =response.body();
                 byte[] bytes=responseBody.bytes();
                 String json=new String(bytes,"UTF-8");
-                System.out.print("[GetDebtorsThread]: -->"+json);
                 System.out.println("[GetDebtorsThread]: Processing response Body");
                 GsonBuilder builder=new GsonBuilder();
                 builder.setPrettyPrinting();
@@ -74,6 +74,11 @@ public class getDebtorsthread extends Thread{
                     LoadingWindow.window.close();
                     tableview.setItems(tableList);
                 });
+                if (!schoolfees.isEmpty()){
+                    //D
+                    SchoolFeeWindowController.pdf=schoolfees.get(schoolfees.size()-1).getPdf();
+                    System.out.println("Document:"+schoolfees.get(schoolfees.size()-1).getPdf());
+                }
                 response.close();
             }else {
                 Platform.runLater(()->{

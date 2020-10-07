@@ -1,6 +1,7 @@
 package sample.LoginPage.DashBoard.SelectWindows.Score;
 
 public class Scores {
+    private String id;
     private String Subject;
     private double FirstCa;
     private double SecondCa;
@@ -19,7 +20,7 @@ public class Scores {
     public Scores() {
     }
 
-    public Scores(String subject, double firstCa, double secondCa, double thirdCa, double fourthCa, double fifthCa, double sixthCa, double seventhCa, double eightCa, double ninthCa, double tenthCa, double exam, double cumulative, String term) {
+    public Scores(String subject, double firstCa, double secondCa, double thirdCa, double fourthCa, double fifthCa, double sixthCa, double seventhCa, double eightCa, double ninthCa, double tenthCa, double exam, double cumulative, String term,String id) {
         Subject = subject;
         FirstCa = firstCa;
         SecondCa = secondCa;
@@ -34,6 +35,15 @@ public class Scores {
         Exam = exam;
         Cumulative = cumulative;
         this.term = term;
+        this.id=id;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getSubject() {

@@ -11,41 +11,38 @@ import sample.LoginPage.DashBoard.SelectWindows.Registeration.LoadingWindow;
 import sample.LoginPage.LogInModel;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 
 public class saveDataIntoSchoolFeeTable extends Thread{
 
-    private  String clas;
-    private String session;
-    private String studentname;
-    private String tag;
+
+    private String studentid;
     private String entity;
     private String column;
-    private String term;
     private TableColumn<?, ?> tableColumn;
-    public saveDataIntoSchoolFeeTable(String clas, String session, String studentnameInTheColumn, String tag, String newvalue, String columntable, String term, TableColumn<?, ?> column) {
-        this.clas=clas;
-        this.session=session;
-        this.studentname=studentnameInTheColumn;
-        this.tag=tag;
+    public saveDataIntoSchoolFeeTable(String studentid, String newvalue, String columntable, TableColumn<?, ?> column) {
+        this.studentid=studentid;
         //This entity is the data to be saved
         this.entity=newvalue;
         //this table correspond to a table in the schoolfee table
         //it nullify the white space to avoid error while executing script
         this.column=columntable.replaceAll(" ","");
-        this.term=term;
         this.tableColumn=column;
-        System.out.println("[Controller]:Saving data to schoolfee table-->\r\n class: "+clas+"\r\n session: "+session+"\r\n term: "+term+"\r\n name: "+studentname+"\r\n tag: "+tag+"\r\n column: "+ this.column +"\r\n entity: "+entity);
+        System.out.println("[Controller]:Saving data to schoolfee table-->\r\n  studentid: "+studentid+"\r\n column: "+ this.column +"\r\n entity: "+entity);
 
     }
 
     @Override
     public void run() {
         System.out.println("[saveDataIntoSchoolFeetable]: Setting up client ");
-        OkHttpClient client=new OkHttpClient();
+        OkHttpClient client=new OkHttpClient.Builder()
+                .connectTimeout(1, TimeUnit.MINUTES)
+                .readTimeout(1, TimeUnit.MINUTES)
+                .build();
 
         Request request=new Request.Builder()
-                .url("http://localhost:8080/savedatatoschoolfeetable/"+term+"/"+studentname+"/"+clas+"/"+session+"/"+tag+"/"+column+"/"+entity)
+                .url("http://localhost:8080/savedatatoschoolfeetable/"+studentid+"/"+column+"/"+entity)
                 .addHeader("Authorization","Bearer "+ LogInModel.token)
                 .build();
         try {
@@ -70,6 +67,7 @@ public class saveDataIntoSchoolFeeTable extends Thread{
                 Platform.runLater(()->{
                     boolean error=new ConnectionError().Connection("server return error "+response.code()+": unable to save school fee");
                     if (error){
+                        tableColumn.getTableView().getItems().clear();
                         System.out.println("[saveDataIntoSchoolFeetable]--> unable to save school fee on the server");
                     }
                 });

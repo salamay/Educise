@@ -20,6 +20,7 @@ import sample.LoginPage.LogInModel;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class getDebtorsthread extends Thread{
     private String clas;
@@ -45,7 +46,11 @@ public class getDebtorsthread extends Thread{
     @Override
     public void run() {
         System.out.print("[GetDebtorsThread]: Setting up client");
-        OkHttpClient client=new OkHttpClient();
+        OkHttpClient client=new OkHttpClient.Builder()
+                .connectTimeout(1,TimeUnit.MINUTES)
+                .readTimeout(1, TimeUnit.MINUTES)
+                .build();
+
         System.out.print("[GetDebtorsThread]: Setting up Request");
         Request request=new Request.Builder()
                 .addHeader("Authorization","Bearer "+ LogInModel.token)

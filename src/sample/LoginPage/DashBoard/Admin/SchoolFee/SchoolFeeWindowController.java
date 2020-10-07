@@ -4,8 +4,10 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextArea;
 
+import com.jfoenix.controls.JFXTextField;
 import javafx.animation.ScaleTransition;
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
 
 import javafx.scene.control.*;
@@ -18,6 +20,7 @@ import okhttp3.Response;
 import okhttp3.ResponseBody;
 import sample.ConnectionError;
 import sample.LoginPage.DashBoard.Admin.SchoolFee.getSchoolFees.DeleteSchoolFee.DeleteSchoolFee;
+import sample.LoginPage.DashBoard.Admin.SchoolFee.getSchoolFees.SaveSchoolFee;
 import sample.LoginPage.DashBoard.Admin.SchoolFee.getSchoolFees.debtors.getDebtorsthread;
 import sample.LoginPage.DashBoard.Admin.SchoolFee.getSchoolFees.getSchoolFeeThread;
 import sample.LoginPage.DashBoard.Admin.SchoolFee.getSchoolFees.getSchoolFeeWithoutTermThread;
@@ -61,6 +64,7 @@ public class SchoolFeeWindowController implements Initializable {
     private String session;
     private String tag;
     public static byte[] pdf;
+    public TableColumn<Fee,String> idcolumn;
     public TableColumn<Fee,String> namecolumn;
     public TableColumn<Fee,String> amountcolumn;
     public TableColumn<Fee,String> yearcolumn;
@@ -76,6 +80,8 @@ public class SchoolFeeWindowController implements Initializable {
     public JFXButton getdebtorsbutton;
     public JFXButton deleteschoolfeebutton;
     public JFXButton printbutton;
+    public JFXTextField studentnameTextField;
+    public JFXButton saveschoolfeebutton;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -109,15 +115,26 @@ public class SchoolFeeWindowController implements Initializable {
         deleteschoolfeebutton.setOnMouseExited(event -> {
             RestoreScale(deleteschoolfeebutton);
         });
+        saveschoolfeebutton.setOnMouseEntered(event -> {
+            ScaleTrans(saveschoolfeebutton);
+        });
+        saveschoolfeebutton.setOnMouseExited(event -> {
+            RestoreScale(saveschoolfeebutton);
+        });
 
         classcombobox.getItems().addAll("Nursery 1","Nursery 2","Primary 1","Primary 2","Primary 3","Primary 4","Primary 5","Jss 1","Jss 2","Jss 3","SS 1","SS 2","SS 3");
         tagcombobox.getItems().addAll("DAY","BOARDER");
-        new ClassThread(sessioncombobox,null).start();
+        sessioncombobox.getItems().addAll("2019-2020","2020-2021","2021-2022","2022-2023","2023-2024","2024-2025","2025-2026","2026-2027","2027-2028","2028-2029","2029-2030");
         termcombobox.getItems().addAll("Cancel","1","2","3");
         termcombobox.getSelectionModel().selectFirst();
         ////////Set table view Editable
         tableview.setEditable(true);
         //////////////////////////////////////////////////Setting up table column
+
+        // id column Column
+        idcolumn=new TableColumn<>("id");
+        idcolumn.setMinWidth(30);
+        idcolumn.setCellValueFactory(new PropertyValueFactory<>("studentid"));
         //Student name Column
         namecolumn=new TableColumn<>("Student name");
         namecolumn.setMinWidth(160);
@@ -142,7 +159,7 @@ public class SchoolFeeWindowController implements Initializable {
             }else {
                 boolean error=new ConnectionError().Connection("Pls enter term field first");
                 System.out.println("Pls enter term field first");
-                tableview.getColumns().clear();
+                tableview.getItems().clear();
             }
         });
         //Class column
@@ -160,7 +177,7 @@ public class SchoolFeeWindowController implements Initializable {
             }else {
                 boolean error=new ConnectionError().Connection("Pls enter term field first");
                 System.out.println("Pls enter term field first");
-                tableview.getColumns().clear();
+                tableview.getItems().clear();
             }
         });
 
@@ -184,7 +201,7 @@ public class SchoolFeeWindowController implements Initializable {
             }else {
                 boolean error=new ConnectionError().Connection("Pls enter term field first");
                 System.out.println("Pls enter term field first");
-                tableview.getColumns().clear();
+                tableview.getItems().clear();
             }
 
         });
@@ -208,7 +225,7 @@ public class SchoolFeeWindowController implements Initializable {
             }else {
                 boolean error=new ConnectionError().Connection("Pls enter term field first");
                 System.out.println("Pls enter term field first");
-                tableview.getColumns().clear();
+                tableview.getItems().clear();
             }
         });
 
@@ -227,7 +244,7 @@ public class SchoolFeeWindowController implements Initializable {
             }else {
                 boolean error=new ConnectionError().Connection("Pls enter term field first");
                 System.out.println("Pls enter term field first");
-                tableview.getColumns().clear();
+                tableview.getItems().clear();
             }
         });
 
@@ -246,7 +263,7 @@ public class SchoolFeeWindowController implements Initializable {
             }else {
                 boolean error=new ConnectionError().Connection("Pls enter term field first");
                 System.out.println("Pls enter term field first");
-                tableview.getColumns().clear();
+                tableview.getItems().clear();
             }
         });
 
@@ -281,10 +298,10 @@ public class SchoolFeeWindowController implements Initializable {
                 ce.getRowValue().setTerm(null);
                 boolean err=new ConnectionError().Connection("Please provide a number to the field");
                 System.out.println("SchoolFeeWindowController: Please provide a anumber to the field");
-                tableview.getColumns().clear();
+                tableview.getItems().clear();
             }
         });
-        tableview.getColumns().addAll(namecolumn,amountcolumn,classcolumn,tagcolumn,termcolumn,yearcolumn,modeofpaymentcolumn,transactionidcolumn,datecolumn,depositorcolumn);
+        tableview.getColumns().addAll(idcolumn,namecolumn,amountcolumn,classcolumn,tagcolumn,termcolumn,yearcolumn,modeofpaymentcolumn,transactionidcolumn,datecolumn,depositorcolumn);
     }
 
 
@@ -328,7 +345,7 @@ public class SchoolFeeWindowController implements Initializable {
         //if class,term and year is present,it will fetch the school fee connected with the term
         if (clas!=null&&!term.contains("Cancel")&& session!=null&&tag!=null){
             new LoadingWindow();
-            new getSchoolFeeThread(clas,term,session,tableview).start();
+            new getSchoolFeeThread(clas,term,session,tableview,tag).start();
         }else {
             new ConnectionError().Connection("Select a term instead of cancel");
         }
@@ -428,8 +445,57 @@ public class SchoolFeeWindowController implements Initializable {
             new ConnectionError().Connection("Please provide the requirement information");
         }
     }
-    public  void printButtonClicked() throws IOException {
 
+
+    //When save button is clicked
+    public void SaveSchoolFeeButtonClicked() throws IOException {
+        System.out.println("[SchoolFeeWindowController]: Save button Clicked");
+        String clas=classcombobox.getValue();
+        String session=sessioncombobox.getValue();
+        String term=termcombobox.getValue();
+        String tag=tagcombobox.getValue();
+        String studentname=studentnameTextField.getText();
+
+        //Checking input for error
+        //Checking class combobox
+        if (clas!=null){
+            classerror.setVisible(false);
+        }
+        else {
+            classerror.setVisible(true);
+        }
+
+        //Checking year combobox
+        if (session!=null){
+            yearerror.setVisible(false);
+        }
+        else {
+            yearerror.setVisible(true);
+        }
+        if (tag!=null){
+            tagerror.setVisible(false);
+        }
+        else {
+            tagerror.setVisible(true);
+        }
+        if (term.equals("Cancel")){
+            new ConnectionError().Connection("Please select the term you want to add data to");
+        }
+        if (!studentname.matches("^[A-Z[ ]a-z]*$")){
+            new ConnectionError().Connection("Invalid student name, check for invalid character");
+        }
+        if (studentname.isEmpty()){
+            new ConnectionError().Connection("Student name is empty");
+        }
+        if (clas!=null && session!=null &&tag!=null &&!term.equals("Cancel")&&studentname.matches("^[A-Z[ ]a-z]*$")){
+            new LoadingWindow();
+            System.out.println("SchoolFeeWindowController:get button without term pressed--> getting all term schoolfees");
+            new SaveSchoolFee(clas,session,tag,studentname,term,tableview,studentnameTextField).start();
+        }
+    }
+
+
+    public  void printButtonClicked() throws IOException {
         System.out.println("[SchoolFeeWindowController]: Printing debtors");
         System.out.println("[SchoolFeeWindowController]: Pdf: "+pdf);
         if (pdf!=null){
@@ -593,52 +659,42 @@ public class SchoolFeeWindowController implements Initializable {
     public void deleteButtonClicked() throws IOException {
         ///this method will delete the data in the selected column and leave the name Column
         //getting value
-        Fee fee=tableview.getSelectionModel().getSelectedItem();
-
-       if (fee!=null){
-           if (fee.getClas()!=null&&fee.getTerm()!=null&&fee.getYear()!=null&&fee.getStudentname()!=null){
-               System.out.println("FEE:name to delete-->"+fee.getStudentname());
-               System.out.println("FEE:-->"+fee.getTerm());
-               System.out.println("FEE:-->"+fee.getClas());
-               System.out.println("FEE:-->"+fee.getYear());
-               new LoadingWindow();
-               new DeleteSchoolFee(clas,fee.getYear(),fee.getTerm(),fee.getStudentname(),tableview).start();
-           }else {
-               new ConnectionError().Connection("Selected items cannot be deleted,some importance field are missing");
-           }
-
-       }else {
-           new ConnectionError().Connection("Please select a fee to delete");
+        System.out.println("[SchoolFeeWindowController]:Delete button clicked");
+        ObservableList<Fee> fee=tableview.getSelectionModel().getSelectedItems();
+          if (!fee.isEmpty()){
+              if (fee.get(0).getStudentid()!=null){
+                  new LoadingWindow();
+                  new DeleteSchoolFee(fee.get(0).getStudentid(),tableview).start();
+              }else {
+                  tableview.getItems().clear();
+                  new ConnectionError().Connection("Selected fee does not contain id, consider reloading the schoolfee from server to get an id");
+              }
+          }else {
+              new ConnectionError().Connection("Please select a fee to delete");
+          }
        }
 
-    }
+
 
     //Saving data to school fee table
     public void saveDataToSchoolfeetable(TableColumn<?, ?> column, TableColumn.CellEditEvent<Fee, ?> e){
         String newvalue=e.getNewValue().toString().replaceAll("/","-");
         System.out.println("SchoolFeeWindowController: entity: "+newvalue);
        if (!newvalue.isEmpty()&&newvalue.matches("^[A-Za-z[-/ ]0-9]*$")){
-           //get the student name in the selected row
-           String studentnameInTheColumn=e.getRowValue().getStudentname();
-           System.out.println("SchoolFeeWindowController: student name: "+studentnameInTheColumn);
-           //get session from the selected row
-           String session=e.getRowValue().getYear();
-           System.out.println("SchoolFeeWindowController: Session: "+session);
-           //get the class for the selected row
-           String clas=e.getRowValue().getClas();
-           System.out.println("SchoolFeeWindowController: class: "+clas);
-           //get the tag from the selcted row
-           String tag=e.getRowValue().getTag();
-           System.out.println("SchoolFeeWindowController: tag: "+tag);
+           //get the student id in the selected row
+           String studentid=e.getRowValue().getStudentid();
            //Get column table of the selected
            String columntable=column.getText();
            System.out.println("SchoolFeeWindowController: column: "+columntable);
-           //get term from the selected row
-           String term=e.getRowValue().getTerm();
            System.out.println("SchoolFeeWindowController: term: "+term);
-           new saveDataIntoSchoolFeeTable(clas,session,studentnameInTheColumn,tag,newvalue,columntable,term,column).start();
+           if (studentid!=null){
+               new saveDataIntoSchoolFeeTable(studentid,newvalue,columntable,column).start();
+           }else {
+               tableview.getItems().clear();
+               new ConnectionError().Connection("Student id is not present, Consider reloading the school fees from server to get an id");
+           }
        }else {
-           boolean error=new ConnectionError().Connection("Check for invalid symbol, symbol '-' is only allow in date field,delet or change the symbol");
+           boolean error=new ConnectionError().Connection("Check for invalid symbol, symbol '-' is only allow in date field,delete or change the symbol");
            System.out.println("SchoolFeeWindowController: Please provide valid value for the field");
        }
     }
@@ -675,81 +731,6 @@ public class SchoolFeeWindowController implements Initializable {
         scaleTransition.setFromY(1.2);
         scaleTransition.setToY(1);
         scaleTransition.play();
-
-    }
-    //////////This class get the information sessions and set the value gotten to the Combobox passed in from the parent class
-    //the progressbar indicate the progress
-    public class ClassThread extends Thread {
-        private ComboBox<String> clas;
-        private ProgressIndicator pgb;
-        double progress=0.0;
-
-        public ClassThread(ComboBox<String> comb,ProgressIndicator progressBar) {
-            this.clas = comb;
-            this.pgb=progressBar;
-
-        }
-
-        @Override
-        public void run() {
-            System.out.println("[ClassThread]: setting up okhttp client");
-            OkHttpClient client=new OkHttpClient();
-
-            System.out.println("[ClassThread]: setting up okhttp client request");
-            Request request=new Request.Builder()
-                    .url("http://localhost:8080/retrieveinformationsession")
-                    .addHeader("Authorization","Bearer "+ LogInModel.token)
-                    .build();
-
-            try {
-                Response response = client.newCall(request).execute();
-                System.out.println("[ClassThread]: "+response);
-                if (response.code()==200|| response.code()==212||response.code()==201){
-
-                    System.out.println("[ClassThread]: session retrieved");
-                    ResponseBody body=response.body();
-                    try {
-                        byte [] bytes=body.bytes();
-                        //removing bracket from response
-                        String data=new String(bytes,"UTF-8");
-                        String data2=data.replace(']',' ');
-                        String data3=data2.replace('[',' ');
-                        String data4=data3.replaceAll(" ","");
-                        List<String> list= Arrays.stream(data4.split(",")).collect(Collectors.toList());
-
-                        Platform.runLater(()->{
-                            clas.getItems().addAll(list);
-                        });
-                        System.out.println(data);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                }else {
-                    //Display an Alert dialog
-                    Platform.runLater(()->{
-                        boolean error=new ConnectionError().Connection("server:error "+response.code()+" Unable to get session,CHECK INTERNET CONNECTION");
-                        if (error){
-                            SchoolFeeWindow.window.close();
-                            System.out.println("[ClassThread]--> Connection Error,Window close");
-                        }
-                    });
-                }
-            } catch (IOException e) {
-                //Display an Alert dialog
-                Platform.runLater(()->{
-                    boolean error=new ConnectionError().Connection("Unable to establish connection,CHECK INTERNET CONNECTION");
-                    if (error){
-
-                        SchoolFeeWindow.window.close();
-                        System.out.println("[ClassThread]--> Connection Error,Window close");
-                    }
-                });
-                System.out.println("[ClassThread]: Unable to get session information from server");
-                e.printStackTrace();
-            }
-
-        }
 
     }
 }

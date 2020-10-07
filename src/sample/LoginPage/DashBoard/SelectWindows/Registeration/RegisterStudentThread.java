@@ -9,6 +9,7 @@ import sample.ConnectionError;
 import sample.LoginPage.LogInModel;
 
 import java.io.*;
+import java.util.concurrent.TimeUnit;
 
 public class RegisterStudentThread extends  Thread {
 
@@ -95,7 +96,11 @@ public class RegisterStudentThread extends  Thread {
         //////////Preparing Json end///////////////////////////
         //////////////////////////Preparing to send to server///////////////////////////
             System.out.println("[RegisterstudentThread]: "+"Creating Okhttp client");
-            OkHttpClient client=new OkHttpClient();
+        OkHttpClient client=new OkHttpClient.Builder()
+                .connectTimeout(1, TimeUnit.MINUTES)
+                .readTimeout(1, TimeUnit.MINUTES)
+                .build();
+
             System.out.println("[RegisterstudentThread]: "+"preparing Json body");
             RequestBody jsonBody=RequestBody.create(entity,MediaType.parse("application/json"));
             System.out.println("[RegisterstudentThread]: "+"making request body");

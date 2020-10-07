@@ -33,6 +33,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.ResourceBundle;
+import java.util.concurrent.TimeUnit;
 
 public class EditingLayoutController implements Initializable {
     private String session;
@@ -75,14 +76,14 @@ public class EditingLayoutController implements Initializable {
         System.out.println("[EditingLayoutController]:studentname:"+studentname);
 
         idcolumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+
         studentnamecolumn.setCellValueFactory(new PropertyValueFactory<>("studentname"));
         studentnamecolumn.setCellFactory(TextFieldTableCell.forTableColumn());
         studentnamecolumn.setOnEditCommit((e)->{
             editColumn(studentnamecolumn,e);
-            e.getRowValue().setStudentname(e.getNewValue());
+            e.getRowValue().setStudentname(String.valueOf(e.getNewValue()));
             tableView.refresh();
         });
-
         agecolumn.setCellValueFactory(new PropertyValueFactory<>("age"));
         agecolumn.setCellFactory(TextFieldTableCell.forTableColumn());
         agecolumn.setOnEditCommit((e)->{
@@ -196,8 +197,21 @@ public class EditingLayoutController implements Initializable {
             tableView.refresh();
         });
         studentclasscolumn.setCellValueFactory(new PropertyValueFactory<>("clas"));
+        studentclasscolumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        studentclasscolumn.setOnEditCommit((e)->{
+            editColumn(studentclasscolumn,e);
+            e.getRowValue().setClas(e.getNewValue());
+            tableView.refresh();
+        });
 
         tagcolumn.setCellValueFactory(new PropertyValueFactory<>("tag"));
+        tagcolumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        tagcolumn.setOnEditCommit((e)->{
+            editColumn(tagcolumn,e);
+            e.getRowValue().setTag(e.getNewValue());
+            tableView.refresh();
+        });
+
         new RetrieveInformationThread().start();
     }
     public void editColumn(TableColumn<?, ?> column, TableColumn.CellEditEvent<InformationEntity, ?> e){
@@ -307,7 +321,10 @@ public class EditingLayoutController implements Initializable {
                     e.printStackTrace();
                 }
             });
-            OkHttpClient client=new OkHttpClient();
+            OkHttpClient client=new OkHttpClient.Builder()
+                    .connectTimeout(1, TimeUnit.MINUTES)
+                    .readTimeout(1, TimeUnit.MINUTES)
+                    .build();
             Request request=new Request.Builder()
                     .url("http://localhost:8080/retrievestudentinformation/"+studentname+"/"+session)
                     .addHeader("Authorization","Bearer "+ LogInModel.token)

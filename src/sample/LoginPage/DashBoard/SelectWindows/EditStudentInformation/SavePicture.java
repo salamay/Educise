@@ -14,6 +14,7 @@ import sample.LoginPage.LogInModel;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.concurrent.TimeUnit;
 
 public class SavePicture extends Thread{
     private File file;
@@ -39,8 +40,10 @@ public class SavePicture extends Thread{
         System.out.println("[Savepicture]: --> studenname: "+studentname);
         System.out.println("[Savepicture]: --> tag: "+tag);
         System.out.println("[Savepicture]: --> class: "+clas);
-        OkHttpClient client=new OkHttpClient();
-        System.out.println("[Savepicture]: --> Preparing request body ");
+        OkHttpClient client=new OkHttpClient.Builder()
+                .connectTimeout(1, TimeUnit.MINUTES)
+                .readTimeout(1, TimeUnit.MINUTES)
+                .build();        System.out.println("[Savepicture]: --> Preparing request body ");
         GsonBuilder builder=new GsonBuilder();
         builder.serializeNulls();
         builder.setPrettyPrinting();

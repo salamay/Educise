@@ -284,14 +284,13 @@ public class BookStoreWindowController implements Initializable {
         System.out.println("[BookStoreWindowController]:Copies->" + copies);
         System.out.println("[BookStoreWindowController]:Session->" + session);
         System.out.println("[BookStoreWindowController]:Term->" + term);
-        if (title.isEmpty() || !title.matches("^[A-Z[ ]a-z]*$")) {
-            System.out.println("HJGDHJJSKJSKS");
+        if (title.isEmpty() || !title.matches("^[A-Z[ ]0-9a-z]*$")) {
             book.setTitle(null);
             new ConnectionError().Connection("Please provide valid title,if symbol is present,delete it");
         } else {
             book.setTitle(title);
         }
-        if (author.isEmpty() || !author.matches("^[A-Z[ ]a-z]*$")) {
+        if (author.isEmpty() || !author.matches("^[A-Z[ ]0-9a-z]*$")) {
             book.setAuthor(null);
             new ConnectionError().Connection("Please provide valid author,if symbol is present,delete it");
         } else {
@@ -371,7 +370,6 @@ public class BookStoreWindowController implements Initializable {
         if (buyer.isEmpty()||buyer==null) {
             new ConnectionError().Connection("Enter buyer name");
         }
-        System.out.println("hghsjfhf"+date);
         if (localdate==null) {
             new ConnectionError().Connection("Select todays date");
         }
@@ -428,10 +426,9 @@ public class BookStoreWindowController implements Initializable {
         String entity= e.getNewValue().toString();
         //Columnname instance here correspond to a table column in the database
         String columnname=e.getTableColumn().getText();
-        int id=e.getRowValue().getId();
+        String id=e.getRowValue().getId();
         System.out.println("[Editing book]: entity:"+entity+"\n"+"column:"+columnname+"\n"+"id:"+id);
-        if (entity!=null &&entity.matches("^[A-Z[- ]a-z0-9]*$")&&id!=0){
-            new LoadingWindow();
+        if (entity!=null &&entity.matches("^[A-Z[- ]a-z0-9]*$")&&id!=null){
             EditBookRequest editBookRequest=new EditBookRequest();
             editBookRequest.setEntity(entity);
             editBookRequest.setColumn(columnname);
@@ -440,20 +437,21 @@ public class BookStoreWindowController implements Initializable {
         }
        else {
             boolean error=new ConnectionError().Connection("Please provide a valid input for the field");
-            System.out.println("EditBook: Please provide a valid input for the field");
+            System.out.println("EditBook: Please provide a valid input for the field,if id is not present, reload window to update the id");
         }
     }
     /////Delete book
     public void editBookDeletButtonClicked() throws IOException {
         ObservableList<Book> bookselected=editbooktableview.getSelectionModel().getSelectedItems();
-        if (bookselected.get(0)==null||bookselected.get(0).getId()==0){
-            new ConnectionError().Connection("please select book to delete");
+        if (bookselected.get(0)==null||bookselected.get(0).getId()==null){
+            new ConnectionError().Connection("please select book to delete, if id is not present, reload window to update the id");
+        }else {
+            if (bookselected.get(0)!=null&&bookselected.get(0).getId()!=null){
+                new LoadingWindow();
+                new DeleteBook(bookselected.get(0).getId(),editbooktableview).start();
+            }
         }
 
-        if (bookselected.get(0)!=null&&bookselected.get(0).getId()!=0){
-            new LoadingWindow();
-            new DeleteBook(bookselected.get(0).getId(),editbooktableview).start();
-        }
     }
 
     //Editbook End
@@ -497,9 +495,13 @@ public class BookStoreWindowController implements Initializable {
 
 
     public void printHistory(){
-        Path path= Paths.get(System.getProperty("user.dir")+"/MyChildSchool");
-        File pdffile=new File(path+"/bookhistory.pdf");
-        new PrinterManager(pdfdocumentbytes,pdffile,bookhistorytextarea).start();
+        if (pdfdocumentbytes!=null){
+            Path path= Paths.get(System.getProperty("user.dir")+"/MyChildSchool");
+            File pdffile=new File(path+"/bookhistory.pdf");
+            new PrinterManager(pdfdocumentbytes,pdffile,bookhistorytextarea).start();
+        }else {
+            new ConnectionError().Connection("No document found");
+        }
     }
 
 

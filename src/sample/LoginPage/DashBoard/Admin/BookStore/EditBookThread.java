@@ -10,6 +10,7 @@ import sample.LoginPage.DashBoard.SelectWindows.Registeration.LoadingWindow;
 import sample.LoginPage.LogInModel;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 public class EditBookThread extends Thread {
 
@@ -25,7 +26,11 @@ public class EditBookThread extends Thread {
     @Override
     public void run() {
         System.out.println("[EditBook]: Setting up client ");
-        OkHttpClient client=new OkHttpClient();
+        OkHttpClient client=new OkHttpClient.Builder()
+                .connectTimeout(1, TimeUnit.MINUTES)
+                .readTimeout(1, TimeUnit.MINUTES)
+                .build();
+
         GsonBuilder builder=new GsonBuilder();
         builder.setPrettyPrinting();
         builder.serializeNulls();

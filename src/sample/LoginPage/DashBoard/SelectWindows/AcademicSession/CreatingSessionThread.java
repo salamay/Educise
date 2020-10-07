@@ -11,6 +11,8 @@ import sample.LoginPage.LogInModel;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 
 public class CreatingSessionThread  extends Thread{
     private String jss1sessionName;
@@ -77,7 +79,10 @@ public class CreatingSessionThread  extends Thread{
         Gson gson=builder.create();
         String rawjson=gson.toJson(createSessionRequestEntity);
         System.out.println("[CreatingSessionThread]: Setting up client");
-        OkHttpClient client=new OkHttpClient();
+        OkHttpClient client=new OkHttpClient.Builder()
+                .connectTimeout(1,TimeUnit.MINUTES)
+                .readTimeout(1, TimeUnit.MINUTES)
+                .build();
         System.out.println("[CreatingSessionThread]: Preparing Request Body");
         RequestBody requestBody=RequestBody.create(MediaType.parse("application/json"),rawjson);
         System.out.println("[CreatingSessionThread]: Sending Request");
@@ -93,6 +98,7 @@ public class CreatingSessionThread  extends Thread{
                     LoadingWindow.window.close();
                     new ConnectionError().Connection("SUCCESS");
                 });
+                response.close();
             }else{
                 System.out.println("[CreatingSessionThread]--> server return error "+response.code()+": Unable to get score");
                 //Display alert dialog

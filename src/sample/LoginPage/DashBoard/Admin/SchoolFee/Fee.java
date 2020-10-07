@@ -3,6 +3,7 @@ package sample.LoginPage.DashBoard.Admin.SchoolFee;
 import net.sf.jasperreports.engine.JasperPrint;
 
 public class Fee {
+    private String studentid;
     private String studentname;
     private String depositorname;
     private String clas;
@@ -14,9 +15,17 @@ public class Fee {
     private String amount;
     private String tag;
     private byte[] pdf;
+
     public Fee() {
     }
 
+    public String getStudentid() {
+        return studentid;
+    }
+
+    public void setStudentid(String studentid) {
+        this.studentid = studentid;
+    }
 
     public String getStudentname() {
         return studentname;

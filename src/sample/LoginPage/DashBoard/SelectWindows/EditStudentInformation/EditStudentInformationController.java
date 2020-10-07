@@ -24,6 +24,7 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 public class EditStudentInformationController implements Initializable {
@@ -91,7 +92,10 @@ public class EditStudentInformationController implements Initializable {
         public void run() {
 
             System.out.println("[ClassThread]: setting up okhttp client");
-            OkHttpClient client = new OkHttpClient();
+            OkHttpClient client=new OkHttpClient.Builder()
+                    .connectTimeout(1, TimeUnit.MINUTES)
+                    .readTimeout(1, TimeUnit.MINUTES)
+                    .build();
 
             System.out.println("[ClassThread]: setting up okhttp client request");
             Request request = new Request.Builder()

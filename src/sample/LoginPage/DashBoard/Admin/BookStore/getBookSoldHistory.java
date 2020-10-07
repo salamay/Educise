@@ -17,6 +17,7 @@ import sample.LoginPage.LogInModel;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class getBookSoldHistory extends Thread{
     private String session;
@@ -36,7 +37,11 @@ public class getBookSoldHistory extends Thread{
     public void run() {
         System.out.println("[getBookSoldHistory]:--> getting histories");
         System.out.println("[getBookSoldHistory]:--> Setting up client");
-        OkHttpClient client=new OkHttpClient();
+
+        OkHttpClient client=new OkHttpClient.Builder()
+                .connectTimeout(1, TimeUnit.MINUTES)
+                .readTimeout(1, TimeUnit.MINUTES)
+                .build();
 
 
         Request request=new Request.Builder()

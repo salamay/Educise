@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 //This class retrieve student name and add it to the list view
@@ -32,7 +33,10 @@ public class ClassNameThread extends Thread {
 
     @Override
     public void run() {
-        OkHttpClient client=new OkHttpClient();
+        OkHttpClient client=new OkHttpClient.Builder()
+                .connectTimeout(1, TimeUnit.MINUTES)
+                .readTimeout(1, TimeUnit.MINUTES)
+                .build();
         System.out.println("[ClassNameThread]: Receiving name ");
         System.out.println("[ClassNameThread]: preparing request ");
         Request request=new Request.Builder()

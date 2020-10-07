@@ -12,6 +12,7 @@ import sample.LoginPage.DashBoard.SelectWindows.Registeration.LoadingWindow;
 import sample.LoginPage.LogInModel;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 public class EditInformation extends Thread {
 
@@ -38,8 +39,10 @@ public class EditInformation extends Thread {
         System.out.println("[EditInformation]: --> session: "+session);
         System.out.println("[EditInformation]: --> studenname: "+studentname);
         System.out.println("[EditInformation]: Setting up client ");
-        OkHttpClient client=new OkHttpClient();
-
+        OkHttpClient client=new OkHttpClient.Builder()
+                .connectTimeout(1, TimeUnit.MINUTES)
+                .readTimeout(1, TimeUnit.MINUTES)
+                .build();
 
         Request request=new Request.Builder()
                 .url("http://localhost:8080/editstudentinformation/"+session+"/"+newValue+"/"+id+"/"+column)

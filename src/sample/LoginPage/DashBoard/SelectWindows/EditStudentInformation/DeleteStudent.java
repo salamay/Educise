@@ -10,6 +10,7 @@ import sample.ConnectionError;
 import sample.LoginPage.DashBoard.SelectWindows.Registeration.LoadingWindow;
 import sample.LoginPage.LogInModel;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 public class DeleteStudent extends Thread {
     private int id;
@@ -26,7 +27,10 @@ public class DeleteStudent extends Thread {
         System.out.println("[DeleteStudent]: id:"+id);
         System.out.println("[DeleteStudent]: session: "+session);
         System.out.println("[DeleteStudent]: Setting up client ");
-        OkHttpClient client=new OkHttpClient();
+        OkHttpClient client=new OkHttpClient.Builder()
+                .connectTimeout(1, TimeUnit.MINUTES)
+                .readTimeout(1, TimeUnit.MINUTES)
+                .build();
 
         Request request=new Request.Builder()
                 .url("http://localhost:8080/deletestudent/"+id+"/"+session)

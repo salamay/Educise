@@ -13,6 +13,7 @@ import sample.LoginPage.LogInModel;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class insertTerm extends Thread{
     private String studentname;
@@ -22,6 +23,7 @@ public class insertTerm extends Thread{
     private String term;
     private TableColumn.CellEditEvent<Fee, String> ce;
     private TableColumn<Fee, String> termcolumn;
+
     public insertTerm(String studentnameInTheColumn, String session, String clas, String tag, String term, TableColumn.CellEditEvent<Fee, String> ce, TableColumn<Fee, String> termcolumn) {
         this.studentname=studentnameInTheColumn;
         this.session=session;
@@ -31,11 +33,15 @@ public class insertTerm extends Thread{
         this.ce=ce;
         this.termcolumn=termcolumn;
     }
+
     @Override
     public void run() {
 
         System.out.println("[InsertTerm]: Setting up client ");
-        OkHttpClient client=new OkHttpClient();
+        OkHttpClient client=new OkHttpClient.Builder()
+                .connectTimeout(1, TimeUnit.MINUTES)
+                .readTimeout(1, TimeUnit.MINUTES)
+                .build();
 
         Request request=new Request.Builder()
                 .url("http://localhost:8080/saveterm/"+term+"/"+studentname+"/"+clas+"/"+session+"/"+tag)

@@ -9,37 +9,33 @@ import sample.LoginPage.DashBoard.SelectWindows.Registeration.LoadingWindow;
 import sample.LoginPage.LogInModel;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 /////This class Save the Subject to the Database,the scores are excluded
 
 public class UpdateSubjectThread extends Thread {
-    //The student name to save score to
-    private String Studentname;
+    private String id;
+
     //The table which store scores and subject
     //its is the value selected from the combo box
     private String ScoreTable;
-    //The subject to save ,it is stored where ScoreTable equals to the Studentname
+    //The subject to save ,it is stored where ScoreTable equals to the id
     private String Subject;
     private SaveSubjectRequestEntity saveSubjectRequestEntity;
-    private String oldSubject;
-    private String term;
-    public UpdateSubjectThread(String clas, String studentname, String Subject, String oldSubject,String term) {
+
+    public UpdateSubjectThread(String clas, String id, String Subject) {
         this.ScoreTable=clas;
-        this.Studentname = studentname;
+        this.id = id;
         this.Subject=Subject;
-        this.oldSubject=oldSubject;
-        this.term=term;
-        System.out.println("[UpdateSubjectThread]: Entity to store --> "+ ScoreTable+","+Studentname+","+Subject+",Old subject-->"+oldSubject+",term-->"+term);
+        System.out.println("[UpdateSubjectThread]: Entity to store --> Table:"+ ScoreTable+"\r\nid:"+id+"\r\n"+",Subject:-->"+Subject);
     }
 
     @Override
     public void run() {
         saveSubjectRequestEntity=new SaveSubjectRequestEntity();
-        saveSubjectRequestEntity.setName(Studentname);
+        saveSubjectRequestEntity.setId(id);
         saveSubjectRequestEntity.setTable(ScoreTable);
         saveSubjectRequestEntity.setSubject(Subject);
-        saveSubjectRequestEntity.setOldsubject(oldSubject);
-        saveSubjectRequestEntity.setTerm(term);
         System.out.println("[UpdateSubjectThread]--> Preparing Json body");
         GsonBuilder builder=new GsonBuilder();
         builder.setPrettyPrinting();
@@ -51,7 +47,11 @@ public class UpdateSubjectThread extends Thread {
             System.out.println("[UpdateSubjectThread]-->json body processed successfully");
         }
         System.out.println("[UpdateSubjectThread]--> Setting up Connection");
-        OkHttpClient client=new OkHttpClient();
+        OkHttpClient client=new OkHttpClient.Builder()
+                .connectTimeout(1, TimeUnit.MINUTES)
+                .readTimeout(1, TimeUnit.MINUTES)
+                .build();
+
         System.out.println("[UpdateSubjectThread]-->Preparing Request body");
         RequestBody jsonbody=RequestBody.create(MediaType.parse("application/json"),json);
         System.out.println("[UpdateSubjectThread]--> Setting up RequestBody");

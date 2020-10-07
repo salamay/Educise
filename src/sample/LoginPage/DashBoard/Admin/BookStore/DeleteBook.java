@@ -10,11 +10,12 @@ import sample.ConnectionError;
 import sample.LoginPage.DashBoard.SelectWindows.Registeration.LoadingWindow;
 import sample.LoginPage.LogInModel;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 public class DeleteBook extends Thread{
     private TableView<Book> editbooktableview;
-    private int id;
-    public DeleteBook(int id, TableView<Book> editbooktableview) {
+    private String id;
+    public DeleteBook(String id, TableView<Book> editbooktableview) {
         this.id=id;
         this.editbooktableview=editbooktableview;
     }
@@ -23,7 +24,10 @@ public class DeleteBook extends Thread{
     public void run() {
         System.out.println("[DeleteBook]: id: "+id);
         System.out.println("[DeleteBook]: Setting up client ");
-        OkHttpClient client=new OkHttpClient();
+        OkHttpClient client=new OkHttpClient.Builder()
+                .connectTimeout(1, TimeUnit.MINUTES)
+                .readTimeout(1, TimeUnit.MINUTES)
+                .build();
 
         Request request=new Request.Builder()
                 .url("http://localhost:8080/deletebook/"+id)

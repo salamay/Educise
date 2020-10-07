@@ -20,6 +20,7 @@ import sample.LoginPage.LogInModel;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class getSchoolFeeWithoutTermThread extends Thread {
     private String clas;
@@ -40,7 +41,10 @@ public class getSchoolFeeWithoutTermThread extends Thread {
         System.out.println("[getSchoolFeeWithoutTermThread]:"+year);
         System.out.println("[getSchoolFeeWithoutTermThread]:"+tag);
         System.out.println("[getSchoolFeeWithoutTermThread]: Setting up client ");
-        OkHttpClient client=new OkHttpClient();
+        OkHttpClient client=new OkHttpClient.Builder()
+                .connectTimeout(1, TimeUnit.MINUTES)
+                .readTimeout(1, TimeUnit.MINUTES)
+                .build();
 
         Request request=new Request.Builder()
                 .url("http://localhost:8080/getschoolfeewithoutterm/"+clas+"/"+year+"/"+tag)

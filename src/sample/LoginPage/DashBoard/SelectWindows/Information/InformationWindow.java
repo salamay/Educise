@@ -51,7 +51,8 @@ public class InformationWindow {
         image.setFitHeight(217);
         image.setFitWidth(206);
         Label NameLabel=new Label("Name");
-        NameLabel.setFont(Font.font("verdana",FontWeight.MEDIUM,30));
+        NameLabel.isWrapText();
+        NameLabel.setFont(Font.font("verdana",FontWeight.MEDIUM,17));
         NameLabel.setStyle("-fx-text-fill: #ee1010;");
 
         hBox2.setSpacing(10);
@@ -62,11 +63,12 @@ public class InformationWindow {
         //Father Name And MotherName
         Label FatherName=new Label("Name");
         FatherName.setStyle("-fx-text-fill: #ee1010;");
-        FatherName.setFont(Font.font("verdana",FontWeight.MEDIUM,30));
+        FatherName.setFont(Font.font("verdana",FontWeight.MEDIUM,17));
+        FatherName.isWrapText();
         Label MotherName=new Label("Name");
         MotherName.setStyle("-fx-text-fill: #ee1010;");
-        MotherName.setFont(Font.font("verdana",FontWeight.MEDIUM,30));
-
+        MotherName.setFont(Font.font("verdana",FontWeight.MEDIUM,17));
+        MotherName.isWrapText();
         // layout
         hBox2.getChildren().addAll(image,NameLabel,FatherImage,FatherName,MotherImage,MotherName);
         String styles="-fx-background-image: url('image/schoolback.jpg');"+"-fx-background-size:70%;";

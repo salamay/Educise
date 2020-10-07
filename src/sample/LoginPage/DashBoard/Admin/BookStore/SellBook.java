@@ -11,6 +11,7 @@ import sample.LoginPage.DashBoard.SelectWindows.Registeration.LoadingWindow;
 import sample.LoginPage.LogInModel;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 public class SellBook  extends Thread{
     private TableView<Book> sellBookTableView;
@@ -36,7 +37,10 @@ public class SellBook  extends Thread{
         //Setting date
         book.setDate(date);
         System.out.println("[SellBook]: Setting up client ");
-        OkHttpClient client=new OkHttpClient();
+        OkHttpClient client=new OkHttpClient.Builder()
+                .connectTimeout(1, TimeUnit.MINUTES)
+                .readTimeout(1, TimeUnit.MINUTES)
+                .build();
         System.out.println("[SellBook]: Setting up requestbody");
         GsonBuilder builder=new GsonBuilder();
         builder.setPrettyPrinting();

@@ -29,6 +29,7 @@ import javax.security.auth.spi.LoginModule;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 //This class displays a window to select session and make the list view after a session has been clicked and also display
@@ -128,7 +129,10 @@ public class SelectParent {
 
         public void run() {
             System.out.println("[Retrieving information session]: setting up okhttp client");
-            OkHttpClient client=new OkHttpClient();
+            OkHttpClient client=new OkHttpClient.Builder()
+                    .connectTimeout(1, TimeUnit.MINUTES)
+                    .readTimeout(1, TimeUnit.MINUTES)
+                    .build();
 
             System.out.println("[Retrieving information session]: setting up okhttp client request");
             Request request=new Request.Builder()
@@ -213,7 +217,10 @@ public class SelectParent {
         @Override
         public void run() {
             System.out.println("[SelectParent]: Retrieving name");
-            OkHttpClient client=new OkHttpClient();
+            OkHttpClient client=new OkHttpClient.Builder()
+                    .connectTimeout(1,TimeUnit.MINUTES)
+                    .readTimeout(1, TimeUnit.MINUTES)
+                    .build();
 
             System.out.println("[SelectParent]: setting up okhttp client request");
             Request request=new Request.Builder()

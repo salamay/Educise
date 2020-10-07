@@ -11,6 +11,7 @@ import sample.LoginPage.DashBoard.SelectWindows.Registeration.LoadingWindow;
 import sample.LoginPage.LogInModel;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 public class SaveBook extends Thread {
     private ObservableList<Book> books;
@@ -25,7 +26,10 @@ public class SaveBook extends Thread {
     @Override
     public void run() {
         System.out.println("[SaveBook]: Setting up client ");
-        OkHttpClient client=new OkHttpClient();
+        OkHttpClient client=new OkHttpClient.Builder()
+                .connectTimeout(1, TimeUnit.MINUTES)
+                .readTimeout(1, TimeUnit.MINUTES)
+                .build();
         System.out.println("[SaveBook]: Setting up requestbody ");
         GsonBuilder builder=new GsonBuilder();
         builder.serializeNulls();

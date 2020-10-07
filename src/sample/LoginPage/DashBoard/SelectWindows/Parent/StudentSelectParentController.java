@@ -28,6 +28,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.TimeUnit;
 
 public class StudentSelectParentController implements Initializable {
 
@@ -86,7 +87,12 @@ public class StudentSelectParentController implements Initializable {
             System.out.println("[ParentInfoThread]-->Processing request");
 
             System.out.println("[ParentInfoThread]: Setting Up client");
-            OkHttpClient client=new OkHttpClient();
+
+            OkHttpClient client=new OkHttpClient.Builder()
+                    .connectTimeout(1, TimeUnit.MINUTES)
+                    .readTimeout(1, TimeUnit.MINUTES)
+                    .build();
+
             System.out.println("[ParentInfoThread]: Making request");
             Request request=new Request.Builder()
                     .url("http://localhost:8080/getparentinformation/"+classSelected+"/"+parentname)

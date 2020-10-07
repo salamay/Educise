@@ -17,6 +17,7 @@ import sample.LoginPage.LogInModel;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class GetAllBooks extends Thread {
 
@@ -31,7 +32,10 @@ public class GetAllBooks extends Thread {
     public void run() {
 
         System.out.println("[GetAllBooks]: Setting up client ");
-        OkHttpClient client=new OkHttpClient();
+        OkHttpClient client=new OkHttpClient.Builder()
+                .connectTimeout(1, TimeUnit.MINUTES)
+                .readTimeout(1, TimeUnit.MINUTES)
+                .build();
 
         Request request=new Request.Builder()
                 .url("http://localhost:8080/findallbook")

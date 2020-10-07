@@ -15,10 +15,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
+import okhttp3.*;
 import sample.ConnectionError;
 import sample.LoginPage.DashBoard.SelectWindows.Information.SelectInformationSesssionWindow;
 import sample.LoginPage.LogInModel;
@@ -36,6 +33,7 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 public class RegisterStudentController implements Initializable {
@@ -391,7 +389,10 @@ public class RegisterStudentController implements Initializable {
         public void run() {
 
             System.out.println("[ClassThread]: setting up okhttp client");
-            OkHttpClient client = new OkHttpClient();
+            OkHttpClient client=new OkHttpClient.Builder()
+                    .connectTimeout(1, TimeUnit.MINUTES)
+                    .readTimeout(1, TimeUnit.MINUTES)
+                    .build();
 
             System.out.println("[ClassThread]: setting up okhttp client request");
             Request request = new Request.Builder()

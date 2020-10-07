@@ -38,6 +38,7 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 //This class is a controller class for StudentAssessmentSession, it gets the Session and
@@ -98,34 +99,37 @@ public class StudentSelectAssessmentSessionWindowController implements Initializ
                 tableview.setPrefWidth(Control.USE_COMPUTED_SIZE);
 
                 //////////////Table column
+                TableColumn<Scores,String> idcolumn=new TableColumn<>("id");
+                idcolumn.setMinWidth(150);
+                idcolumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+
                 TableColumn<Scores,String> termcolumn=new TableColumn<>("Term");
                 termcolumn.setMinWidth(10);
                 termcolumn.setCellValueFactory(new PropertyValueFactory<>("term"));
 
+
                 TableColumn<Scores,String> SubjectColumn=new TableColumn<>("Subject");
-                SubjectColumn.setMinWidth(100);
+                SubjectColumn.setMinWidth(150);
                 SubjectColumn.setCellValueFactory(new PropertyValueFactory<>("Subject"));
                 SubjectColumn.setCellFactory(TextFieldTableCell.forTableColumn());
                 final String[] SubjectInput = new String[1];
 
                 //////subject column on edit
                 SubjectColumn.setOnEditCommit((ce)->{
-                    //ce.getRowValue().setSubject set the subject In the Score Class,ce.getRowValue().setSubject(ce.getNewValue()) set the
-                    //SubjectField to the new Value typed in
-                    String oldValue=ce.getOldValue();
-                    ce.getRowValue().setSubject(ce.getNewValue());
+                    String id=ce.getRowValue().getId();
                     SubjectInput[0] =ce.getNewValue();
-                    System.out.println(SubjectInput[0]);
                     //This get the selected value of the Combo Box and pass it to the SaveScore Thread.The value selected coresspond to a table
                     //In the Database
                     String ScoreSessionvalue=ScoreSession.getSelectionModel().getSelectedItem();
-                    System.out.println("[ScoreSessionValue]:"+ScoreSessionvalue);
                     //This save input score to Database
-                    //score session valuer here is the table name ,NewValue arg here
-                    //is the name of student selected
+                    //score session valuer here is the table name
                     //Subjectinput is the enity to save,it is the Subject typed into the Subject Column
-                    //oldvalue is the old value
-                    new UpdateSubjectThread(ScoreSessionvalue,NewValue,SubjectInput[0],oldValue,term.getValue()).start();
+                    if (tableview.getSelectionModel().getSelectedItem().getId()!=null){
+                        new UpdateSubjectThread(ScoreSessionvalue,id,SubjectInput[0]).start();
+                    }else {
+                        tableview.getItems().clear();
+                        new ConnectionError().Connection("id is not present,Reload score to get id");
+                    }
                 });
 
 
@@ -139,14 +143,19 @@ public class StudentSelectAssessmentSessionWindowController implements Initializ
                        de.getRowValue().setFirstCa(Double.parseDouble(String.valueOf(de.getNewValue())));
                        FirstCaInput[0] =de.getNewValue();
                        System.out.println(FirstCaInput[0]);
-                       String sub=tableview.getSelectionModel().getSelectedItem().getSubject();
-                       System.out.println("[SelectedRowSubject] subject= "+sub );
+                       String id=tableview.getSelectionModel().getSelectedItem().getId();
+                       System.out.println("[SelectedRowSubject] id= "+id );
                        String ScoreSessionvalue=ScoreSession.getSelectionModel().getSelectedItem();
                        //This save input score to Database
-                       //scoresessionvalue here is the table name ,NewValue arg here is the name of student selected
+                       //scoresessionvalue here is the table name ,
                        //FirstCaInput is the entity to save,it is the ca value typed into the FirstCa Column
-                       //sub is the subject
-                       new UpdateScore(ScoreSessionvalue,NewValue,FirstCaInput[0],sub,FirstCaColumn.getText(),term.getValue()).start();
+                    if (tableview.getSelectionModel().getSelectedItem().getId()!=null){
+                        new UpdateScore(ScoreSessionvalue,id,FirstCaInput[0],FirstCaColumn.getText()).start();
+                    }else {
+                        tableview.getItems().clear();
+                        new ConnectionError().Connection("id is not present,Reload score to get id");
+                    }
+
 
                 });
 
@@ -159,14 +168,19 @@ public class StudentSelectAssessmentSessionWindowController implements Initializ
                     ff.getRowValue().setSecondCa(Double.parseDouble(String.valueOf(ff.getNewValue())));
                     SecondCaInput[0] =ff.getNewValue();
                     System.out.println(SecondCaInput[0]);
-                    String sub=tableview.getSelectionModel().getSelectedItem().getSubject();
-                    System.out.println("[SelectedRowSubject] subject= "+sub );
+                    String id=tableview.getSelectionModel().getSelectedItem().getId();
+                    System.out.println("[SelectedRowSubject] id= "+id );
                     String ScoreSessionvalue=ScoreSession.getSelectionModel().getSelectedItem();
                     //This save input score to Database
-                    //scoresessionvalue here is the table name ,NewValue arg here is the name of student selected
+                    //scoresessionvalue here is the table name
                     //SecondCaInput is the entity to save,it is the ca value typed into the SecondCa Column
-                    //sub is the subject
-                    new UpdateScore(ScoreSessionvalue,NewValue,SecondCaInput[0],sub,SecondCaColumn.getText(),term.getValue()).start();
+                    if (tableview.getSelectionModel().getSelectedItem().getId()!=null){
+                        new UpdateScore(ScoreSessionvalue,id,SecondCaInput[0],SecondCaColumn.getText()).start();
+                    }else {
+                        tableview.getItems().clear();
+                        new ConnectionError().Connection("id is not present,Reload score to get id");
+                    }
+
                 });
 
                 TableColumn<Scores,Double> ThirdCaColumn=new TableColumn<>("third ca");
@@ -177,15 +191,19 @@ public class StudentSelectAssessmentSessionWindowController implements Initializ
                 ThirdCaColumn.setOnEditCommit((de)->{
                     de.getRowValue().setThirdCa(Double.parseDouble(String.valueOf(de.getNewValue())));
                     ThirdCaInput[0] =de.getNewValue();
-                    String sub=tableview.getSelectionModel().getSelectedItem().getSubject();
-                    System.out.println("[SelectedRow] subject= "+sub );
+                    String id=tableview.getSelectionModel().getSelectedItem().getId();
+                    System.out.println("[SelectedRow] id= "+id );
                     System.out.println(ThirdCaInput[0]);
                     String ScoreSessionvalue=ScoreSession.getSelectionModel().getSelectedItem();
                     //This save input score to Database
-                    //scoresessionvalue here is the table name ,NewValue arg here is the name of student selected
+                    //scoresessionvalue here is the table name
                     //ThirdCaInput is the entity to save,it is the ca value typed into the ThirdCa Column
-                    //sub is the subject
-                    new UpdateScore(ScoreSessionvalue,NewValue,ThirdCaInput[0],sub,ThirdCaColumn.getText(),term.getValue()).start();
+                    if (tableview.getSelectionModel().getSelectedItem().getId()!=null){
+                        new UpdateScore(ScoreSessionvalue,id,ThirdCaInput[0],ThirdCaColumn.getText()).start();
+                    }else {
+                        tableview.getItems().clear();
+                        new ConnectionError().Connection("id is not present,Reload score to get id");
+                    }
 
                 });
 
@@ -197,15 +215,20 @@ public class StudentSelectAssessmentSessionWindowController implements Initializ
                 FourthCaColumn.setOnEditCommit((de)->{
                     de.getRowValue().setFourthCa(Double.parseDouble(String.valueOf(de.getNewValue())));
                     FourthCaInput[0] =de.getNewValue();
-                    String sub=tableview.getSelectionModel().getSelectedItem().getSubject();
-                    System.out.println("[SelectedRow] subject= "+sub );
+                    String id=tableview.getSelectionModel().getSelectedItem().getId();
+                    System.out.println("[SelectedRow] id= "+id );
                     System.out.println(FirstCaInput[0]);
                     String ScoreSessionvalue=ScoreSession.getSelectionModel().getSelectedItem();
                     //This save input score to Database
-                    //scoresessionvalue here is the table name ,NewValue arg here is the name of student selected
+                    //scoresessionvalue here is the table name
                     //ThirdCaInput is the entity to save,it is the ca value typed into the FourthCa Column
-                    //sub is the subject
-                    new UpdateScore(ScoreSessionvalue,NewValue,FourthCaInput[0],sub,FourthCaColumn.getText(),term.getValue()).start();
+                    if (tableview.getSelectionModel().getSelectedItem().getId()!=null){
+                        new UpdateScore(ScoreSessionvalue,id,FourthCaInput[0],FourthCaColumn.getText()).start();
+                    }else {
+                        tableview.getItems().clear();
+                        new ConnectionError().Connection("id is not present,Reload score to get id");
+                    }
+
                 });
 
                 TableColumn<Scores,Double> FifthCaColumn=new TableColumn<>("fifth ca");
@@ -216,15 +239,21 @@ public class StudentSelectAssessmentSessionWindowController implements Initializ
                 FifthCaColumn.setOnEditCommit((de)->{
                     de.getRowValue().setFifthCa(Double.parseDouble(String.valueOf(de.getNewValue())));
                     FifthCaInput[0] =de.getNewValue();
-                    String sub=tableview.getSelectionModel().getSelectedItem().getSubject();
-                    System.out.println("[SelectedRow] subject= "+sub );
+                    String id=tableview.getSelectionModel().getSelectedItem().getId();
+                    System.out.println("[SelectedRow] id= "+id );
                     System.out.println(FifthCaInput[0]);
                     String ScoreSessionvalue=ScoreSession.getSelectionModel().getSelectedItem();
                     //This save input score to Database
-                    //scoresessionvalue here is the table name ,NewValue arg here is the name of student selected
+                    //scoresessionvalue here is the table name
                     //FifthCaInput is the entity to save,it is the ca value typed into the FifthCA Column
-                    //sub is the subject
-                    new UpdateScore(ScoreSessionvalue,NewValue,FifthCaInput[0],sub,FifthCaColumn.getText(),term.getValue()).start();
+
+                    if (tableview.getSelectionModel().getSelectedItem().getId()!=null){
+                        new UpdateScore(ScoreSessionvalue,id,FifthCaInput[0],FifthCaColumn.getText()).start();
+                    }else {
+                        tableview.getItems().clear();
+                        new ConnectionError().Connection("id is not present,Reload score to get id");
+                    }
+
                 });
 
                 TableColumn<Scores,Double> SixthCaColumn=new TableColumn<>("sixth ca");
@@ -235,15 +264,20 @@ public class StudentSelectAssessmentSessionWindowController implements Initializ
                 SixthCaColumn.setOnEditCommit((de)->{
                     de.getRowValue().setSixthCa(Double.parseDouble(String.valueOf(de.getNewValue())));
                     SixthCaInput[0] =de.getNewValue();
-                    String sub=tableview.getSelectionModel().getSelectedItem().getSubject();
-                    System.out.println("[SelectedRow] subject= "+sub );
+                    String id=tableview.getSelectionModel().getSelectedItem().getId();
+                    System.out.println("[SelectedRow] id= "+id );
                     System.out.println(SixthCaInput[0]);
                     String ScoreSessionvalue=ScoreSession.getSelectionModel().getSelectedItem();
                     //This save input score to Database
-                    //scoresessionvalue here is the table name ,NewValue arg here is the name of student selected
+                    //scoresessionvalue here is the table name
                     //SixthCaInput is the entity to save,it is the ca value typed into the SixthXCa Column
-                    //sub is the subject
-                    new UpdateScore(ScoreSessionvalue,NewValue,SixthCaInput[0],sub,SixthCaColumn.getText(),term.getValue()).start();
+                    if (tableview.getSelectionModel().getSelectedItem().getId()!=null){
+                        new UpdateScore(ScoreSessionvalue,id,SixthCaInput[0],SixthCaColumn.getText()).start();
+                    }else {
+                        tableview.getItems().clear();
+                        new ConnectionError().Connection("id is not present,Reload score to get id");
+                    }
+
                 });
 
 
@@ -255,15 +289,20 @@ public class StudentSelectAssessmentSessionWindowController implements Initializ
                 SeventhCaColumn.setOnEditCommit((de)->{
                     de.getRowValue().setSeventhCa(Double.parseDouble(String.valueOf(de.getNewValue())));
                     SeventhCaInput[0] =de.getNewValue();
-                    String sub=tableview.getSelectionModel().getSelectedItem().getSubject();
-                    System.out.println("[SelectedRow] subject= "+sub );
+                    String id=tableview.getSelectionModel().getSelectedItem().getId();
+                    System.out.println("[SelectedRow] id= "+id );
                     System.out.println(SeventhCaInput[0]);
                     String ScoreSessionvalue=ScoreSession.getSelectionModel().getSelectedItem();
                     //This save input score to Database
-                    //scoresessionvalue here is the table name ,NewValue arg here is the name of student selected
+                    //scoresessionvalue here is the table name
                     //SeventhCaInput is the entity to save,it is the ca value typed into the Seventh Column
-                    //sub is the subject
-                    new UpdateScore(ScoreSessionvalue,NewValue,SeventhCaInput[0],sub,SeventhCaColumn.getText(),term.getValue()).start();
+                    if (tableview.getSelectionModel().getSelectedItem().getId()!=null){
+                        new UpdateScore(ScoreSessionvalue,id,SeventhCaInput[0],SeventhCaColumn.getText()).start();
+                    }else {
+                        tableview.getItems().clear();
+                        new ConnectionError().Connection("id is not present,Reload score to get id");
+                    }
+
                 });
 
                 TableColumn<Scores,Double> EightCaColumn=new TableColumn<>("eight ca");
@@ -274,15 +313,20 @@ public class StudentSelectAssessmentSessionWindowController implements Initializ
                 EightCaColumn.setOnEditCommit((de)->{
                     de.getRowValue().setEightCa(Double.parseDouble(String.valueOf(de.getNewValue())));
                     EightCaInput[0] =de.getNewValue();
-                    String sub=tableview.getSelectionModel().getSelectedItem().getSubject();
-                    System.out.println("[SelectedRow] subject= "+sub );
+                    String id=tableview.getSelectionModel().getSelectedItem().getId();
+                    System.out.println("[SelectedRow] id= "+id );
                     System.out.println(EightCaInput[0]);
                     String ScoreSessionvalue=ScoreSession.getSelectionModel().getSelectedItem();
                     //This save input score to Database
-                    //scoresessionvalue here is the table name ,NewValue arg here is the name of student selected
+                    //scoresessionvalue here is the table name
                     //EightCaInput is the entity to save,it is the ca value typed into the EightCa Column
-                    //sub is the subject
-                    new UpdateScore(ScoreSessionvalue,NewValue,EightCaInput[0],sub,EightCaColumn.getText(),term.getValue()).start();
+                    if (tableview.getSelectionModel().getSelectedItem().getId()!=null){
+                        new UpdateScore(ScoreSessionvalue,id,EightCaInput[0],EightCaColumn.getText()).start();
+                    }else {
+                        tableview.getItems().clear();
+                        new ConnectionError().Connection("id is not present,Reload score to get id");
+                    }
+
                 });
 
                 TableColumn<Scores,Double> NinethCaColumn=new TableColumn<>("ninth ca");
@@ -293,15 +337,20 @@ public class StudentSelectAssessmentSessionWindowController implements Initializ
                 NinethCaColumn.setOnEditCommit((de)->{
                     de.getRowValue().setNinthCa(Double.parseDouble(String.valueOf(de.getNewValue())));
                     NinthCaInput[0] =de.getNewValue();
-                    String sub=tableview.getSelectionModel().getSelectedItem().getSubject();
-                    System.out.println("[SelectedRow] subject= "+sub );
+                    String id=tableview.getSelectionModel().getSelectedItem().getId();
+                    System.out.println("[SelectedRow] id= "+id );
                     System.out.println(NinthCaInput[0]);
                     String ScoreSessionvalue=ScoreSession.getSelectionModel().getSelectedItem();
                     //This save input score to Database
-                    //scoresessionvalue here is the table name ,NewValue arg here is the name of student selected
+                    //scoresessionvalue here is the table name
                     //NinethCaInput is the entity to save,it is the ca value typed into the Nineth Column
-                    //sub is the subject
-                    new UpdateScore(ScoreSessionvalue,NewValue,NinthCaInput[0],sub,NinethCaColumn.getText(),term.getValue()).start();
+                    if (tableview.getSelectionModel().getSelectedItem().getId()!=null){
+                        new UpdateScore(ScoreSessionvalue,id,NinthCaInput[0],NinethCaColumn.getText()).start();
+                    }else {
+                        tableview.getItems().clear();
+                        new ConnectionError().Connection("id is not present,Reload score to get id");
+                    }
+
                 });
 
                 TableColumn<Scores,Double> TenthCaColumn=new TableColumn<>("tenth ca");
@@ -312,15 +361,20 @@ public class StudentSelectAssessmentSessionWindowController implements Initializ
                 TenthCaColumn.setOnEditCommit((de)->{
                     de.getRowValue().setTenthCa(Double.parseDouble(String.valueOf(de.getNewValue())));
                     TenthCaInput[0] =de.getNewValue();
-                    String sub=tableview.getSelectionModel().getSelectedItem().getSubject();
-                    System.out.println("[SelectedRow] subject= "+sub );
+                    String id=tableview.getSelectionModel().getSelectedItem().getId();
+                    System.out.println("[SelectedRow] id= "+id );
                     System.out.println(TenthCaInput[0]);
                     String ScoreSessionvalue=ScoreSession.getSelectionModel().getSelectedItem();
                     //This save input score to Database
-                    //scoresessionvalue here is the table name ,NewValue arg here is the name of student selected
+                    //scoresessionvalue here is the table name
                     //TenthCaInput is the entity to save,it is the ca value typed into the TenthCa Column
-                    //sub is the subject
-                    new UpdateScore(ScoreSessionvalue,NewValue,TenthCaInput[0],sub,TenthCaColumn.getText(),term.getValue()).start();
+                    if (tableview.getSelectionModel().getSelectedItem().getId()!=null){
+                        new UpdateScore(ScoreSessionvalue,id,TenthCaInput[0],TenthCaColumn.getText()).start();
+                    }else {
+                        tableview.getItems().clear();
+                        new ConnectionError().Connection("id is not present,Reload score to get id");
+                    }
+
                 });
 
                 TableColumn<Scores,Double> ExamColumn=new TableColumn<>("Exam");
@@ -331,15 +385,20 @@ public class StudentSelectAssessmentSessionWindowController implements Initializ
                 ExamColumn.setOnEditCommit((de)->{
                     de.getRowValue().setExam(Double.parseDouble(String.valueOf(de.getNewValue())));
                     ExamInput[0] =de.getNewValue();
-                    String sub=tableview.getSelectionModel().getSelectedItem().getSubject();
-                    System.out.println("[SelectedRow] subject= "+sub );
+                    String id=tableview.getSelectionModel().getSelectedItem().getId();
+                    System.out.println("[SelectedRow] id= "+id );
                     System.out.println(ExamInput[0]);
                     String ScoreSessionvalue=ScoreSession.getSelectionModel().getSelectedItem();
                     //This save input score to Database
-                    //scoresessionvalue here is the table name ,NewValue arg here is the name of student selected
+                    //scoresessionvalue here is the table name
                     //ExamInput is the entity to save,it is the exam value typed into the Exam Column
-                    //sub is the subject
-                    new UpdateScore(ScoreSessionvalue,NewValue,ExamInput[0],sub,ExamColumn.getText(),term.getValue()).start();
+                    if (tableview.getSelectionModel().getSelectedItem().getId()!=null){
+                        new UpdateScore(ScoreSessionvalue,id,ExamInput[0],ExamColumn.getText()).start();
+                    }else {
+                        tableview.getItems().clear();
+                        new ConnectionError().Connection("id is not present,Reload score to get id");
+                    }
+
                 });
 
                 TableColumn<Scores,Double> CummulativeColumn=new TableColumn<>("Cummulative");
@@ -350,15 +409,19 @@ public class StudentSelectAssessmentSessionWindowController implements Initializ
                 CummulativeColumn.setOnEditCommit((de)->{
                     de.getRowValue().setCumulative(Double.parseDouble(String.valueOf(de.getNewValue())));
                     CumInput[0] =de.getNewValue();
-                    String sub=tableview.getSelectionModel().getSelectedItem().getSubject();
-                    System.out.println("[SelectedRow] subject= "+sub );
+                    String id=tableview.getSelectionModel().getSelectedItem().getId();
+                    System.out.println("[SelectedRow] id= "+id );
                     System.out.println(CumInput[0]);
                     String ScoreSessionvalue=ScoreSession.getSelectionModel().getSelectedItem();
                     //This save input score to Database
-                    //scoresessionvalue here is the table name ,NewValue arg hereis the name of student selected
+                    //scoresessionvalue here is the table name
                     //Cumlative Input is the entity to save,it is the cummulative value typed into the cummulative Column
-                    //sub is the subject
-                    new UpdateScore(ScoreSessionvalue,NewValue,CumInput[0],sub,CummulativeColumn.getText(),term.getValue()).start();
+                    if (tableview.getSelectionModel().getSelectedItem().getId()!=null){
+                        new UpdateScore(ScoreSessionvalue,id,CumInput[0],CummulativeColumn.getText()).start();
+                    }else {
+                        tableview.getItems().clear();
+                        new ConnectionError().Connection("id is not present,Reload score to get id");
+                    }
 
                 });
 
@@ -366,7 +429,7 @@ public class StudentSelectAssessmentSessionWindowController implements Initializ
                 //////////////////////////////////////////////////
                // tableview.setItems(GetScores());
                 tableview.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-                tableview.getColumns().addAll(SubjectColumn,termcolumn,FirstCaColumn,SecondCaColumn,ThirdCaColumn,FourthCaColumn,
+                tableview.getColumns().addAll(idcolumn,SubjectColumn,termcolumn,FirstCaColumn,SecondCaColumn,ThirdCaColumn,FourthCaColumn,
                         FifthCaColumn,SixthCaColumn,SeventhCaColumn,EightCaColumn,NinethCaColumn,TenthCaColumn,
                         ExamColumn,CummulativeColumn);
                 ///Button And EditText
@@ -384,13 +447,13 @@ public class StudentSelectAssessmentSessionWindowController implements Initializ
                     if(sub.isEmpty()){
                         labelerror.setVisible(true);
                     }
-                    if (!sub.matches("^[A-Za-z]*$")){
+                    if (!sub.matches("^[A-Z[ ]0-9a-z]*$")){
                         new ConnectionError().Connection("Subject field contains invalid character");
                     }
                     if(ScoreSession.getValue()==null){
                         new ConnectionError().Connection("Please select session on top of the screen");
                     }
-                    if (!sub.isEmpty() && sub.matches("^[A-Za-z]*$")&&ScoreSession.getValue()!=null){
+                    if (!sub.isEmpty() && sub.matches("^[A-Z[ ]0-9a-z]*$")&&ScoreSession.getValue()!=null){
                         ///This thread does the actual adding
                         new InsertSubjectThread(sub,NewValue,ScoreSession.getSelectionModel().getSelectedItem(),tableview,term.getValue()).start();
                         labelerror.setVisible(false);
@@ -410,7 +473,12 @@ public class StudentSelectAssessmentSessionWindowController implements Initializ
                     }
                     if (ScoreSession.getValue()!=null||!ScoreSelected.isEmpty()){
                         //This Thread does the actual deleting
-                        new DeleteSubjectThread(ScoreSelected.get(0).getSubject(),NewValue,ScoreSession.getSelectionModel().getSelectedItem(),tableview,term.getValue()).start();
+                        if (ScoreSelected.get(0).getId()!=null){
+                            new DeleteSubjectThread(ScoreSelected.get(0).getId(),ScoreSession.getSelectionModel().getSelectedItem(),tableview).start();
+                        }else {
+                            tableview.getItems().clear();
+                            new ConnectionError().Connection("id is not present,Reload score to get id");
+                        }
                     }
                 });
                 DeleteButton.setMinWidth(100);
@@ -461,7 +529,11 @@ public class StudentSelectAssessmentSessionWindowController implements Initializ
                 printbutton.setOnAction((print)->{
                     Path path= Paths.get(System.getProperty("user.dir")+"/MyChildSchool");
                     File pdffile=new File(path+"/studentscores.pdf");
-                    new PrinterManager(pdfdocumentbytes,pdffile,textArea).start();
+                    if (pdfdocumentbytes!=null){
+                        new PrinterManager(pdfdocumentbytes,pdffile,textArea).start();
+                    }else{
+                        new ConnectionError().Connection("Document not available, get student scores before printing");
+                    }
                 });
                 ScorevBox.getChildren().addAll(label,ScoreSession,term,button,tableview,textArea,printbutton,scoreHbox,vb);
                 scrollpane.setContent(ScorevBox);
@@ -538,7 +610,10 @@ public class StudentSelectAssessmentSessionWindowController implements Initializ
 
        public void run() {
         System.out.println("[Retrieving information session]: setting up okhttp client");
-        OkHttpClient client=new OkHttpClient();
+           OkHttpClient client=new OkHttpClient.Builder()
+                   .connectTimeout(1, TimeUnit.MINUTES)
+                   .readTimeout(1, TimeUnit.MINUTES)
+                   .build();
 
         System.out.println("[Retrieving information session]: setting up okhttp client request");
         Request request=new Request.Builder()

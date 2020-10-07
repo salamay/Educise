@@ -13,6 +13,7 @@ import sample.LoginPage.LogInModel;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 public class getScoreSessionThread extends Thread {
@@ -24,7 +25,10 @@ public class getScoreSessionThread extends Thread {
     @Override
     public void run() {
         System.out.println("[Retrieving information session]: setting up okhttp client");
-        OkHttpClient client=new OkHttpClient();
+        OkHttpClient client=new OkHttpClient.Builder()
+                .connectTimeout(1, TimeUnit.MINUTES)
+                .readTimeout(1, TimeUnit.MINUTES)
+                .build();
 
         System.out.println("[Retrieving information session]: setting up okhttp client request");
         Request request=new Request.Builder()
@@ -66,6 +70,7 @@ public class getScoreSessionThread extends Thread {
                         System.out.println("[SelectClassThread]--> Connection Error,Window close");
                     }
                 });
+                response.close();
             }
             if (response.code()==404){
                 //Display an Alert dialog
@@ -76,6 +81,7 @@ public class getScoreSessionThread extends Thread {
                         System.out.println("[SelectClassThread]--> Connection Error,Window close");
                     }
                 });
+                response.close();
             }
 
         } catch (IOException e) {

@@ -11,33 +11,32 @@ import sample.LoginPage.DashBoard.SelectWindows.Registeration.LoadingWindow;
 import sample.LoginPage.LogInModel;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 public class DeleteSubjectThread extends Thread {
-    private String subject;
-    private String name;
+    private String id;
     private String session;
     private TableView<Scores> tableview;
-    private String term;
 
-    public DeleteSubjectThread(String subject, String name, String session, TableView<Scores> tableview, String term) {
-        this.subject=subject;
-        this.name=name;
+    public DeleteSubjectThread( String id, String session, TableView<Scores> tableview) {
+        this.id=id;
         this.session=session;
         this.tableview=tableview;
-        this.term=term;
-        System.out.println("[DeleteSubjectThread]-->Subject: "+subject);
+        System.out.println("[DeleteSubjectThread]-->id: "+id);
         System.out.println("[DeleteSubjectThread]-->session: "+session);
-        System.out.println("[DeleteSubjectThread]-->student name: "+name);
-        System.out.println("[DeleteSubjectThread]-->term: "+term);
     }
 
     @Override
     public void run() {
         System.out.println("[DeleteSubjectThread]-->Preparing to send Request");
-        OkHttpClient client=new OkHttpClient();
+        OkHttpClient client=new OkHttpClient.Builder()
+                .connectTimeout(1, TimeUnit.MINUTES)
+                .readTimeout(1, TimeUnit.MINUTES)
+                .build();
+
         Request request=new Request.Builder()
                 .addHeader("Authorization","Bearer "+ LogInModel.token)
-                .url("http://localhost:8080/deletesubject/"+subject+"/"+session+"/"+name+"/"+term)
+                .url("http://localhost:8080/deletesubject/"+id+"/"+session)
                 .build();
         try {
             Response response=client.newCall(request).execute();
@@ -49,6 +48,7 @@ public class DeleteSubjectThread extends Thread {
                     ScoreSelected=tableview.getSelectionModel().getSelectedItems();
                     ScoreSelected.forEach(AllScore::remove);
                 });
+                response.close();
             }else {
                 Platform.runLater(()->{
                     boolean error=new ConnectionError().Connection("server return error "+response.code()+": Unable to delete subject");
@@ -56,6 +56,7 @@ public class DeleteSubjectThread extends Thread {
                         System.out.println("[InsertSubjectThread]--> server error,unable to delete subject");
                     }
                 });
+                response.close();
             }
             if (response.code()==422){
                 //Display alert dialog

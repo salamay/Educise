@@ -10,6 +10,7 @@ import sample.LoginPage.DashBoard.SelectWindows.Registeration.LoadingWindow;
 import sample.LoginPage.LogInModel;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 public class InsertSubjectThread extends Thread {
     private String subject;
@@ -33,7 +34,11 @@ public class InsertSubjectThread extends Thread {
     @Override
     public void run() {
         System.out.println("[InsertSubjectThread]-->Preparing to send Request");
-        OkHttpClient client=new OkHttpClient();
+        OkHttpClient client=new OkHttpClient.Builder()
+                .connectTimeout(1, TimeUnit.MINUTES)
+                .readTimeout(1, TimeUnit.MINUTES)
+                .build();
+
         Request request=new Request.Builder()
                 .addHeader("Authorization","Bearer "+ LogInModel.token)
                 .url("http://localhost:8080/insertsubject/"+subject+"/"+session+"/"+name+"/"+term)

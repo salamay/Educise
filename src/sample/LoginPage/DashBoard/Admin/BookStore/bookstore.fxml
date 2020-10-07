@@ -284,7 +284,7 @@
                               </TableView>
                            </children>
                         </JFXScrollPane>
-                        <JFXTextArea fx:id="bookhistorytextarea" prefHeight="71.0" prefWidth="1180.0" />
+                        <JFXTextArea fx:id="bookhistorytextarea" prefHeight="71.0" prefWidth="1180.0" style="-fx-background-color: #FFFFFF;" />
                         <JFXButton fx:id="printhistorybutton" onAction="#printHistory" prefHeight="103.0" prefWidth="75.0" styleClass="print" stylesheets="@../../../../../back.css" text="  " />
                         <HBox alignment="CENTER" prefHeight="39.0" prefWidth="1180.0">
                            <children>

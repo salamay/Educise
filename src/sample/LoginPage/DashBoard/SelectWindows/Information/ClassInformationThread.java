@@ -21,6 +21,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.concurrent.TimeUnit;
 
 //this class does the fetching of Student information from database
 public class ClassInformationThread extends  Thread {
@@ -88,7 +89,11 @@ public class ClassInformationThread extends  Thread {
                     e.printStackTrace();
                 }
             });
-            OkHttpClient client=new OkHttpClient();
+            OkHttpClient client=new OkHttpClient.Builder()
+                    .connectTimeout(1, TimeUnit.MINUTES)
+                    .readTimeout(1, TimeUnit.MINUTES)
+                    .build();
+
             Request request=new Request.Builder()
                     .url("http://localhost:8080/retrievestudentinformation/"+studentName+"/"+classname)
                     .addHeader("Authorization","Bearer "+ LogInModel.token)

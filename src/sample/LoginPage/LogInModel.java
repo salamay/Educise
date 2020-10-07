@@ -13,22 +13,15 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import okhttp3.*;
 import sample.ConnectionError;
-import sample.LoginPage.DashBoard.DashboardController;
-import sample.LoginPage.DashBoard.SelectWindows.Registeration.LoadingWindow;
-import sample.Main;
 import sample.SplashScreenController;
-import sample.SqlConnection;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.util.concurrent.TimeUnit;
+
 
 public class LogInModel extends Thread{
     private String email;
@@ -56,7 +49,11 @@ public class LogInModel extends Thread{
     @Override
     public void run() {
         System.out.println("[LoginModel]-->Signing in");
-        OkHttpClient client=new OkHttpClient();
+        OkHttpClient client=new OkHttpClient.Builder()
+                .connectTimeout(1, TimeUnit.MINUTES)
+                .readTimeout(1, TimeUnit.MINUTES)
+                .build();
+
         System.out.println("[LoginModel]-->Setting up request body");
         GsonBuilder builder=new GsonBuilder();
         builder.setPrettyPrinting();

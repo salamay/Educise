@@ -9,24 +9,22 @@ import sample.LoginPage.DashBoard.SelectWindows.Registeration.LoadingWindow;
 import sample.LoginPage.LogInModel;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 public class UpdateScore extends Thread {
 
-    private String Studentname;
+    private String id;
+    //Score table correspond to a table in database
     private String ScoreTable;
     //data instance is the score of the student
     private double data;
-    private String Subject;
     //column instance here is the corresponding column you want to update,it correspond to a table in the databese
     private String column;
-    private String term;
-    public UpdateScore(String scoreTable, String studentname, double data, String Subject, String column,String term) {
-        this.Studentname = studentname;
+    public UpdateScore(String scoreTable, String id, double data, String column) {
         this.ScoreTable = scoreTable;
+        this.id = id;
         this.data = data;
-        this.Subject=Subject;
-        this.term=term;
-        //remove white space to avoid sql sythax error
+        //remove white space to avoid sql syntax error
         this.column=column.replaceAll(" ","");
     }
 
@@ -34,12 +32,10 @@ public class UpdateScore extends Thread {
     @Override
     public void run() {
         UpdateScoreRequestEntity updateScoreRequestEntity=new UpdateScoreRequestEntity();
-        updateScoreRequestEntity.setName(Studentname);
         updateScoreRequestEntity.setTable(ScoreTable);
-        updateScoreRequestEntity.setSubject(Subject);
         updateScoreRequestEntity.setCa(column);
         updateScoreRequestEntity.setScore(data);
-        updateScoreRequestEntity.setTerm(term);
+        updateScoreRequestEntity.setId(id);
         System.out.println("[UpdateScore]:Updating Score--> Preparing json body");
         GsonBuilder builder=new GsonBuilder();
         builder.setPrettyPrinting();
@@ -52,7 +48,11 @@ public class UpdateScore extends Thread {
                 .addFormDataPart("file","file.gson",rawbody)
                 .build();
         System.out.println("[UpdateScore]:Updating Score--> Setting up client");
-        OkHttpClient client=new OkHttpClient();
+        OkHttpClient client=new OkHttpClient.Builder()
+                .connectTimeout(1, TimeUnit.MINUTES)
+                .readTimeout(1, TimeUnit.MINUTES)
+                .build();
+
         System.out.println("[UpdateScore]:Updating Score--> Making Request");
         Request request=new Request.Builder()
                 .addHeader("Authorization","Bearer "+ LogInModel.token)
@@ -64,7 +64,7 @@ public class UpdateScore extends Thread {
             Response response=client.newCall(request).execute();
             System.out.println("[UpdateScore]:Response--> "+response);
             if (response.code()==200||response.code()==201||response.code()==212||response.code()==202){
-
+                response.close();
             }else {
                 System.out.println("[UpdateScore]--> server return error "+response.code()+": Unable to get score");
                 //Display alert dialog
@@ -74,6 +74,7 @@ public class UpdateScore extends Thread {
                         System.out.println("[UpdateScore]--> Connection Error,Window close");
                     }
                 });
+                response.close();
             }
             if (response.code()==422){
                 //Display alert dialog

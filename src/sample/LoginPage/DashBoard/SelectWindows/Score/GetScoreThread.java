@@ -16,6 +16,7 @@ import sample.LoginPage.LogInModel;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 
 ///This class get the Scores from the Database
@@ -59,7 +60,11 @@ public class GetScoreThread extends Thread {
         String json=gson.toJson(getScoreRequestEntity);
         System.out.println("[GetScoreThread]--> entity to send"+json);
         System.out.println("[GetScoreThread]--> Setting up connection");
-        OkHttpClient client=new OkHttpClient();
+        OkHttpClient client=new OkHttpClient.Builder()
+                .connectTimeout(1, TimeUnit.MINUTES)
+                .readTimeout(1, TimeUnit.MINUTES)
+                .build();
+
         Response response;
         ///This make the request body for the json
         RequestBody jsonbody=RequestBody.create(MediaType.parse("application/json"),json);
@@ -67,6 +72,7 @@ public class GetScoreThread extends Thread {
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("jsonbody","json.gson",jsonbody)
                 .build();
+
         Request request=new Request.Builder()
                 .post(body)
                 .addHeader("Authorization","Bearer "+ LogInModel.token)
@@ -106,7 +112,7 @@ public class GetScoreThread extends Thread {
                             s.getSeventhca(),s.getSixthca(),
                             s.getEightca(),s.getNinthca(),
                             s.getTenthca(),s.getExam(),
-                            s.getCumulative(),s.getTerm()));
+                            s.getCumulative(),s.getTerm(),s.getId()));
                     tableView.setItems(scores);
                     response.close();
                 }
@@ -123,7 +129,7 @@ public class GetScoreThread extends Thread {
                 Platform.runLater(()->{
                     boolean error=new ConnectionError().Connection("server return error "+response.code()+": Unable to  get score");
                     if (error){
-                        tableView.getColumns().clear();
+                        tableView.getItems().clear();
                             System.out.println("[GetScoreThread]--> Server error,unable to get score");
                     }
                 });
@@ -166,6 +172,7 @@ public class GetScoreThread extends Thread {
             //Display an Alert dialog
             Platform.runLater(()->{
                 LoadingWindow.window.close();
+                tableView.getItems().clear();
                 boolean error=new ConnectionError().Connection("Unable to establish,CHECK INTERNET CONNECTION");
                 if (error){
                     System.out.println("[SaveScoreThread]--> Connection Error,Window close");

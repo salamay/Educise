@@ -15,30 +15,37 @@ import sample.LoginPage.LogInModel;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class getSchoolFeeThread extends Thread {
     private String clas;
     private String term;
     private String year;
+    private String tag;
     private TableView<Fee> tableView;
-    public getSchoolFeeThread(String clas, String term, String year, TableView<Fee> tableview) {
+    public getSchoolFeeThread(String clas, String term, String year, TableView<Fee> tableview, String tag) {
         this.clas=clas;
         this.term=term;
         this.year=year;
         this.tableView=tableview;
+        this.tag=tag;
         System.out.println("[getschoolfee]: Class: "+clas);
         System.out.println("[getschoolfee]: term: "+term);
         System.out.println("[getschoolfee]: year: "+year);
+        System.out.println("[getschoolfee]: tag: "+tag);
     }
 
     @Override
     public void run() {
 
         System.out.println("[getschoolfee]: Setting up client ");
-        OkHttpClient client=new OkHttpClient();
+        OkHttpClient client=new OkHttpClient.Builder()
+                .connectTimeout(1, TimeUnit.MINUTES)
+                .readTimeout(1, TimeUnit.MINUTES)
+                .build();
 
         Request request=new Request.Builder()
-                .url("http://localhost:8080/getschoolfee/"+clas+"/"+term+"/"+year)
+                .url("http://localhost:8080/getschoolfee/"+clas+"/"+term+"/"+year+"/"+tag)
                 .addHeader("Authorization","Bearer "+ LogInModel.token)
                 .build();
         try {

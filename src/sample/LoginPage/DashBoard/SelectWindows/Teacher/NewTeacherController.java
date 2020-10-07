@@ -25,6 +25,7 @@ import java.io.*;
 import java.net.URL;
 import java.nio.file.Files;
 import java.util.ResourceBundle;
+import java.util.concurrent.TimeUnit;
 
 public class NewTeacherController implements Initializable {
     public JFXTextField FirstName;
@@ -327,7 +328,11 @@ public class NewTeacherController implements Initializable {
                 String rawjson=gson.toJson(newTeacherRequestEntity);
 
                 System.out.println("[NewTeacherController] :Setting up client");
-                OkHttpClient client=new OkHttpClient();
+                OkHttpClient client=new OkHttpClient.Builder()
+                        .connectTimeout(1, TimeUnit.MINUTES)
+                        .readTimeout(1, TimeUnit.MINUTES)
+                        .build();
+
                 System.out.println("[NewTeacherController] :Preparing request body");
                 RequestBody requestBody=RequestBody.create(MediaType.parse("application/json"),rawjson);
 

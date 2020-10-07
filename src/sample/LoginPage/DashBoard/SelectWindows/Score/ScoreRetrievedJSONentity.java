@@ -2,6 +2,7 @@ package sample.LoginPage.DashBoard.SelectWindows.Score;
 
 /////This class is aa json entity that contains the scores retrieved from database
 public class ScoreRetrievedJSONentity {
+    private String id;
     private String subject;
     private double firstca;
     private double secondca;
@@ -18,6 +19,14 @@ public class ScoreRetrievedJSONentity {
     private String term;
     private byte[] pdfdocumenbytes;
     public ScoreRetrievedJSONentity() {
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getSubject() {

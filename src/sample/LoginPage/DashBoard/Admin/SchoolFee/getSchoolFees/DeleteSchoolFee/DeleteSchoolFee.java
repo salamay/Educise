@@ -36,7 +36,7 @@ public class DeleteSchoolFee extends Thread {
 
         System.out.println("[DeleteSchoolFee]: Making request");
         Request request=new Request.Builder()
-                .url("http://localhost:8080/deleteschoolfee/"+id)
+                .url("http://167.99.91.154:8080/deleteschoolfee/"+id)
                 .addHeader("Authorization","Bearer "+ LogInModel.token)
                 .delete()
                 .build();

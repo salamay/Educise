@@ -63,7 +63,7 @@ public class SaveSchoolFee extends Thread {
         System.out.println(json);
         RequestBody body=RequestBody.create(json, MediaType.parse("application/json"));
         Request request=new Request.Builder()
-                .url("http://localhost:8080/savestudentnametoschoolfee")
+                .url("http://167.99.91.154:8080/savestudentnametoschoolfee")
                 .addHeader("Authorization","Bearer "+ LogInModel.token)
                 .post(body)
                 .build();

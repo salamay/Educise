@@ -3,6 +3,7 @@ package sample.LoginPage.DashBoard.SelectWindows.Information;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import java.io.IOException;
@@ -19,6 +20,8 @@ public class SelectInformationSesssionWindow {
        StudentWindow.setMaximized(true);
        StudentWindow.initModality(Modality.APPLICATION_MODAL);
        StudentWindow.setResizable(true);
+       StudentWindow.setTitle("Select session");
+       StudentWindow.getIcons().add(new Image("image/window_icon.png"));
        StudentWindow.centerOnScreen();
        StudentWindow.setMinHeight(700);
        StudentWindow.setMinWidth(1200);

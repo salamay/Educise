@@ -3,6 +3,7 @@ package sample.LoginPage.DashBoard.Admin;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -18,6 +19,8 @@ public class AdminWindow {
         window.setResizable(true);
         window.initModality(Modality.APPLICATION_MODAL);
         window.setMaximized(true);
+        window.setTitle("Admin window");
+        window.getIcons().add(new Image("image/window_icon.png"));
         window.initModality(Modality.APPLICATION_MODAL);
         window.setScene(scene);
         window.show();

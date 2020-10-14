@@ -95,7 +95,7 @@ public class StudentSelectParentController implements Initializable {
 
             System.out.println("[ParentInfoThread]: Making request");
             Request request=new Request.Builder()
-                    .url("http://localhost:8080/getparentinformation/"+classSelected+"/"+parentname)
+                    .url("http://167.99.91.154:8080/getparentinformation/"+classSelected+"/"+parentname)
                     .addHeader("Authorization","Bearer "+ LogInModel.token)
                     .build();
 

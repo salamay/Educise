@@ -15,11 +15,9 @@ import java.util.concurrent.TimeUnit;
 public class EditBookThread extends Thread {
 
     private EditBookRequest editBookRequest;
-    private String oldValue;
     private TableColumn.CellEditEvent<Book, ?> e;
-    public EditBookThread(EditBookRequest editBookRequest, String oldValue, TableColumn.CellEditEvent<Book, ?> e) {
+    public EditBookThread(EditBookRequest editBookRequest, TableColumn.CellEditEvent<Book, ?> e) {
         this.editBookRequest=editBookRequest;
-        this.oldValue=oldValue;
         this.e=e;
     }
 
@@ -39,7 +37,7 @@ public class EditBookThread extends Thread {
         System.out.println("[EditBook]: RequestBody--> "+json);
         RequestBody requestBody=RequestBody.create(MediaType.parse("application/json"),json);
         Request request=new Request.Builder()
-                .url("http://localhost:8080/editbook")
+                .url("http://167.99.91.154:8080/editbook")
                 .addHeader("Authorization","Bearer "+ LogInModel.token)
                 .post(requestBody)
                 .build();
@@ -54,9 +52,9 @@ public class EditBookThread extends Thread {
                 });
             }else {
                 Platform.runLater(()->{
-                    e.getTableColumn().onEditCancelProperty();
                     boolean error=new ConnectionError().Connection("server:error "+response.code()+" Unable to Edit book books");
                     if (error){
+                        e.getTableView().getItems().clear();
                         System.out.println("[EditBook]--> Connection Error");
                     }
                 });
@@ -76,6 +74,7 @@ public class EditBookThread extends Thread {
                 Platform.runLater(()->{
                     boolean error=new ConnectionError().Connection("server return error "+response.code()+": Server cannot process your request,check fields for invalid character");
                     if (error){
+                        e.getTableView().getItems().clear();
                         System.out.println("[EditBook]--> Connection error");
                     }
                 });
@@ -91,14 +90,15 @@ public class EditBookThread extends Thread {
                 });
                 response.close();
             }
-        } catch (IOException e) {
+        } catch (IOException ex) {
             Platform.runLater(()->{
                 boolean error=new ConnectionError().Connection("Unable to establish connection,CHECK INTERNET CONNECTION");
                 if (error){
+                    e.getTableView().getItems().clear();
                     System.out.println("[EditBook]--> Connection Error,Window close");
                 }
             });
-            e.printStackTrace();
+            ex.printStackTrace();
         }
 
     }

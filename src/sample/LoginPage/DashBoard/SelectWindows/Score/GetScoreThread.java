@@ -76,7 +76,7 @@ public class GetScoreThread extends Thread {
         Request request=new Request.Builder()
                 .post(body)
                 .addHeader("Authorization","Bearer "+ LogInModel.token)
-                .url("http://localhost:8080/getstudentscores")
+                .url("http://167.99.91.154:8080/getstudentscores")
                 .build();
         System.out.println("[GetScoreThread]: Setting up request body");
         System.out.println("[GetScoreThread]--> Sending request");
@@ -109,7 +109,7 @@ public class GetScoreThread extends Thread {
                     scores.add(new Scores(s.getSubject(),s.getFirstca(),
                             s.getSecondca(),s.getThirdca(),
                             s.getFourthca(),s.getFifthca(),
-                            s.getSeventhca(),s.getSixthca(),
+                            s.getSixthca(),s.getSeventhca(),
                             s.getEightca(),s.getNinthca(),
                             s.getTenthca(),s.getExam(),
                             s.getCumulative(),s.getTerm(),s.getId()));

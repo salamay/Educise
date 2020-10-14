@@ -45,7 +45,7 @@ public class EditInformation extends Thread {
                 .build();
 
         Request request=new Request.Builder()
-                .url("http://localhost:8080/editstudentinformation/"+session+"/"+newValue+"/"+id+"/"+column)
+                .url("http://167.99.91.154:8080/editstudentinformation/"+session+"/"+newValue+"/"+id+"/"+column)
                 .addHeader("Authorization","Bearer "+ LogInModel.token)
                 .build();
         try {

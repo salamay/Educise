@@ -560,6 +560,7 @@ public class StudentSelectAssessmentSessionWindowController implements Initializ
             layout.setPadding(new Insets(10, 10, 10, 10));
             StudentSelectAssessmentSessionWindow.window.setMaximized(true);
             Scene scene = new Scene(layout);
+            StudentSelectAssessmentSessionWindow.window.setTitle("Student score");
             StudentSelectAssessmentSessionWindow.window.setScene(scene);
 
 
@@ -617,7 +618,7 @@ public class StudentSelectAssessmentSessionWindowController implements Initializ
 
         System.out.println("[Retrieving information session]: setting up okhttp client request");
         Request request=new Request.Builder()
-                .url("http://localhost:8080/retrieveinformationsession")
+                .url("http://167.99.91.154:8080/retrieveinformationsession")
                 .addHeader("Authorization","Bearer "+ LogInModel.token)
                 .build();
 

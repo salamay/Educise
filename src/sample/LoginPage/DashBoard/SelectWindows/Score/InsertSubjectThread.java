@@ -41,7 +41,7 @@ public class InsertSubjectThread extends Thread {
 
         Request request=new Request.Builder()
                 .addHeader("Authorization","Bearer "+ LogInModel.token)
-                .url("http://localhost:8080/insertsubject/"+subject+"/"+session+"/"+name+"/"+term)
+                .url("http://167.99.91.154:8080/insertsubject/"+subject+"/"+session+"/"+name+"/"+term)
                 .build();
         try {
             Response response=client.newCall(request).execute();

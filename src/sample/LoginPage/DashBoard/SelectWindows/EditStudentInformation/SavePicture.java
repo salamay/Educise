@@ -43,7 +43,8 @@ public class SavePicture extends Thread{
         OkHttpClient client=new OkHttpClient.Builder()
                 .connectTimeout(1, TimeUnit.MINUTES)
                 .readTimeout(1, TimeUnit.MINUTES)
-                .build();        System.out.println("[Savepicture]: --> Preparing request body ");
+                .build();
+        System.out.println("[Savepicture]: --> Preparing request body ");
         GsonBuilder builder=new GsonBuilder();
         builder.serializeNulls();
         builder.setPrettyPrinting();
@@ -64,7 +65,7 @@ public class SavePicture extends Thread{
         String rawbody=gson.toJson(editInformationImageRequestEntity);
         RequestBody requestBody=RequestBody.create(rawbody, MediaType.parse("application/json"));
         Request request=new Request.Builder()
-                .url("http://localhost:8080/editinformationimage")
+                .url("http://167.99.91.154:8080/editinformationimage")
                 .addHeader("Authorization","Bearer "+ LogInModel.token)
                 .post(requestBody)
                 .build();

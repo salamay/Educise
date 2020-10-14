@@ -36,7 +36,7 @@ public class DeleteSubjectThread extends Thread {
 
         Request request=new Request.Builder()
                 .addHeader("Authorization","Bearer "+ LogInModel.token)
-                .url("http://localhost:8080/deletesubject/"+id+"/"+session)
+                .url("http://167.99.91.154:8080/deletesubject/"+id+"/"+session)
                 .build();
         try {
             Response response=client.newCall(request).execute();

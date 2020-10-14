@@ -3,6 +3,7 @@ package sample.LoginPage.DashBoard.SelectWindows.Teacher;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -21,6 +22,8 @@ public class NewTeacherWindow {
         window.centerOnScreen();
         window.setMaximized(true);
         window.setScene(scene);
+        window.setTitle("Register tearcher");
+        window.getIcons().add(new Image("image/window_icon.png"));
         window.show();
         System.out.println("[NewTeacherWIndow]: window Created");
 

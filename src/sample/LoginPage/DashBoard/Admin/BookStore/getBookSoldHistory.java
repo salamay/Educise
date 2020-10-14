@@ -45,7 +45,7 @@ public class getBookSoldHistory extends Thread{
 
 
         Request request=new Request.Builder()
-                .url("http://localhost:8080/getbookhistory/"+session+"/"+term+"/"+date)
+                .url("http://167.99.91.154:8080/getbookhistory/"+session+"/"+term+"/"+date)
                 .addHeader("Authorization","Bearer "+ LogInModel.token)
                 .build();
         try {

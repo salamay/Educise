@@ -97,7 +97,7 @@ public class SelectInformationSessionController implements Initializable {
 
             System.out.println("[ClassThread]: setting up okhttp client request");
             Request request = new Request.Builder()
-                    .url("http://localhost:8080/retrieveinformationsession")
+                    .url("http://167.99.91.154:8080/retrieveinformationsession")
                     .addHeader("Authorization", "Bearer " + LogInModel.token)
                     .build();
 

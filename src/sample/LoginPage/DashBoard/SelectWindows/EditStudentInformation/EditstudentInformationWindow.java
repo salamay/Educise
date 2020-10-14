@@ -3,6 +3,7 @@ package sample.LoginPage.DashBoard.SelectWindows.EditStudentInformation;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -24,6 +25,8 @@ public class EditstudentInformationWindow {
         StudentWindow.setResizable(true);
         StudentWindow.centerOnScreen();
         StudentWindow.setMinHeight(700);
+        StudentWindow.setTitle("Edit student information");
+        StudentWindow.getIcons().add(new Image("image/window_icon.png"));
         StudentWindow.setMinWidth(1200);
         StudentWindow.setScene(scene);
         StudentWindow.show();

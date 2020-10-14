@@ -45,7 +45,7 @@ public class getSchoolFeeThread extends Thread {
                 .build();
 
         Request request=new Request.Builder()
-                .url("http://localhost:8080/getschoolfee/"+clas+"/"+term+"/"+year+"/"+tag)
+                .url("http://167.99.91.154:8080/getschoolfee/"+clas+"/"+term+"/"+year+"/"+tag)
                 .addHeader("Authorization","Bearer "+ LogInModel.token)
                 .build();
         try {
@@ -89,6 +89,7 @@ public class getSchoolFeeThread extends Thread {
                     LoadingWindow.window.close();
                     boolean error=new ConnectionError().Connection("server return error "+response.code()+": School fee not found");
                     if (error){
+                        tableView.getItems().clear();
                         System.out.println("[getschoolfee]--> school fee not found on the server");
                     }
                 });
@@ -111,6 +112,7 @@ public class getSchoolFeeThread extends Thread {
                     LoadingWindow.window.close();
                     boolean error=new ConnectionError().Connection("server return error "+response.code()+": Access denied");
                     if (error){
+                        tableView.getItems().clear();
                         System.out.println("Access denied");
                     }
                 });

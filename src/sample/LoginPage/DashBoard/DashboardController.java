@@ -14,6 +14,8 @@ import sample.LoginPage.DashBoard.SelectWindows.Information.SelectInformationSes
 import sample.LoginPage.DashBoard.SelectWindows.Parent.SelectParent;
 import sample.LoginPage.DashBoard.SelectWindows.Score.StudentSelectAssessmentSessionWindow;
 import sample.LoginPage.DashBoard.SelectWindows.Registeration.RegisterationWindow;
+import sample.LoginPage.DashBoard.SelectWindows.Teacher.NewTeacherWindow;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -51,7 +53,7 @@ public class DashboardController implements Initializable {
     }
     public void NewTeacherButtonClicked() throws IOException {
         new ConnectionError().Connection("Not available");
-        //new NewTeacherWindow();
+        new NewTeacherWindow();
     }
     public void NewTeacherButtonClickedtwo() throws IOException {
         new ConnectionError().Connection("Not available");

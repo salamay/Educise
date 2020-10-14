@@ -58,6 +58,11 @@
             -fx-background-size:100%, 100%;
 
             }
+            .print{
+                        -fx-background-image: url('icon/drawable-xxxhdpi/ic_print_light_blue_700_18dp.png');
+                        -fx-background-size:100%, 100%;
+
+                        }
 .dashboardVbox{
 -fx-background-radius: 0 30 0 0;
 }
@@ -124,6 +129,13 @@
                                 -fx-background-image: url('image/ss2_classroom.jpg');
                                 -fx-background-size:100%, 100%;
           }
+           .splashscreen{
+                                          -fx-background-image: url('image/jess-bailey-l3N9Q27zULw-unsplash.jpg');
+                                          -fx-background-size:100%, 100%;
+                    } .pen{
+                                          -fx-background-image: url('image/pen.png');
+                                          -fx-background-size:100%, 100%;
+                    }
             .ss3_Background{
                                           -fx-background-image: url('image/ss3_classroom.jpg');
                                           -fx-background-size:100%, 100%;

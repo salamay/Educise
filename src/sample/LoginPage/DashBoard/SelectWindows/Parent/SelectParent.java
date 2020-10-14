@@ -13,6 +13,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
@@ -70,6 +71,8 @@ public class SelectParent {
         window1.setMinWidth(1200);
         window1.setMinHeight(700);
         window1.centerOnScreen();
+        window1.setTitle("Select parent");
+        window1.getIcons().add(new Image("image/window_icon.png"));
         window1.initModality(Modality.APPLICATION_MODAL);
         window1.show();
 ///////////////////////////////////Displays the window end///////////////////////////
@@ -136,7 +139,7 @@ public class SelectParent {
 
             System.out.println("[Retrieving information session]: setting up okhttp client request");
             Request request=new Request.Builder()
-                    .url("http://localhost:8080/retrieveinformationsession")
+                    .url("http://167.99.91.154:8080/retrieveinformationsession")
                     .addHeader("Authorization","Bearer "+ LogInModel.token)
                     .build();
 
@@ -224,7 +227,7 @@ public class SelectParent {
 
             System.out.println("[SelectParent]: setting up okhttp client request");
             Request request=new Request.Builder()
-                    .url("http://localhost:8080/retrieveparent/"+classSelected)
+                    .url("http://167.99.91.154:8080/retrieveparent/"+classSelected)
                     .addHeader("Authorization","Bearer "+ LogInModel.token)
                     .build();
 

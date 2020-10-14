@@ -114,7 +114,7 @@ public class RegisterStudentThread extends  Thread {
             System.out.println("[RegisterstudentThread]: "+" Finished preparing request body");
             System.out.println("[RegisterstudentThread]: "+"sending request");
             Request  request=new Request.Builder()
-                    .url("http://localhost:8080/register/"+session)
+                    .url("http://167.99.91.154:8080/register/"+session)
                     .post(requestBody)
                     .addHeader("Authorization","Bearer "+ LogInModel.token)
                     .build();

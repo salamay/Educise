@@ -261,11 +261,6 @@ public class BookStoreWindowController implements Initializable {
         sellbooktermcolumn.setCellValueFactory(new PropertyValueFactory<>("term"));
         /////////////////////////////////Sell book layout setting end////////////////
 
-        try {
-            new LoadingWindow();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         /////Starting to get all books from server
         new GetAllBooks(addbooktableview,editbooktableview).start();
     }
@@ -422,7 +417,6 @@ public class BookStoreWindowController implements Initializable {
         }
     }
     public void EditBook(TableColumn.CellEditEvent<Book, ?> e) throws IOException {
-        String oldValue= e.getOldValue().toString();
         String entity= e.getNewValue().toString();
         //Columnname instance here correspond to a table column in the database
         String columnname=e.getTableColumn().getText();
@@ -433,10 +427,11 @@ public class BookStoreWindowController implements Initializable {
             editBookRequest.setEntity(entity);
             editBookRequest.setColumn(columnname);
             editBookRequest.setId(id);
-            new EditBookThread(editBookRequest,oldValue,e).start();
+            new EditBookThread(editBookRequest,e).start();
         }
        else {
-            boolean error=new ConnectionError().Connection("Please provide a valid input for the field");
+            boolean error=new ConnectionError().Connection("Please provide a valid input for the field,if id is not present, reload window to update the id");
+            editbooktableview.getItems().clear();
             System.out.println("EditBook: Please provide a valid input for the field,if id is not present, reload window to update the id");
         }
     }
@@ -451,7 +446,6 @@ public class BookStoreWindowController implements Initializable {
                 new DeleteBook(bookselected.get(0).getId(),editbooktableview).start();
             }
         }
-
     }
 
     //Editbook End

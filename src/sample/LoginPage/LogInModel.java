@@ -10,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
@@ -66,7 +67,7 @@ public class LogInModel extends Thread{
         RequestBody requestBody=RequestBody.create(MediaType.parse("application/json"),json);
 
         Request request=new Request.Builder()
-                .url("http://localhost:8080/authenticate")
+                .url("http://167.99.91.154:8080/authenticate")
                 .post(requestBody)
                 .build();
         try {
@@ -77,11 +78,11 @@ public class LogInModel extends Thread{
                 byte[] rawbody=response.body().bytes();
                 System.out.println("RawBody: "+rawbody);
                 String jwt=new String(rawbody,"UTF-8");
-                System.out.println("JWT: "+jwt);
                 Jwt j=new Jwt();
                 GsonBuilder builder1=new GsonBuilder();
                 j=gson.fromJson(jwt,Jwt.class);
                 token=j.getJwt();
+                System.out.println("token: "+token);
                 if (token!=null){
                     Platform.runLater(()->{
                         SplashScreenController.window1.close();
@@ -98,6 +99,7 @@ public class LogInModel extends Thread{
                         window2.setMaximized(true);
                         window2.isMaximized();
                         window2.setResizable(false);
+                        window2.getIcons().add(new Image("image/window_icon.png"));
                         Scene scene = new Scene(root,1200,700);
                         window2.setScene(scene);
                         window2.show();

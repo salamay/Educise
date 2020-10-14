@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
@@ -179,6 +180,7 @@ public class InformationWindow {
         window1.setResizable(true);
         window1.isResizable();
         window1.isMaximized();
+        window1.getIcons().add(new Image("image/window_icon.png"));
         Scene scene=new Scene(borderPane,1200,700);
         window1.setScene(scene);
         window1.show();

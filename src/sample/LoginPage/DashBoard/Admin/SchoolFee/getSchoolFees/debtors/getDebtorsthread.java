@@ -7,7 +7,7 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableView;
-import net.sf.jasperreports.engine.JasperPrint;
+
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -54,7 +54,7 @@ public class getDebtorsthread extends Thread{
         System.out.print("[GetDebtorsThread]: Setting up Request");
         Request request=new Request.Builder()
                 .addHeader("Authorization","Bearer "+ LogInModel.token)
-                .url("http://localhost:8080/getdebtors/"+clas+"/"+term+"/"+session+"/"+minimum+"/"+tag)
+                .url("http://167.99.91.154:8080/getdebtors/"+clas+"/"+term+"/"+session+"/"+minimum+"/"+tag)
                 .build();
         try {
             System.out.print("[GetDebtorsThread]: Retrieving response");

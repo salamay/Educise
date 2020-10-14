@@ -88,7 +88,7 @@ public class CreatingSessionThread  extends Thread{
         System.out.println("[CreatingSessionThread]: Sending Request");
         Request request=new Request.Builder()
                 .addHeader("Authorization","Bearer "+ LogInModel.token)
-                .url("http://localhost:8080/createsession")
+                .url("http://167.99.91.154:8080/createsession")
                 .post(requestBody)
                 .build();
         try {

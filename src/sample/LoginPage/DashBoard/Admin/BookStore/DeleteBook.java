@@ -30,7 +30,7 @@ public class DeleteBook extends Thread{
                 .build();
 
         Request request=new Request.Builder()
-                .url("http://localhost:8080/deletebook/"+id)
+                .url("http://167.99.91.154:8080/deletebook/"+id)
                 .addHeader("Authorization","Bearer "+ LogInModel.token)
                 .delete()
                 .build();

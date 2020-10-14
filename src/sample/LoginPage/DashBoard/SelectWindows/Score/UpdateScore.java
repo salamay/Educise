@@ -57,7 +57,7 @@ public class UpdateScore extends Thread {
         Request request=new Request.Builder()
                 .addHeader("Authorization","Bearer "+ LogInModel.token)
                 .post(requestbody)
-                .url("http://localhost:8080/updatescore")
+                .url("http://167.99.91.154:8080/updatescore")
                 .build();
         System.out.println("[UpdateScore]:Updating Score--> Sending Request");
         try {

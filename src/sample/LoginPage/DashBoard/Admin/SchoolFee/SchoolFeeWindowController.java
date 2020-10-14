@@ -6,7 +6,6 @@ import com.jfoenix.controls.JFXTextArea;
 
 import com.jfoenix.controls.JFXTextField;
 import javafx.animation.ScaleTransition;
-import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
 
@@ -14,10 +13,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.Duration;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperPrintManager;
 import sample.ConnectionError;
 import sample.LoginPage.DashBoard.Admin.SchoolFee.getSchoolFees.DeleteSchoolFee.DeleteSchoolFee;
 import sample.LoginPage.DashBoard.Admin.SchoolFee.getSchoolFees.SaveSchoolFee;
@@ -26,7 +23,7 @@ import sample.LoginPage.DashBoard.Admin.SchoolFee.getSchoolFees.getSchoolFeeThre
 import sample.LoginPage.DashBoard.Admin.SchoolFee.getSchoolFees.getSchoolFeeWithoutTermThread;
 import sample.LoginPage.DashBoard.Admin.SchoolFee.getSchoolFees.insertTerm;
 import sample.LoginPage.DashBoard.SelectWindows.Registeration.LoadingWindow;
-import sample.LoginPage.LogInModel;
+
 
 import javax.print.*;
 import javax.print.attribute.*;
@@ -34,10 +31,7 @@ import javax.print.attribute.standard.MediaSizeName;
 import javax.print.attribute.standard.Sides;
 import javax.print.event.PrintJobEvent;
 import javax.print.event.PrintJobListener;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -496,20 +490,20 @@ public class SchoolFeeWindowController implements Initializable {
 
 
     public  void printButtonClicked() throws IOException {
-        System.out.println("[SchoolFeeWindowController]: Printing debtors");
-        System.out.println("[SchoolFeeWindowController]: Pdf: "+pdf);
-        if (pdf!=null){
-            Path path= Paths.get(System.getProperty("user.dir")+"/MyChildSchool");
+//        System.out.println("[SchoolFeeWindowController]: Printing debtors");
+//        System.out.println("[SchoolFeeWindowController]: Pdf: "+pdf);
+        if (pdf != null) {
+            Path path = Paths.get(System.getProperty("user.dir") + "/MyChildSchool");
             try {
                 Files.createDirectories(path);
-                if (Files.exists(path)){
-                    File pdffile=new File(path+"/debtors.pdf");
+                if (Files.exists(path)) {
+                    File pdffile = new File(path + "/debtors.pdf");
                     FileOutputStream fileOutputStream=new FileOutputStream(pdffile);
                     fileOutputStream.write(pdf);
                     fileOutputStream.close();
-                    fileOutputStream.flush();
                     FileInputStream fileInputStream=new FileInputStream(pdffile);
-                    DocFlavor flavor=DocFlavor.INPUT_STREAM.AUTOSENSE;
+                    fileInputStream.close();
+                    DocFlavor flavor = DocFlavor.INPUT_STREAM.AUTOSENSE;
                     PrintRequestAttributeSet asset=new HashPrintRequestAttributeSet();
                     asset.add(MediaSizeName.ISO_A4);
                     asset.add(Sides.DUPLEX);

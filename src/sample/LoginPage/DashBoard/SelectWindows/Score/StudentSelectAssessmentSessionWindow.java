@@ -3,6 +3,7 @@ package sample.LoginPage.DashBoard.SelectWindows.Score;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -22,6 +23,7 @@ public class StudentSelectAssessmentSessionWindow {
         window.setMaximized(true);
         window.isMaximized();
         window.centerOnScreen();
+        window.getIcons().add(new Image("image/window_icon.png"));
         window.setMinHeight(700);
         window.setMinWidth(1200);
         window.show();

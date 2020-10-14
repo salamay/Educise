@@ -7,6 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
@@ -74,6 +75,8 @@ public class SplashScreenController implements Initializable {
                 window1.setMaximized(true);
                 window1.setResizable(false);
                 window1.show();
+                window1.setTitle("Sign in");
+                window1.getIcons().add(new Image("image/window_icon.png"));
                 Main.window1.close();
 
             });

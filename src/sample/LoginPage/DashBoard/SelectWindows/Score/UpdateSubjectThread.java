@@ -62,7 +62,7 @@ public class UpdateSubjectThread extends Thread {
         Request request=new Request.Builder()
                 .post(body)
                 .addHeader("Authorization","Bearer "+ LogInModel.token)
-                .url("http://localhost:8080/updatesubject")
+                .url("http://167.99.91.154:8080/updatesubject")
                 .build();
         System.out.println("[UpdateSubjectThread]--> Request sent");
         try {

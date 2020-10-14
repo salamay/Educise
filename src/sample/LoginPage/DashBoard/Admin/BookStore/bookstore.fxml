@@ -25,7 +25,7 @@
                               <Font name="Algerian" size="24.0" />
                            </font>
                         </Label>
-                        <VBox prefHeight="455.0" prefWidth="1190.0" spacing="5.0" style="-fx-background-color: #202639;">
+                        <VBox prefHeight="429.0" prefWidth="1190.0" spacing="5.0" style="-fx-background-color: #202639;">
                            <children>
                               <Label alignment="CENTER" prefHeight="23.0" prefWidth="47.0" text="Title:" textAlignment="CENTER" textFill="#eee5e5">
                                  <font>
@@ -63,9 +63,12 @@
                                  </font>
                               </Label>
                               <JFXComboBox fx:id="addbooktermcombobox" labelFloat="true" layoutX="20.0" layoutY="290.0" prefHeight="25.0" prefWidth="133.0" promptText="Select tem" style="-fx-background-color: #D5D5D5;" />
-                              <HBox alignment="CENTER" prefHeight="76.0" prefWidth="1170.0">
+                              <HBox alignment="CENTER" prefHeight="48.0" prefWidth="1170.0">
                                  <children>
-                                    <JFXButton fx:id="addbookbutton" buttonType="RAISED" onAction="#addbookbuttonClicked" prefHeight="81.0" prefWidth="75.0" ripplerFill="#082ce1" styleClass="fetch" stylesheets="@../../../../../back.css" text=" " />
+                                    <JFXButton fx:id="addbookbutton" buttonType="RAISED" onAction="#addbookbuttonClicked" prefHeight="36.0" prefWidth="148.0" ripplerFill="#082ce1" style="-fx-background-color: #0066CB; -fx-background-radius: 20 20 20 20;" text="Add book to store" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font></JFXButton>
                                  </children>
                               </HBox>
                            </children>
@@ -75,9 +78,9 @@
                            <padding>
                               <Insets left="10.0" right="10.0" />
                            </padding></VBox>
-                        <ScrollPane fitToHeight="true" fitToWidth="true" pannable="true" prefHeight="154.0" prefWidth="1190.0">
+                        <ScrollPane fitToHeight="true" fitToWidth="true" pannable="true" prefHeight="247.0" prefWidth="1190.0">
                            <content>
-                              <TableView fx:id="addbooktableview" prefHeight="155.0" prefWidth="1188.0" />
+                              <TableView fx:id="addbooktableview" prefHeight="169.0" prefWidth="1188.0" />
                            </content>
                         </ScrollPane>
                      </children>
@@ -92,7 +95,7 @@
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="750.0" prefWidth="1200.0" style="-fx-background-color: #181D30;">
                <children>
-                  <VBox prefHeight="701.0" prefWidth="1200.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <VBox prefHeight="688.0" prefWidth="1200.0" spacing="10.0" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </padding>
@@ -144,9 +147,9 @@
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Label>
-                        <HBox prefHeight="280.0" prefWidth="1180.0">
+                        <HBox prefHeight="385.0" prefWidth="1180.0">
                            <children>
-                              <TableView fx:id="SellBookTableView" prefHeight="255.0" prefWidth="1180.0">
+                              <TableView fx:id="SellBookTableView" prefHeight="281.0" prefWidth="1180.0">
                                 <columns>
                                   <TableColumn fx:id="sellbookidcolumn" prefWidth="89.0" text="ID" />
                                     <TableColumn fx:id="sellbooktitlecolumn" prefWidth="381.0" text="Title" />
@@ -159,9 +162,12 @@
                               </TableView>
                            </children>
                         </HBox>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                        <HBox alignment="CENTER" prefHeight="53.0" prefWidth="1180.0">
                            <children>
-                              <JFXButton fx:id="sellbutton" buttonType="RAISED" onAction="#sellbookbuttonClicked" prefHeight="71.0" prefWidth="77.0" styleClass="fetch" stylesheets="@../../../../../back.css" text=" " />
+                              <JFXButton fx:id="sellbutton" buttonType="RAISED" onAction="#sellbookbuttonClicked" prefHeight="30.0" prefWidth="117.0" style="-fx-background-color: #0066CB; -fx-background-radius: 20 20 20 20;" text="Sell book" textFill="WHITE" wrapText="true">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font></JFXButton>
                            </children>
                         </HBox>
                      </children>

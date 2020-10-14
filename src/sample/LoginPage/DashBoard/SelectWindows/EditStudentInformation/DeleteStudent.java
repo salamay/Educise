@@ -33,7 +33,7 @@ public class DeleteStudent extends Thread {
                 .build();
 
         Request request=new Request.Builder()
-                .url("http://localhost:8080/deletestudent/"+id+"/"+session)
+                .url("http://167.99.91.154:8080/deletestudent/"+id+"/"+session)
                 .addHeader("Authorization","Bearer "+ LogInModel.token)
                 .delete()
                 .build();

@@ -18,6 +18,7 @@ import javafx.stage.FileChooser;
 import okhttp3.*;
 import sample.ConnectionError;
 import sample.LoginPage.DashBoard.SelectWindows.Registeration.LoadingWindow;
+import sample.LoginPage.LogInModel;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -338,8 +339,8 @@ public class NewTeacherController implements Initializable {
 
                 Request request=new Request.Builder()
                         .post(requestBody)
-                        .addHeader("Authorization","Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzYWxhbWF5IiwiaWF0IjoxNTk4NTA4NTczLCJleHAiOjE1OTg2ODg1NzN9.9nK-QCA6cxUmsU1qBiE8CEhiAMoBqfLuSehQQA9yJbU")
-                        .url("http://localhost:8080/registerteacher")
+                        .addHeader("Authorization","Bearer "+ LogInModel.token)
+                        .url("http://167.99.91.154:8080/registerteacher")
                         .build();
                 Response response=client.newCall(request).execute();
                 if (response.code()==201||response.code()==200||response.code()==202){

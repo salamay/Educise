@@ -41,7 +41,7 @@ public class ClassNameThread extends Thread {
         System.out.println("[ClassNameThread]: preparing request ");
         Request request=new Request.Builder()
                 .addHeader("Authorization","Bearer "+ LogInModel.token)
-                .url("http://localhost:8080/retrivenames/"+classname)
+                .url("http://167.99.91.154:8080/retrivenames/"+classname)
                 .build();
         System.out.println("[ClassNameThread]: preparing to send request ");
         try {

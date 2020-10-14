@@ -19,17 +19,12 @@ import okhttp3.*;
 import sample.ConnectionError;
 import sample.LoginPage.DashBoard.SelectWindows.Information.SelectInformationSesssionWindow;
 import sample.LoginPage.LogInModel;
-import sample.SqlConnection;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -117,7 +112,6 @@ public class RegisterStudentController implements Initializable {
         System.out.println("[Initializing()]: Initializing ComboBox");
         System.out.println("[Initializing()]: "+ sessionlist);
 
-
         ToggleGroup toggleGroup=new ToggleGroup();
         Male.setToggleGroup(toggleGroup);
         Female.setToggleGroup(toggleGroup);
@@ -133,7 +127,10 @@ public class RegisterStudentController implements Initializable {
         );
         file=fileChooser.showOpenDialog(new Stage());
         System.out.println(file);
-        if (file!=null){
+        if (file.length()>=1e+6){
+            new ConnectionError().Connection("Please choose a picture with lower size(< 1 MB)");
+        }
+        if (file!=null &&file.length()<=1e+6){
             bufferedImage=null;
             try {
                 bufferedImage= ImageIO.read(file);
@@ -157,7 +154,10 @@ public class RegisterStudentController implements Initializable {
                 new FileChooser.ExtensionFilter("JPG","*.JPG"));
 //        Image Processing
         MotherImageFile=fileChooser.showOpenDialog(new Stage());
-        if (MotherImageFile!=null){
+        if (MotherImageFile.length()>=1e+6){
+            new ConnectionError().Connection("Please choose a picture with lower size( < 1 MB");
+        }
+        if (MotherImageFile!=null&&MotherImageFile.length()<=1e+6){
             BufferedImage bufferedImage=ImageIO.read(MotherImageFile);
             Image image=SwingFXUtils.toFXImage(bufferedImage,null);
             MotherPicture.setImage(image);
@@ -172,7 +172,10 @@ public class RegisterStudentController implements Initializable {
                 new FileChooser.ExtensionFilter("JPG","*.JPG"));
 //        Image Processing
         FatherImageFile=fileChooser.showOpenDialog(new Stage());
-        if (FatherImageFile!=null){
+        if (FatherImageFile.length()>=1e+6){
+            new ConnectionError().Connection("Please choose a picture with lower size( < 1 MB");
+        }
+        if (FatherImageFile!=null&&FatherImageFile.length()<=1e+6){
             BufferedImage bufferedImage=ImageIO.read(FatherImageFile);
             Image image=SwingFXUtils.toFXImage(bufferedImage,null);
             FatherPicture.setImage(image);
@@ -396,7 +399,7 @@ public class RegisterStudentController implements Initializable {
 
             System.out.println("[ClassThread]: setting up okhttp client request");
             Request request = new Request.Builder()
-                    .url("http://localhost:8080/retrieveinformationsession")
+                    .url("http://167.99.91.154:8080/retrieveinformationsession")
                     .addHeader("Authorization", "Bearer " + LogInModel.token)
                     .build();
 

@@ -32,7 +32,7 @@ public class getScoreSessionThread extends Thread {
 
         System.out.println("[Retrieving information session]: setting up okhttp client request");
         Request request=new Request.Builder()
-                .url("http://localhost:8080/retrievescoresession")
+                .url("http://167.99.91.154:8080/retrievescoresession")
                 .addHeader("Authorization","Bearer "+ LogInModel.token)
                 .build();
 

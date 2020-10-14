@@ -42,7 +42,7 @@ public class saveDataIntoSchoolFeeTable extends Thread{
                 .build();
 
         Request request=new Request.Builder()
-                .url("http://localhost:8080/savedatatoschoolfeetable/"+studentid+"/"+column+"/"+entity)
+                .url("http://167.99.91.154:8080/savedatatoschoolfeetable/"+studentid+"/"+column+"/"+entity)
                 .addHeader("Authorization","Bearer "+ LogInModel.token)
                 .build();
         try {

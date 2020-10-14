@@ -44,7 +44,7 @@ public class insertTerm extends Thread{
                 .build();
 
         Request request=new Request.Builder()
-                .url("http://localhost:8080/saveterm/"+term+"/"+studentname+"/"+clas+"/"+session+"/"+tag)
+                .url("http://167.99.91.154:8080/saveterm/"+term+"/"+studentname+"/"+clas+"/"+session+"/"+tag)
                 .addHeader("Authorization","Bearer "+ LogInModel.token)
                 .build();
         try {

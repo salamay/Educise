@@ -50,7 +50,7 @@ public class SellBook  extends Thread{
         System.out.println("[SellBook]: Setting up requestbody-->"+json);
         RequestBody requestBody=RequestBody.create(MediaType.parse("application/json"),json);
         Request request=new Request.Builder()
-                .url("http://localhost:8080/sellbook/"+bookname+"/"+term+"/"+session+"/"+buyer)
+                .url("http://167.99.91.154:8080/sellbook/"+bookname+"/"+term+"/"+session+"/"+buyer)
                 .addHeader("Authorization","Bearer "+ LogInModel.token)
                 .post(requestBody)
                 .build();

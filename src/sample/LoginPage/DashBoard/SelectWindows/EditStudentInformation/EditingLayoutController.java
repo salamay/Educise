@@ -326,7 +326,7 @@ public class EditingLayoutController implements Initializable {
                     .readTimeout(1, TimeUnit.MINUTES)
                     .build();
             Request request=new Request.Builder()
-                    .url("http://localhost:8080/retrievestudentinformation/"+studentname+"/"+session)
+                    .url("http://167.99.91.154:8080/retrievestudentinformation/"+studentname+"/"+session)
                     .addHeader("Authorization","Bearer "+ LogInModel.token)
                     .build();
             Response response;

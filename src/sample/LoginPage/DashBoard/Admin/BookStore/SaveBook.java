@@ -41,7 +41,7 @@ public class SaveBook extends Thread {
 
         Request request=new Request.Builder()
                 .post(requestBody)
-                .url("http://localhost:8080/savebook")
+                .url("http://167.99.91.154:8080/savebook")
                 .addHeader("Authorization","Bearer "+ LogInModel.token)
                 .build();
         Response response;
@@ -73,6 +73,7 @@ public class SaveBook extends Thread {
                     LoadingWindow.window.close();
                     boolean error=new ConnectionError().Connection("server return error "+response.code()+": Books not found");
                     if (error){
+                        addbooktableview.refresh();
                         System.out.println("[SaveBook]--> unable to save school fee on the server");
                     }
                 });
@@ -84,6 +85,7 @@ public class SaveBook extends Thread {
                     LoadingWindow.window.close();
                     boolean error=new ConnectionError().Connection("server return error "+response.code()+": Server cannot process your request,check fields for invalid character");
                     if (error){
+                        addbooktableview.refresh();
                         System.out.println("[SaveBook]--> Connection error");
                     }
                 });
@@ -95,6 +97,7 @@ public class SaveBook extends Thread {
                     LoadingWindow.window.close();
                     boolean error=new ConnectionError().Connection("server return error "+response.code()+": Access denied");
                     if (error){
+                        addbooktableview.refresh();
                         System.out.println("Access denied");
                     }
                 });

@@ -95,7 +95,7 @@ public class ClassInformationThread extends  Thread {
                     .build();
 
             Request request=new Request.Builder()
-                    .url("http://localhost:8080/retrievestudentinformation/"+studentName+"/"+classname)
+                    .url("http://167.99.91.154:8080/retrievestudentinformation/"+studentName+"/"+classname)
                     .addHeader("Authorization","Bearer "+ LogInModel.token)
                     .build();
             Response response;
@@ -103,17 +103,14 @@ public class ClassInformationThread extends  Thread {
                  response=client.newCall(request).execute();
                 System.out.println("[ClassInformationThread]"+response);
                 if (response.code()==200||response.code()==202||response.code()==212||response.code()==201){
-                    Platform.runLater(()->{
-                        LoadingWindow.window.close();
-                    });
-                    ResponseBody responseBody=response.body();
-                    System.out.println("[ClassInformationThread]"+responseBody);
+
+                    System.out.println("[ClassInformationThread]"+response.body());
                     /////Retrieving and processing body,The response contains images and sting value
                     //Images is received as bytes and converted back from json to respective object
-                    byte[] bytes=responseBody.bytes();
+                    byte[] bytes=response.body().bytes();
                     System.out.println("[ClassInformationThread]: byte retrieved from server");
                     String data=new String(bytes,"UTF-8");
-                    System.out.println("[ClassInformationThread]"+responseBody);
+                    System.out.println("[ClassInformationThread]"+response.body());
                     System.out.println("[ClassInformationThread]:Converting Json body");
                     GsonBuilder builder=new GsonBuilder();
                     builder.setPrettyPrinting();
@@ -209,8 +206,8 @@ public class ClassInformationThread extends  Thread {
                           tag2.setText(retrieveResponseEntity.getTag());
                           class2.setText(retrieveResponseEntity.getClas());
                           ambition2.setText(retrieveResponseEntity.getFutureambition());
+                          LoadingWindow.window.close();
                       });
-
 
                     }else {
                         System.out.println("[ClassInformationThread]:path to store images does not exists" );

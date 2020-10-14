@@ -30,7 +30,13 @@ public class GetAllBooks extends Thread {
 
     @Override
     public void run() {
-
+        Platform.runLater(()->{
+            try {
+                new LoadingWindow();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
         System.out.println("[GetAllBooks]: Setting up client ");
         OkHttpClient client=new OkHttpClient.Builder()
                 .connectTimeout(1, TimeUnit.MINUTES)
@@ -38,7 +44,7 @@ public class GetAllBooks extends Thread {
                 .build();
 
         Request request=new Request.Builder()
-                .url("http://localhost:8080/findallbook")
+                .url("http://167.99.91.154:8080/findallbook")
                 .addHeader("Authorization","Bearer "+ LogInModel.token)
                 .build();
         try {

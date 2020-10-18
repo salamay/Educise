@@ -528,9 +528,9 @@ public class StudentSelectAssessmentSessionWindowController implements Initializ
                 });
                 printbutton.setOnAction((print)->{
                     Path path= Paths.get(System.getProperty("user.dir")+"/MyChildSchool");
-                    File pdffile=new File(path+"/studentscores.pdf");
+                    File pdffile=new File(path+"/studentscores.ser");
                     if (pdfdocumentbytes!=null){
-                        new PrinterManager(pdfdocumentbytes,pdffile,textArea).start();
+                        new PrinterManager(pdfdocumentbytes,pdffile).start();
                     }else{
                         new ConnectionError().Connection("Document not available, get student scores before printing");
                     }
@@ -581,7 +581,9 @@ public class StudentSelectAssessmentSessionWindowController implements Initializ
         scaleTransition.setFromY(1);
         scaleTransition.setToY(1.2);
         scaleTransition.play();
-
+        scaleTransition.setOnFinished(event -> {
+            scaleTransition.stop();
+        });
     }
     public void RestoreScale(Button button){
         ScaleTransition scaleTransition=new ScaleTransition(new Duration(100));
@@ -591,7 +593,9 @@ public class StudentSelectAssessmentSessionWindowController implements Initializ
         scaleTransition.setFromY(1.2);
         scaleTransition.setToY(1);
         scaleTransition.play();
-
+        scaleTransition.setOnFinished(event -> {
+            scaleTransition.stop();
+        });
     }
 
     //////////This class get the information sessions and set the value gotten to the Combobox passed in from the parent class

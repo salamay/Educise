@@ -71,6 +71,9 @@ public class Controller extends Main implements Initializable {
         scaleTransition.setFromY(1);
         scaleTransition.setToY(1.5);
         scaleTransition.play();
+        scaleTransition.setOnFinished(event -> {
+            scaleTransition.stop();
+        });
 
     }
     public void RestoreScale(Button button){
@@ -81,7 +84,9 @@ public class Controller extends Main implements Initializable {
         scaleTransition.setFromY(1.5);
         scaleTransition.setToY(1);
             scaleTransition.play();
-
+        scaleTransition.setOnFinished(event -> {
+            scaleTransition.stop();
+        });
     }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -104,6 +109,7 @@ public class Controller extends Main implements Initializable {
             parallelTransition.play();
 
             parallelTransition.setOnFinished((event -> {
+                parallelTransition.stop();
                 stackpane.setVisible(true);
                 Rotate(c1,true,360,2000);
                 Rotate(c2,true,270,1500);
@@ -112,6 +118,9 @@ public class Controller extends Main implements Initializable {
                 TranslateTransition stackpaneTransition=new TranslateTransition(new Duration(1000),stackpane);
                 stackpaneTransition.setToY(-10);
                 stackpaneTransition.play();
+                stackpaneTransition.setOnFinished(et -> {
+                    stackpaneTransition.stop();
+                });
             }));
             new LogInModel(email,passwd,loginError,vbox,stackpane,c1,c2,c3,c4).start();
         }

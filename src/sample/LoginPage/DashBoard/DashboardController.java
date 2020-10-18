@@ -171,7 +171,9 @@ public class DashboardController implements Initializable {
         scaleTransition.setFromY(1);
         scaleTransition.setToY(1.2);
         scaleTransition.play();
-
+        scaleTransition.setOnFinished(event -> {
+            scaleTransition.stop();
+        });
     }
     public void RestoreScale(Button button){
         ScaleTransition scaleTransition=new ScaleTransition(new Duration(100));
@@ -181,6 +183,8 @@ public class DashboardController implements Initializable {
         scaleTransition.setFromY(1.2);
         scaleTransition.setToY(1);
         scaleTransition.play();
-
+        scaleTransition.setOnFinished(event -> {
+            scaleTransition.stop();
+        });
     }
 }

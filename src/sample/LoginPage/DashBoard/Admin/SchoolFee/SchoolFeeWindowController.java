@@ -5,10 +5,12 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextArea;
 
 import com.jfoenix.controls.JFXTextField;
+import com.school.webapp.SchoolFee.SaveSchoolFee.getDebtors.Jasperprintdoc;
 import javafx.animation.ScaleTransition;
 import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
 
+import javafx.print.Printer;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
@@ -22,6 +24,7 @@ import sample.LoginPage.DashBoard.Admin.SchoolFee.getSchoolFees.debtors.getDebto
 import sample.LoginPage.DashBoard.Admin.SchoolFee.getSchoolFees.getSchoolFeeThread;
 import sample.LoginPage.DashBoard.Admin.SchoolFee.getSchoolFees.getSchoolFeeWithoutTermThread;
 import sample.LoginPage.DashBoard.Admin.SchoolFee.getSchoolFees.insertTerm;
+import sample.LoginPage.DashBoard.Printing.PrinterManager;
 import sample.LoginPage.DashBoard.SelectWindows.Registeration.LoadingWindow;
 
 
@@ -481,7 +484,7 @@ public class SchoolFeeWindowController implements Initializable {
         if (studentname.isEmpty()){
             new ConnectionError().Connection("Student name is empty");
         }
-        if (clas!=null && session!=null &&tag!=null &&!term.equals("Cancel")&&studentname.matches("^[A-Z[ ]a-z]*$")){
+        if (clas!=null && session!=null &&tag!=null &&!term.equals("Cancel")&&studentname.matches("^[A-Z[ ]a-z]*$")&&!studentname.isEmpty()){
             new LoadingWindow();
             System.out.println("SchoolFeeWindowController:get button without term pressed--> getting all term schoolfees");
             new SaveSchoolFee(clas,session,tag,studentname,term,tableview,studentnameTextField).start();
@@ -490,165 +493,173 @@ public class SchoolFeeWindowController implements Initializable {
 
 
     public  void printButtonClicked() throws IOException {
+    if (pdf!=null){
+        Path path = Paths.get(System.getProperty("user.dir") + "/MyChildSchool");
+        File pdffile = new File(path + "/debtors.ser");
+        new PrinterManager(pdf,pdffile).start();
+    }else {
+        new ConnectionError().Connection("No document found");
+    }
 //        System.out.println("[SchoolFeeWindowController]: Printing debtors");
 //        System.out.println("[SchoolFeeWindowController]: Pdf: "+pdf);
-        if (pdf != null) {
-            Path path = Paths.get(System.getProperty("user.dir") + "/MyChildSchool");
-            try {
-                Files.createDirectories(path);
-                if (Files.exists(path)) {
-                    File pdffile = new File(path + "/debtors.pdf");
-                    FileOutputStream fileOutputStream=new FileOutputStream(pdffile);
-                    fileOutputStream.write(pdf);
-                    fileOutputStream.close();
-                    FileInputStream fileInputStream=new FileInputStream(pdffile);
-                    fileInputStream.close();
-                    DocFlavor flavor = DocFlavor.INPUT_STREAM.AUTOSENSE;
-                    PrintRequestAttributeSet asset=new HashPrintRequestAttributeSet();
-                    asset.add(MediaSizeName.ISO_A4);
-                    asset.add(Sides.DUPLEX);
-                    PrintService[] printsServices=PrintServiceLookup.lookupPrintServices(flavor,null);
-                    PrintService defaultPrintService=PrintServiceLookup.lookupDefaultPrintService();
-                    for (int i=0;i<printsServices.length;i++){
-                        System.out.println("[SchoolFeeWindowController]: Printers: "+printsServices[i].getName());
-                    }
-                    if (printsServices.length==0){
-                       if (defaultPrintService!=null){
-                           new LoadingWindow();
-                           System.out.println("[SchoolFeeWindowController]: Using default printer");
-                           Doc debtors=new SimpleDoc(fileInputStream,flavor,null);
-                           DocPrintJob job=defaultPrintService.createPrintJob();
-                           System.out.println("[SchoolFeeWindowController]: default printer: "+defaultPrintService.getName());
-                           if (job!=null){
-                               job.addPrintJobListener(new PrintJobListener() {
-                                   @Override
-                                   public void printDataTransferCompleted(PrintJobEvent pje) {
-                                       System.out.println("[SchoolFeeWindowController]: Status: "+pje.getPrintEventType()+": Data Transfer completed");
-                                       printingTextArea.setText(pje.getPrintEventType()+": Data transfer completed\n");
-                                       LoadingWindow.window.close();
-                                   }
-
-                                   @Override
-                                   public void printJobCompleted(PrintJobEvent pje) {
-                                       System.out.println("[SchoolFeeWindowController]: Status: "+pje.getPrintEventType()+": print Job completed");
-                                       printingTextArea.setText(pje.getPrintEventType()+": Print job completed\n");
-                                       LoadingWindow.window.close();
-                                   }
-
-                                   @Override
-                                   public void printJobFailed(PrintJobEvent pje) {
-                                       System.out.println("[SchoolFeeWindowController]: Status: "+pje.getPrintEventType()+": Print job failed");
-                                       printingTextArea.setText(pje.getPrintEventType()+": Print job failed\n");
-                                       LoadingWindow.window.close();
-                                   }
-
-                                   @Override
-                                   public void printJobCanceled(PrintJobEvent pje) {
-                                       System.out.println("[SchoolFeeWindowController]: Status: "+pje.getPrintEventType()+": Print job cancel");
-                                       printingTextArea.setText(pje.getPrintEventType()+": Print job cancelled\n");
-                                       LoadingWindow.window.close();
-                                   }
-
-                                   @Override
-                                   public void printJobNoMoreEvents(PrintJobEvent pje) {
-                                       LoadingWindow.window.close();
-                                   }
-
-                                   @Override
-                                   public void printJobRequiresAttention(PrintJobEvent pje) {
-                                       LoadingWindow.window.close();
-                                   }
-                               });
-                               try {
-                                   System.out.println("[SchoolFeeWindowController]: Doc: "+debtors.getStreamForBytes());
-                                   job.print(debtors,asset);
-                                   System.out.println("[SchoolFeeWindowController]: Printed");
-                                   LoadingWindow.window.close();
-                               } catch (PrintException e) {
-                                   LoadingWindow.window.close();
-                                   e.printStackTrace();
-                               }
-                           }else {
-                               LoadingWindow.window.close();
-                               return;
-                           }
-                       }else {
-                           LoadingWindow.window.close();
-                           new ConnectionError().Connection("No default printer on this PC");
-                       }
-                    }else {
-                        System.out.println("[SchoolFeeWindowController]: geting all printers");
-                        PrintService service=ServiceUI.printDialog(null,200,200,printsServices,defaultPrintService,flavor,asset);
-                        if (service!=null){
-                            new LoadingWindow();
-                            Doc pdf=new SimpleDoc(fileInputStream,flavor,null);
-                            try {
-                                DocPrintJob job1=service.createPrintJob();
-                                if (job1!=null){
-                                    job1.addPrintJobListener(new PrintJobListener() {
-                                        @Override
-                                        public void printDataTransferCompleted(PrintJobEvent pje) {
-                                            System.out.println("[SchoolFeeWindowController]: Status: "+pje.getPrintEventType()+": Data Transfer completed");
-                                            printingTextArea.appendText(pje.getPrintEventType()+": Data transfer completed \n");
-                                            LoadingWindow.window.close();
-                                        }
-
-                                        @Override
-                                        public void printJobCompleted(PrintJobEvent pje) {
-                                            System.out.println("[SchoolFeeWindowController]: Status: "+pje.getPrintEventType()+": print Job completed");
-                                            printingTextArea.appendText(pje.getPrintEventType()+": Print job completed\n");
-                                            LoadingWindow.window.close();
-                                        }
-
-                                        @Override
-                                        public void printJobFailed(PrintJobEvent pje) {
-                                            System.out.println("[SchoolFeeWindowController]: Status: "+pje.getPrintEventType()+": Print job failed");
-                                            printingTextArea.appendText(pje.getPrintEventType()+": Print job failed\n");
-                                            LoadingWindow.window.close();
-                                        }
-
-                                        @Override
-                                        public void printJobCanceled(PrintJobEvent pje) {
-                                            System.out.println("[SchoolFeeWindowController]: Status: "+pje.getPrintEventType()+": Print job cancel");
-                                            printingTextArea.appendText(pje.getPrintEventType()+": Print job cancelled\n");
-                                            LoadingWindow.window.close();
-                                        }
-
-                                        @Override
-                                        public void printJobNoMoreEvents(PrintJobEvent pje) {
-                                            LoadingWindow.window.close();
-                                        }
-
-                                        @Override
-                                        public void printJobRequiresAttention(PrintJobEvent pje) {
-                                            LoadingWindow.window.close();
-                                        }
-                                    });
-                                    job1.print(pdf,asset);
-                                    LoadingWindow.window.close();
-                                }else {
-                                    LoadingWindow.window.close();
-                                }
-
-                            } catch (PrintException e) {
-                                LoadingWindow.window.close();
-                                e.printStackTrace();
-                            }
-                            System.out.println("[SchoolFeeWindowController]: Printed");
-                            LoadingWindow.window.close();
-                        }else {
-                            LoadingWindow.window.close();
-                            new ConnectionError().Connection("Printing cancelled");
-                        }
-                    }
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }else {
-            LoadingWindow.window.close();
-            new ConnectionError().Connection("Document not found");
-        }
+//        if (pdf != null) {
+//            Path path = Paths.get(System.getProperty("user.dir") + "/MyChildSchool");
+//            try {
+//                Files.createDirectories(path);
+//                if (Files.exists(path)) {
+//                    File pdffile = new File(path + "/debtors.pdf");
+//                    FileOutputStream fileOutputStream=new FileOutputStream(pdffile);
+//                    fileOutputStream.write(pdf);
+//                    fileOutputStream.close();
+//                    FileInputStream fileInputStream=new FileInputStream(pdffile);
+//                    DocFlavor flavor = DocFlavor.INPUT_STREAM.AUTOSENSE;
+//                    PrintRequestAttributeSet asset=new HashPrintRequestAttributeSet();
+//                    asset.add(MediaSizeName.ISO_A4);
+//                    asset.add(Sides.DUPLEX);
+//                    PrintService[] printsServices=PrintServiceLookup.lookupPrintServices(flavor,null);
+//                    PrintService defaultPrintService=PrintServiceLookup.lookupDefaultPrintService();
+//                    for (int i=0;i<printsServices.length;i++){
+//                        System.out.println("[SchoolFeeWindowController]: Printers: "+printsServices[i].getName());
+//                    }
+//                    if (printsServices.length==4){
+//
+//                       if (defaultPrintService!=null){
+//                           new LoadingWindow();
+//                           System.out.println("[SchoolFeeWindowController]: Using default printer");
+//                           Doc debtors=new SimpleDoc(fileInputStream,flavor,null);
+//                           DocPrintJob job=defaultPrintService.createPrintJob();
+//                           System.out.println("[SchoolFeeWindowController]: default printer: "+defaultPrintService.getName());
+//                           if (job!=null){
+//                               job.addPrintJobListener(new PrintJobListener() {
+//                                   @Override
+//                                   public void printDataTransferCompleted(PrintJobEvent pje) {
+//                                       System.out.println("[SchoolFeeWindowController]: Status: "+pje.getPrintEventType()+": Data Transfer completed");
+//                                       printingTextArea.setText(pje.getPrintEventType()+": Data transfer completed\n");
+//                                       LoadingWindow.window.close();
+//                                   }
+//
+//                                   @Override
+//                                   public void printJobCompleted(PrintJobEvent pje) {
+//                                       System.out.println("[SchoolFeeWindowController]: Status: "+pje.getPrintEventType()+": print Job completed");
+//                                       printingTextArea.setText(pje.getPrintEventType()+": Print job completed\n");
+//                                       LoadingWindow.window.close();
+//                                   }
+//
+//                                   @Override
+//                                   public void printJobFailed(PrintJobEvent pje) {
+//                                       System.out.println("[SchoolFeeWindowController]: Status: "+pje.getPrintEventType()+": Print job failed");
+//                                       printingTextArea.setText(pje.getPrintEventType()+": Print job failed\n");
+//                                       LoadingWindow.window.close();
+//                                   }
+//
+//                                   @Override
+//                                   public void printJobCanceled(PrintJobEvent pje) {
+//                                       System.out.println("[SchoolFeeWindowController]: Status: "+pje.getPrintEventType()+": Print job cancel");
+//                                       printingTextArea.setText(pje.getPrintEventType()+": Print job cancelled\n");
+//                                       LoadingWindow.window.close();
+//                                   }
+//
+//                                   @Override
+//                                   public void printJobNoMoreEvents(PrintJobEvent pje) {
+//                                       LoadingWindow.window.close();
+//                                   }
+//
+//                                   @Override
+//                                   public void printJobRequiresAttention(PrintJobEvent pje) {
+//                                       LoadingWindow.window.close();
+//                                   }
+//                               });
+//                               try {
+//                                   System.out.println("[SchoolFeeWindowController]: Doc: "+debtors.getStreamForBytes());
+//                                   job.print(debtors,null);
+//                                   fileInputStream.close();
+//                                   System.out.println("[SchoolFeeWindowController]: Printed");
+//                                   LoadingWindow.window.close();
+//                               } catch (PrintException e) {
+//                                   LoadingWindow.window.close();
+//                                   e.printStackTrace();
+//                               }
+//                           }else {
+//                               LoadingWindow.window.close();
+//                               return;
+//                           }
+//                       }else {
+//                           LoadingWindow.window.close();
+//                           new ConnectionError().Connection("No default printer on this PC");
+//                       }
+//                    }else {
+//                        System.out.println("[SchoolFeeWindowController]: geting all printers");
+//                        PrintService service=ServiceUI.printDialog(null,200,200,printsServices,defaultPrintService,flavor,asset);
+//                        if (service!=null){
+//                            new LoadingWindow();
+//                            Doc pdf=new SimpleDoc(fileInputStream,flavor,null);
+//                            try {
+//                                DocPrintJob job1=service.createPrintJob();
+//                                if (job1!=null){
+//                                    job1.addPrintJobListener(new PrintJobListener() {
+//                                        @Override
+//                                        public void printDataTransferCompleted(PrintJobEvent pje) {
+//                                            System.out.println("[SchoolFeeWindowController]: Status: "+pje.getPrintEventType()+": Data Transfer completed");
+//                                            printingTextArea.appendText(pje.getPrintEventType()+": Data transfer completed \n");
+//                                            LoadingWindow.window.close();
+//                                        }
+//
+//                                        @Override
+//                                        public void printJobCompleted(PrintJobEvent pje) {
+//                                            System.out.println("[SchoolFeeWindowController]: Status: "+pje.getPrintEventType()+": print Job completed");
+//                                            printingTextArea.appendText(pje.getPrintEventType()+": Print job completed\n");
+//                                            LoadingWindow.window.close();
+//                                        }
+//
+//                                        @Override
+//                                        public void printJobFailed(PrintJobEvent pje) {
+//                                            System.out.println("[SchoolFeeWindowController]: Status: "+pje.getPrintEventType()+": Print job failed");
+//                                            printingTextArea.appendText(pje.getPrintEventType()+": Print job failed\n");
+//                                            LoadingWindow.window.close();
+//                                        }
+//
+//                                        @Override
+//                                        public void printJobCanceled(PrintJobEvent pje) {
+//                                            System.out.println("[SchoolFeeWindowController]: Status: "+pje.getPrintEventType()+": Print job cancel");
+//                                            printingTextArea.appendText(pje.getPrintEventType()+": Print job cancelled\n");
+//                                            LoadingWindow.window.close();
+//                                        }
+//
+//                                        @Override
+//                                        public void printJobNoMoreEvents(PrintJobEvent pje) {
+//                                            LoadingWindow.window.close();
+//                                        }
+//
+//                                        @Override
+//                                        public void printJobRequiresAttention(PrintJobEvent pje) {
+//                                            LoadingWindow.window.close();
+//                                        }
+//                                    });
+//                                    job1.print(pdf,null);
+//                                    LoadingWindow.window.close();
+//                                }else {
+//                                    LoadingWindow.window.close();
+//                                }
+//
+//                            } catch (PrintException e) {
+//                                LoadingWindow.window.close();
+//                                e.printStackTrace();
+//                            }
+//                            System.out.println("[SchoolFeeWindowController]: Printed");
+//                            LoadingWindow.window.close();
+//                        }else {
+//                            LoadingWindow.window.close();
+//                            new ConnectionError().Connection("Printing cancelled");
+//                        }
+//                    }
+//                }
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }else {
+//            LoadingWindow.window.close();
+//            new ConnectionError().Connection("Document not found");
+//        }
     }
     public void deleteButtonClicked() throws IOException {
         ///this method will delete the data in the selected column and leave the name Column
@@ -715,7 +726,9 @@ public class SchoolFeeWindowController implements Initializable {
         scaleTransition.setFromY(1);
         scaleTransition.setToY(1.2);
         scaleTransition.play();
-
+        scaleTransition.setOnFinished(event -> {
+            scaleTransition.stop();
+        });
     }
     public void RestoreScale(Button button){
         ScaleTransition scaleTransition=new ScaleTransition(new Duration(100));
@@ -725,6 +738,8 @@ public class SchoolFeeWindowController implements Initializable {
         scaleTransition.setFromY(1.2);
         scaleTransition.setToY(1);
         scaleTransition.play();
-
+        scaleTransition.setOnFinished(event -> {
+            scaleTransition.stop();
+        });
     }
 }

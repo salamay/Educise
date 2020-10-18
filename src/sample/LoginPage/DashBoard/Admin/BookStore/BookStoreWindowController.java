@@ -491,8 +491,8 @@ public class BookStoreWindowController implements Initializable {
     public void printHistory(){
         if (pdfdocumentbytes!=null){
             Path path= Paths.get(System.getProperty("user.dir")+"/MyChildSchool");
-            File pdffile=new File(path+"/bookhistory.pdf");
-            new PrinterManager(pdfdocumentbytes,pdffile,bookhistorytextarea).start();
+            File pdffile=new File(path+"/bookhistory.ser");
+            new PrinterManager(pdfdocumentbytes,pdffile).start();
         }else {
             new ConnectionError().Connection("No document found");
         }
@@ -510,7 +510,9 @@ public class BookStoreWindowController implements Initializable {
         scaleTransition.setFromY(1);
         scaleTransition.setToY(1.2);
         scaleTransition.play();
-
+        scaleTransition.setOnFinished(event -> {
+            scaleTransition.stop();
+        });
     }
     public void RestoreScale(Button button){
         ScaleTransition scaleTransition=new ScaleTransition(new Duration(100));
@@ -520,6 +522,8 @@ public class BookStoreWindowController implements Initializable {
         scaleTransition.setFromY(1.2);
         scaleTransition.setToY(1);
         scaleTransition.play();
-
+        scaleTransition.setOnFinished(event -> {
+            scaleTransition.stop();
+        });
     }
 }

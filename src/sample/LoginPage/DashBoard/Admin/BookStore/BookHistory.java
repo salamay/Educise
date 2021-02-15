@@ -9,20 +9,10 @@ public class BookHistory {
     private String date;
     private String session;
     private String term;
-
+    private byte[] pdfdocumentbytes;
     public BookHistory() {
     }
 
-    public BookHistory(int id, String title, String author, String amountsold, String buyer, String date, String session, String term) {
-        this.id = id;
-        this.title = title;
-        this.author = author;
-        this.amountsold = amountsold;
-        this.buyer = buyer;
-        this.date = date;
-        this.session = session;
-        this.term = term;
-    }
 
     public int getId() {
         return id;
@@ -86,5 +76,13 @@ public class BookHistory {
 
     public void setTerm(String term) {
         this.term = term;
+    }
+
+    public byte[] getPdfdocumentbytes() {
+        return pdfdocumentbytes;
+    }
+
+    public void setPdfdocumentbytes(byte[] pdfdocumentbytes) {
+        this.pdfdocumentbytes = pdfdocumentbytes;
     }
 }

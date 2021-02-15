@@ -19,8 +19,14 @@ public class AcademicSessionController {
     public TextField ss1SessionTextField;
     public TextField ss2SessionTextField;
     public TextField ss3SessionTextField;
+    public TextField pr1SessionTextField;
+    public TextField pr2SessionTextField;
+    public TextField pr3SessionTextField;
+    public TextField pr4SessionTextField;
+    public TextField pr5SessionTextField;
+    public TextField nur1SessionTextField;
+    public TextField nur2SessionTextField;
     public Label Error;
-    public JFXSpinner LoadingSpinner;
 
     public void CreateSessionClicked() throws IOException {
         String jss1sessionName=jss1SessionTextField.getText();
@@ -29,20 +35,20 @@ public class AcademicSessionController {
         String ss1sessionName=ss1SessionTextField.getText();
         String ss2sessionName=ss2SessionTextField.getText();
         String ss3sessionName=ss3SessionTextField.getText();
+        String pr1sessionName=pr1SessionTextField.getText();
+        String pr2sessionName=pr2SessionTextField.getText();
+        String pr3sessionName=pr3SessionTextField.getText();
+        String pr4sessionName=pr4SessionTextField.getText();
+        String pr5sessionName=pr5SessionTextField.getText();
+        String nur1sessionName=nur1SessionTextField.getText();
+        String nur2sessionName=nur2SessionTextField.getText();
+        System.out.println(ss3sessionName);
+        System.out.println(jss3sessionName);
 
-        if(jss1SessionTextField.getText().isEmpty() || jss2SessionTextField.getText().isEmpty()
-                || jss3SessionTextField.getText().isEmpty() || ss1SessionTextField.getText().isEmpty()||
-                ss2SessionTextField.getText().isEmpty() || ss3SessionTextField.getText().isEmpty()||
-                !jss1sessionName.matches("^[a-zA-z[_]0-9]*$")||!jss2sessionName.matches("^[a-zA-z[_]0-9]*$")||
-                !jss3sessionName.matches("^[a-zA-z[_]0-9]*$")||!ss1sessionName.matches("^[a-zA-z[_]0-9]*$")||
-                !ss2sessionName.matches("^[a-zA-z[_]0-9]*$")||!ss3sessionName.matches("^[a-zA-z[_]0-9]*$")){
-            Error.setVisible(true);
-            new ConnectionError().Connection("One of the field is missing or the field contains invalid character ");
-        }
-        else {
+            Error.setVisible(false);
             new LoadingWindow();
             new CreatingSessionThread(jss1sessionName, jss2sessionName, jss3sessionName, ss1sessionName,
-                    ss2sessionName, ss3sessionName).start();
-        }
+                    ss2sessionName, ss3sessionName,pr1sessionName,pr2sessionName,pr3sessionName,pr4sessionName,pr5sessionName,nur1sessionName,nur2sessionName).start();
+
     }
 }

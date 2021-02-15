@@ -1,9 +1,7 @@
 package sample.LoginPage.DashBoard.Admin.BookStore;
 
 public class Book {
-
-
-    public int id;
+    public String id;
     public String title;
     public String author;
     public int price;
@@ -17,7 +15,7 @@ public class Book {
 
     }
 
-    public Book(int id, String title, String author, int price, int copies, String year, String term, String date) {
+    public Book(String id, String title, String author, int price, int copies, String year, String term, String date) {
         this.id = id;
         this.title = title;
         this.author = author;
@@ -28,11 +26,11 @@ public class Book {
         this.date = date;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

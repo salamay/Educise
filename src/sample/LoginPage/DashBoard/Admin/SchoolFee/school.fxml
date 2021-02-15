@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import java.net.*?>
 <?import javafx.scene.text.*?>
 <?import com.jfoenix.controls.*?>
@@ -48,20 +49,21 @@
                 </Label>
                 <JFXComboBox fx:id="tagcombobox" labelFloat="true" layoutX="20.0" layoutY="212.0" prefHeight="25.0" prefWidth="175.0" promptText="Select Tag" />
                 <Label fx:id="tagerror" layoutX="20.0" layoutY="146.0" text="*" textFill="#d31010" visible="false" />
-                <JFXButton fx:id="fetchbutton" buttonType="RAISED" onAction="#FetchButtonClicked" prefHeight="54.0" prefWidth="57.0" styleClass="fetch" stylesheets="@../../../../../back.css" text=" ">
-
-                </JFXButton>
+                <JFXButton fx:id="fetchbutton" buttonType="RAISED" onAction="#FetchButtonClicked" prefHeight="29.0" prefWidth="178.0" style="-fx-background-color: #499954; -fx-background-radius: 20 20 20 20;" text=" Get school fees for a term" textFill="#f8f7f7">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font></JFXButton>
             <Label text="get all school fee for the class when term is selected" textFill="#eb1010" wrapText="true">
                <font>
                   <Font name="System Italic" size="12.0" />
                </font>
             </Label>
-            <JFXButton onAction="#getSchoolfeeWithoutTerm" style="-fx-background-color: #499954; -fx-background-radius: 20 20 20 20;" text="Get school fee" textFill="#e4e4e8">
+            <JFXButton fx:id="getschoolfeeWithoutTermButton" onAction="#getSchoolfeeWithoutTerm" prefHeight="25.0" prefWidth="133.0" style="-fx-background-color: #499954; -fx-background-radius: 20 20 20 20;" text="Get all school fees" textFill="#e4e4e8">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </JFXButton>
-            <Label layoutX="10.0" layoutY="326.0" text="get school fee without term selected" textFill="#f21515" wrapText="true">
+            <Label layoutX="10.0" layoutY="326.0" text="get all school fee for the class when term is not selected" textFill="#eb1010" wrapText="true">
                <font>
                   <Font name="System Italic" size="12.0" />
                </font>
@@ -70,82 +72,60 @@
         </VBox>
     </left>
     <bottom>
-        <HBox alignment="CENTER_LEFT" prefHeight="79.0" prefWidth="600.0" spacing="5.0" BorderPane.alignment="CENTER">
+        <HBox alignment="CENTER_LEFT" prefHeight="55.0" prefWidth="1200.0" spacing="5.0" BorderPane.alignment="CENTER">
             <BorderPane.margin>
                 <Insets bottom="10.0" />
             </BorderPane.margin>
             <padding>
                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
             </padding>
-            <children>
-                <Label fx:id="nameerror" text="*" textFill="#d31010" visible="false" />
-                <Label prefHeight="17.0" prefWidth="49.0" text="Name:" HBox.hgrow="ALWAYS">
-                    <font>
-                        <Font name="System Bold" size="12.0" />
-                    </font></Label>
-                <JFXTextField fx:id="namefield" labelFloat="true" prefHeight="25.0" prefWidth="121.0" promptText="Enter Student name" HBox.hgrow="ALWAYS" />
-                <Label fx:id="modeofpaymenterror" text="*" textFill="#d31010" visible="false" />
-                <Label prefHeight="17.0" prefWidth="119.0" text="Mode of payment:" HBox.hgrow="ALWAYS">
-                    <font>
-                        <Font name="System Bold" size="12.0" />
-                    </font></Label>
-                <JFXComboBox fx:id="modeofpaymentcombobox" labelFloat="true" prefHeight="25.0" prefWidth="83.0" HBox.hgrow="ALWAYS" />
-                <Label fx:id="amounterror" text="*" textFill="#d31010" visible="false" />
-                <Label prefHeight="17.0" prefWidth="60.0" text="Amount:" HBox.hgrow="ALWAYS">
-                    <font>
-                        <Font name="System Bold" size="12.0" />
-                    </font></Label>
-                <JFXTextField fx:id="amountfield" labelFloat="true" prefHeight="25.0" prefWidth="0.0" promptText="Amount" HBox.hgrow="ALWAYS" />
-                <Label fx:id="dateerror" text="*" textFill="#d31010" visible="false" />
-                <Label layoutX="631.0" layoutY="41.0" prefHeight="16.0" prefWidth="36.0" text="Date:" HBox.hgrow="ALWAYS">
-                    <font>
-                        <Font name="System Bold" size="12.0" />
-                    </font>
-                </Label>
-                <JFXTextField fx:id="datefield" labelFloat="true" layoutX="672.0" layoutY="37.0" prefHeight="25.0" prefWidth="0.0" promptText="Date" HBox.hgrow="ALWAYS" />
-                <Label fx:id="depositorerror" text="*" textFill="#d31010" visible="false" />
-                <Label layoutX="897.0" layoutY="41.0" prefHeight="17.0" prefWidth="100.0" text="Depositor name:" HBox.hgrow="ALWAYS">
-                    <font>
-                        <Font name="System Bold" size="12.0" />
-                    </font>
-                </Label>
-                <JFXTextField fx:id="depositorname" labelFloat="true" layoutX="938.0" layoutY="37.0" prefHeight="25.0" prefWidth="52.0" promptText="Depositor name" HBox.hgrow="ALWAYS" />
-                <Label fx:id="transactioniderror" layoutX="20.0" layoutY="41.0" text="*" textFill="#d31010" visible="false" />
-                <Label layoutX="910.0" layoutY="41.0" prefHeight="17.0" prefWidth="100.0" text="Transaction id:">
-                    <font>
-                        <Font name="System Bold" size="12.0" />
-                    </font>
-                </Label>
-                <JFXTextField fx:id="transactionidfield" labelFloat="true" layoutX="1015.0" layoutY="37.0" prefHeight="25.0" prefWidth="47.0" promptText="id" />
-                <JFXButton fx:id="savebutton" onAction="#SaveButtonClicked" prefHeight="25.0" prefWidth="26.0" styleClass="save" stylesheets="@../../../../../back.css" text=" ">
-
-                </JFXButton>
-            </children>
+         <children>
+            <Label text="Student name:" wrapText="true">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <JFXTextField fx:id="studentnameTextField" labelFloat="true" prefHeight="25.0" prefWidth="157.0" promptText="Student name">
+               <font>
+                  <Font name="System Italic" size="12.0" />
+               </font>
+            </JFXTextField>
+            <JFXButton fx:id="saveschoolfeebutton" onAction="#SaveSchoolFeeButtonClicked" prefHeight="25.0" prefWidth="73.0" style="-fx-background-color: #4C7B9E;" text="SAVE" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </JFXButton>
+         </children>
         </HBox>
     </bottom>
     <center>
-        <ScrollPane fitToHeight="true" fitToWidth="true" pannable="true" BorderPane.alignment="CENTER">
-            <content>
-                <AnchorPane prefHeight="422.0" prefWidth="999.0">
-                    <children>
-                        <TableView fx:id="tableview" layoutY="2.0" prefHeight="422.0" prefWidth="1200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                    </children></AnchorPane>
-            </content>
+        <ScrollPane fitToHeight="true" fitToWidth="true" pannable="true" prefHeight="417.0" prefWidth="874.0" BorderPane.alignment="CENTER">
+         <content>
+            <VBox alignment="CENTER" prefHeight="395.0" prefWidth="872.0" spacing="10.0">
+               <children>
+                        <TableView fx:id="tableview" prefHeight="460.0" prefWidth="872.0" />
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="10.0" top="5.0" />
+               </padding>
+            </VBox>
+         </content>
         </ScrollPane>
     </center>
     <right>
-        <VBox prefHeight="424.0" prefWidth="118.0" spacing="10.0" BorderPane.alignment="BOTTOM_CENTER">
+        <VBox prefHeight="448.0" prefWidth="132.0" spacing="10.0" BorderPane.alignment="BOTTOM_CENTER">
             <children>
             <Label text="Minimum amount:" textFill="#e41515" />
             <TextField fx:id="minimumamount" prefHeight="0.0" prefWidth="118.0" />
-                <JFXButton buttonType="RAISED" onAction="#fetchDebtors" prefHeight="43.0" prefWidth="43.0" styleClass="fetch" stylesheets="@../../../../../back.css" text=" " />
-                <Label prefHeight="32.0" prefWidth="118.0" text="Fetch out dabtors" textAlignment="CENTER" textFill="#d70d0d">
+                <JFXButton fx:id="getdebtorsbutton" buttonType="RAISED" onAction="#fetchDebtors" prefHeight="43.0" prefWidth="43.0" styleClass="fetch" stylesheets="@../../../../../back.css" text=" " />
+                <Label prefHeight="32.0" prefWidth="118.0" text="Get dabtors" textAlignment="CENTER" textFill="#d70d0d">
                     <font>
                         <Font name="System Bold" size="14.0" />
                     </font>
                 </Label>
-                <Region prefHeight="153.0" prefWidth="118.0" VBox.vgrow="NEVER" />
-                <JFXButton buttonType="RAISED" onAction="#deleteButtonClicked" prefHeight="76.0" prefWidth="77.0" styleClass="delete" stylesheets="@../../../../../back.css" text=" " />
+            <JFXTextArea fx:id="printingTextArea" prefHeight="115.0" prefWidth="128.0" />
+            <JFXButton fx:id="printbutton" buttonType="RAISED" onAction="#printButtonClicked" prefHeight="57.0" prefWidth="57.0" styleClass="print" stylesheets="@../../../../../back.css" text=" " />
+                <JFXButton fx:id="deleteschoolfeebutton" buttonType="RAISED" onAction="#deleteButtonClicked" prefHeight="76.0" prefWidth="77.0" styleClass="delete" stylesheets="@../../../../../back.css" text=" " />
             </children>
         </VBox>
     </right>

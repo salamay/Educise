@@ -1,9 +1,7 @@
 package sample.LoginPage.DashBoard.Admin.BookStore;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXDatePicker;
-import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.*;
+import javafx.animation.ScaleTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
@@ -11,16 +9,22 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.HBox;
+import javafx.util.Duration;
 import javafx.util.converter.IntegerStringConverter;
 import sample.ConnectionError;
 import sample.LoginPage.DashBoard.Admin.SchoolFee.Fee;
 import sample.LoginPage.DashBoard.Admin.SchoolFee.saveDataIntoSchoolFeeTable;
 import sample.LoginPage.DashBoard.AreYouSure.AreYouSureWindow;
+import sample.LoginPage.DashBoard.Printing.PrinterManager;
 import sample.LoginPage.DashBoard.SelectWindows.Registeration.LoadingWindow;
+import sample.LoginPage.DashBoard.SelectWindows.Utility.GetSessionThread;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 
@@ -76,27 +80,72 @@ public class BookStoreWindowController implements Initializable {
     public TableColumn<Book, String> historysessioncolumn;
     public TableColumn<Book, String> historytermcolumn;
     public TableColumn<Book, String> historybuyercolumn;
+    public JFXTextArea bookhistorytextarea;
     public JFXDatePicker datePicker;
     public Label dateselected;
     public Label totalamount;
+    public JFXButton addbookbutton;
+    public JFXButton deletebookbutton;
+    public JFXButton sellbutton;
+    public JFXButton printhistorybutton;
+    public JFXButton searchbook1;
+    public JFXButton searchbook2;
+    public static byte[] pdfdocumentbytes;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        addbookbutton.setOnMouseEntered(event -> {
+            ScaleTrans(addbookbutton);
+        });
+        addbookbutton.setOnMouseExited(event -> {
+            RestoreScale(addbookbutton);
+        });
+        deletebookbutton.setOnMouseEntered(event -> {
+            ScaleTrans(deletebookbutton);
+        });
+        deletebookbutton.setOnMouseExited(event -> {
+            RestoreScale(deletebookbutton);
+        });
+        sellbutton.setOnMouseEntered(event -> {
+            ScaleTrans(sellbutton);
+        });
+        sellbutton.setOnMouseExited(event -> {
+            RestoreScale(sellbutton);
+        });
+        printhistorybutton.setOnMouseEntered(event -> {
+            ScaleTrans(printhistorybutton);
+        });
+        printhistorybutton.setOnMouseExited(event -> {
+            RestoreScale(printhistorybutton);
+        });
+        searchbook1.setOnMouseEntered(event -> {
+            ScaleTrans(searchbook1);
+        });
+        searchbook1.setOnMouseExited(event -> {
+            RestoreScale(searchbook1);
+        });
+        searchbook2.setOnMouseEntered(event -> {
+            ScaleTrans(searchbook2);
+        });
+        searchbook2.setOnMouseExited(event -> {
+            RestoreScale(searchbook2);
+        });
+
         sellbookDatePicker = new JFXDatePicker();
         sellbookDatePicker.setStyle("-fx-background-color:#D5D5D5;");
         Label todaysdate = new Label("Select today's date:");
         todaysdate.setStyle("-fx-text-fill:#FFFFFF;");
         sellbookhbox.getChildren().addAll(todaysdate, sellbookDatePicker);
         addbooktermcombobox.getItems().addAll("1", "2", "3");
-        addbuttonsessioncombobox.getItems().addAll("2019-2020", "2020-2021", "2021-2022", "2023-2024", "2024-2025", "2025-2026", "2026-2027", "2027-2028");
+        new GetSessionThread(addbuttonsessioncombobox, new ProgressIndicator(), "retrievesession").start();
         sellbooktermcombobox.getItems().addAll("1", "2", "3");
-        sellbooksessioncombobox.getItems().addAll("2019-2020", "2020-2021", "2021-2022", "2023-2024", "2024-2025", "2025-2026", "2026-2027", "2027-2028");
+        new GetSessionThread(sellbooksessioncombobox, new ProgressIndicator(), "retrievesession").start();
         historytermcombobox.getItems().addAll("1", "2", "3");
-        historysessioncombobox.getItems().addAll("2019-2020", "2020-2021", "2021-2022", "2023-2024", "2024-2025", "2025-2026", "2026-2027", "2027-2028");
-        editbooksessioncombobox.getItems().addAll("2019-2020", "2020-2021", "2021-2022", "2023-2024", "2024-2025", "2025-2026", "2026-2027", "2027-2028");
+        new GetSessionThread(historysessioncombobox, new ProgressIndicator(), "retrievesession").start();
         editbooktermcombobox.getItems().addAll("1", "2", "3");
-        //History layout
+        new GetSessionThread(editbooksessioncombobox, new ProgressIndicator(), "retrievesession").start();
 
+        //History layout
         historytitlecolumn.setCellValueFactory(new PropertyValueFactory<>("title"));
         historyidcolumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         historypricecolumn.setCellValueFactory(new PropertyValueFactory<>("amountsold"));
@@ -155,25 +204,8 @@ public class BookStoreWindowController implements Initializable {
         });
         editbookauthorcolumn.setCellFactory(TextFieldTableCell.forTableColumn());
         editbooksessioncolumn.setCellValueFactory(new PropertyValueFactory<>("year"));
-        editbooksessioncolumn.setOnEditCommit((e)->{
-            try {
-                EditBook(e);
-                e.getRowValue().setYear(e.getNewValue());
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        });
-        editbooksessioncolumn.setCellFactory(TextFieldTableCell.forTableColumn());
         editbooktermcolumn.setCellValueFactory(new PropertyValueFactory<>("term"));
-        editbooktermcolumn.setOnEditCommit((e)->{
-            try {
-                EditBook(e);
-                e.getRowValue().setTerm(e.getNewValue());
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        });
-        editbooktermcolumn.setCellFactory(TextFieldTableCell.forTableColumn());
+
 
         editbookcopiescolumn.setCellValueFactory(new PropertyValueFactory<>("copies"));
         editbookcopiescolumn.setOnEditCommit((e)->{
@@ -230,11 +262,6 @@ public class BookStoreWindowController implements Initializable {
         sellbooktermcolumn.setCellValueFactory(new PropertyValueFactory<>("term"));
         /////////////////////////////////Sell book layout setting end////////////////
 
-        try {
-            new LoadingWindow();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         /////Starting to get all books from server
         new GetAllBooks(addbooktableview,editbooktableview).start();
     }
@@ -253,14 +280,13 @@ public class BookStoreWindowController implements Initializable {
         System.out.println("[BookStoreWindowController]:Copies->" + copies);
         System.out.println("[BookStoreWindowController]:Session->" + session);
         System.out.println("[BookStoreWindowController]:Term->" + term);
-        if (title.isEmpty() || !title.matches("^[A-Z[ ]a-z]*$")) {
-            System.out.println("HJGDHJJSKJSKS");
+        if (title.isEmpty() || !title.matches("^[A-Z[ ]0-9a-z]*$")) {
             book.setTitle(null);
             new ConnectionError().Connection("Please provide valid title,if symbol is present,delete it");
         } else {
             book.setTitle(title);
         }
-        if (author.isEmpty() || !author.matches("^[A-Z[ ]a-z]*$")) {
+        if (author.isEmpty() || !author.matches("^[A-Z[ ]0-9a-z]*$")) {
             book.setAuthor(null);
             new ConnectionError().Connection("Please provide valid author,if symbol is present,delete it");
         } else {
@@ -303,13 +329,13 @@ public class BookStoreWindowController implements Initializable {
             ObservableList<Book> books = FXCollections.observableArrayList();
             books.add(book);
             new SaveBook(books, book, addbooktableview).start();
-
         }
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////SELL BOOK START/////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //This actually fires when the search button is clicked, it search for the books
     public void sellbookGoButtonClicked() throws IOException {
         //Getting name of the book
         System.out.println("[BookStoreWindowController]-->[Sell Book]:Getting and checking name");
@@ -340,16 +366,19 @@ public class BookStoreWindowController implements Initializable {
         if (buyer.isEmpty()||buyer==null) {
             new ConnectionError().Connection("Enter buyer name");
         }
-        System.out.println("hghsjfhf"+date);
         if (localdate==null) {
             new ConnectionError().Connection("Select todays date");
         }
         if (!buyer.matches("^[A-Z[ ]a-z]*$")){
             new ConnectionError().Connection("Name of Buyer contains invalid character");
         }
+
         //This get the selected item in the table and deduct 1 from the number of copies from the server
         ObservableList<Book> bookselected = SellBookTableView.getSelectionModel().getSelectedItems();
-        if (!bookselected.isEmpty() && bookselected != null && !buyer.isEmpty() &&buyer!=null &&buyer.matches("^[A-Za-z]*$")&&localdate!=null) {
+        if (bookselected.get(0)==null){
+            new ConnectionError().Connection("Select a book");
+        }
+        if (!bookselected.isEmpty() && bookselected != null && !buyer.isEmpty() &&buyer!=null &&buyer.matches("^[A-Z[ ]a-z]*$")&&localdate!=null) {
             if (bookselected.get(0).getCopies()==0){
                 new ConnectionError().Connection(" 0 "+bookselected.get(0).getTitle()+" left in store");
             }else {
@@ -389,25 +418,37 @@ public class BookStoreWindowController implements Initializable {
         }
     }
     public void EditBook(TableColumn.CellEditEvent<Book, ?> e) throws IOException {
-        String oldValue= e.getOldValue().toString();
         String entity= e.getNewValue().toString();
         //Columnname instance here correspond to a table column in the database
         String columnname=e.getTableColumn().getText();
-        int id=e.getRowValue().getId();
+        String id=e.getRowValue().getId();
         System.out.println("[Editing book]: entity:"+entity+"\n"+"column:"+columnname+"\n"+"id:"+id);
-        if (entity!=null &&entity.matches("^[A-Z[ ]a-z0-9]*$")&&id!=0){
-            new LoadingWindow();
+        if (entity!=null &&entity.matches("^[A-Z[- ]a-z0-9]*$")&&id!=null){
             EditBookRequest editBookRequest=new EditBookRequest();
             editBookRequest.setEntity(entity);
             editBookRequest.setColumn(columnname);
             editBookRequest.setId(id);
-            new EditBookThread(editBookRequest,oldValue,e).start();
+            new EditBookThread(editBookRequest,e).start();
         }
        else {
-            boolean error=new ConnectionError().Connection("Please provide a valid input for the field");
-            System.out.println("EditBook: Please provide a valid input for the field");
+            boolean error=new ConnectionError().Connection("Please provide a valid input for the field,if id is not present, reload window to update the id");
+            editbooktableview.getItems().clear();
+            System.out.println("EditBook: Please provide a valid input for the field,if id is not present, reload window to update the id");
         }
     }
+    /////Delete book
+    public void editBookDeletButtonClicked() throws IOException {
+        ObservableList<Book> bookselected=editbooktableview.getSelectionModel().getSelectedItems();
+        if (bookselected.get(0)==null||bookselected.get(0).getId()==null){
+            new ConnectionError().Connection("please select book to delete, if id is not present, reload window to update the id");
+        }else {
+            if (bookselected.get(0)!=null&&bookselected.get(0).getId()!=null){
+                new LoadingWindow();
+                new DeleteBook(bookselected.get(0).getId(),editbooktableview).start();
+            }
+        }
+    }
+
     //Editbook End
 
     ///////////////////////////////////////////////////History tab view//////////////////////////////////////////////////////////////////
@@ -435,8 +476,55 @@ public class BookStoreWindowController implements Initializable {
             new getBookSoldHistory(session,term,historytableview,date,totalamount).start();
         }
     }
+//    public void historyDeleteButtonClicked() throws IOException {
+//        ObservableList<BookHistory> bookselectd=historytableview.getSelectionModel().getSelectedItems();
+//        if (bookselectd.get(0)==null||bookselectd.get(0).getId()==0){
+//            new ConnectionError().Connection("Please select a history to delete");
+//        }else {
+//            new LoadingWindow();
+//            new DeleteBookHistory(bookselectd,bookselectd.get(0).getId(),historytableview).start();
+//        }
+//
+//    }
+
+
+
+    public void printHistory(){
+        if (pdfdocumentbytes!=null){
+            Path path= Paths.get(System.getProperty("user.dir")+"/MyChildSchool");
+            File pdffile=new File(path+"/bookhistory.ser");
+            new PrinterManager(pdfdocumentbytes,pdffile).start();
+        }else {
+            new ConnectionError().Connection("No document found");
+        }
+    }
 
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////History tab view End/////////////////////////////////////////////////////////////////
+
+    public void ScaleTrans(Button button){
+        ScaleTransition scaleTransition=new ScaleTransition(new Duration(100));
+        scaleTransition.setNode(button);
+        scaleTransition.setFromX(1);
+        scaleTransition.setToX(1.2);
+        scaleTransition.setFromY(1);
+        scaleTransition.setToY(1.2);
+        scaleTransition.play();
+        scaleTransition.setOnFinished(event -> {
+            scaleTransition.stop();
+        });
+    }
+    public void RestoreScale(Button button){
+        ScaleTransition scaleTransition=new ScaleTransition(new Duration(100));
+        scaleTransition.setNode(button);
+        scaleTransition.setFromX(1.2);
+        scaleTransition.setToX(1);
+        scaleTransition.setFromY(1.2);
+        scaleTransition.setToY(1);
+        scaleTransition.play();
+        scaleTransition.setOnFinished(event -> {
+            scaleTransition.stop();
+        });
+    }
 }

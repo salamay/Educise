@@ -1,154 +1,161 @@
 package sample.LoginPage.DashBoard.SelectWindows.Score;
 
 public class Scores {
-    private String Subject;
-    private double FirstCa;
-    private double SecondCa;
-    private double ThirdCa;
-    private double FourthCa;
-    private double FifthCa;
-    private double SixthCa;
-    private double SeventhCa;
-    private double EightCa;
-    private double NinthCa;
-    private double TenthCa;
-    private double Exam;
-    private double Cumulative;
-    public  Scores(){
-        Subject ="";
-        FirstCa =0.0;
-        SecondCa = 0.0;
-        ThirdCa = 0.0;
-        FourthCa = 0.0;
-        FifthCa = 0.0;
-        SixthCa = 0.0;
-        SeventhCa = 0.0;
-        EightCa = 0.0;
-        NinthCa = 0.0;
-        TenthCa = 0.0;
-        Exam = 0.0;
-        Cumulative = 0.0;
+    private String id;
+    private String subject;
+    private double firstca;
+    private double secondca;
+    private double thirdca;
+    private double fourthca;
+    private double fifthca;
+    private double sixthca;
+    private double seventhca;
+    private double eightca;
+    private double ninthca;
+    private double tenthca;
+    private double exam;
+    private double cumulative;
+    private String term;
 
+    public Scores() {
     }
-    public Scores(String subject, Double firstCa, Double secondCa, Double thirdCa, Double fourthCa, Double fifthCa,
-                  Double sixthCa, Double seventhCa, Double eightCa, Double ninthCa, Double tenthCa, Double exam,
-                  Double cumulative) {
-        Subject = subject;
-        FirstCa = firstCa;
-        SecondCa = secondCa;
-        ThirdCa = thirdCa;
-        FourthCa = fourthCa;
-        FifthCa = fifthCa;
-        SixthCa = sixthCa;
-        SeventhCa = seventhCa;
-        EightCa = eightCa;
-        NinthCa = ninthCa;
-        TenthCa = tenthCa;
-        Exam = exam;
-        Cumulative = cumulative;
+
+    public Scores(String subject, double firstCa, double secondCa, double thirdCa, double fourthCa, double fifthCa, double sixthCa, double seventhCa, double eightCa, double ninthCa, double tenthCa, double exam, double cumulative, String term,String id) {
+        this.subject = subject;
+        this.firstca = firstCa;
+        this.secondca = secondCa;
+        this.thirdca = thirdCa;
+        this.fourthca = fourthCa;
+        this.fifthca = fifthCa;
+        this.sixthca = sixthCa;
+        this.seventhca = seventhCa;
+        this.eightca = eightCa;
+        this.ninthca = ninthCa;
+        this.tenthca = tenthCa;
+        this.exam = exam;
+        this.cumulative = cumulative;
+        this.term = term;
+        this.id=id;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getSubject() {
-        return Subject;
+        return subject;
     }
 
     public void setSubject(String subject) {
-        Subject = subject;
+        this.subject = subject;
     }
 
-    public Double getFirstCa() {
-        return FirstCa;
+    public double getFirstca() {
+        return firstca;
     }
 
-    public void setFirstCa(Double firstCa) {
-        FirstCa = firstCa;
+    public void setFirstca(double firstca) {
+        this.firstca = firstca;
     }
 
-    public Double getSecondCa() {
-        return SecondCa;
+    public double getSecondca() {
+        return secondca;
     }
 
-    public void setSecondCa(Double secondCa) {
-        SecondCa = secondCa;
+    public void setSecondca(double secondca) {
+        this.secondca = secondca;
     }
 
-    public Double getThirdCa() {
-        return ThirdCa;
+    public double getThirdca() {
+        return thirdca;
     }
 
-    public void setThirdCa(Double thirdCa) {
-        ThirdCa = thirdCa;
+    public void setThirdca(double thirdca) {
+        this.thirdca = thirdca;
     }
 
-    public Double getFourthCa() {
-        return FourthCa;
+    public double getFourthca() {
+        return fourthca;
     }
 
-    public void setFourthCa(Double fourthCa) {
-        FourthCa = fourthCa;
+    public void setFourthca(double fourthca) {
+        this.fourthca = fourthca;
     }
 
-    public Double getFifthCa() {
-        return FifthCa;
+    public double getFifthca() {
+        return fifthca;
     }
 
-    public void setFifthCa(Double fifthCa) {
-        FifthCa = fifthCa;
+    public void setFifthca(double fifthca) {
+        this.fifthca = fifthca;
     }
 
-    public Double getSixthCa() {
-        return SixthCa;
+    public double getSixthca() {
+        return sixthca;
     }
 
-    public void setSixthCa(Double sixthCa) {
-        SixthCa = sixthCa;
+    public void setSixthca(double sixthca) {
+        this.sixthca = sixthca;
     }
 
-    public Double getSeventhCa() {
-        return SeventhCa;
+    public double getSeventhca() {
+        return seventhca;
     }
 
-    public void setSeventhCa(Double seventhCa) {
-        SeventhCa = seventhCa;
+    public void setSeventhca(double seventhca) {
+        this.seventhca = seventhca;
     }
 
-    public Double getEightCa() {
-        return EightCa;
+    public double getEightca() {
+        return eightca;
     }
 
-    public void setEightCa(Double eigthCa) {
-        EightCa = eigthCa;
+    public void setEightca(double eightca) {
+        this.eightca = eightca;
     }
 
-    public Double getNinthCa() {
-        return NinthCa;
+    public double getNinthca() {
+        return ninthca;
     }
 
-    public void setNinethCa(Double ninethCa) {
-        NinthCa = ninethCa;
+    public void setNinthca(double ninthca) {
+        this.ninthca = ninthca;
     }
 
-    public Double getTenthCa() {
-        return TenthCa;
+    public double getTenthca() {
+        return tenthca;
     }
 
-    public void setTenthCa(Double tenthCa) {
-        TenthCa = tenthCa;
+    public void setTenthca(double tenthca) {
+        this.tenthca = tenthca;
     }
 
-    public Double getExam() {
-        return Exam;
+    public double getExam() {
+        return exam;
     }
 
-    public void setExam(Double exam) {
-        Exam = exam;
+    public void setExam(double exam) {
+        this.exam = exam;
     }
 
-    public Double getCumulative() {
-        return Cumulative;
+    public double getCumulative() {
+        return cumulative;
     }
 
-    public void setCumulative(Double cummulative) {
-        Cumulative = cummulative;
+    public void setCumulative(double cumulative) {
+        this.cumulative = cumulative;
     }
+
+    public String getTerm() {
+        return term;
+    }
+
+    public void setTerm(String term) {
+        this.term = term;
+    }
+
 }

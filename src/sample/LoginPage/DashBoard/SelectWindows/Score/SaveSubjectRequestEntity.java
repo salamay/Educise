@@ -2,29 +2,22 @@ package sample.LoginPage.DashBoard.SelectWindows.Score;
 
 //this class is the Json format
 public class SaveSubjectRequestEntity {
-    private String name;
-    private String table;
+    private String id;
     private String subject;
-    private String oldsubject;
+
 
     public SaveSubjectRequestEntity() {
     }
 
-    public String getName() {
-        return name;
+
+    public String getId() {
+        return id;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public String getTable() {
-        return table;
-    }
-
-    public void setTable(String table) {
-        this.table = table;
-    }
 
     public String getSubject() {
         return subject;
@@ -34,11 +27,4 @@ public class SaveSubjectRequestEntity {
         this.subject = subject;
     }
 
-    public String getOldsubject() {
-        return oldsubject;
-    }
-
-    public void setOldsubject(String oldsubject) {
-        this.oldsubject = oldsubject;
-    }
 }

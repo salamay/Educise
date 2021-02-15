@@ -12,6 +12,8 @@
             <children>
             <ProgressIndicator fx:id="pgb" prefHeight="60.0" prefWidth="223.0" />
             <JFXComboBox fx:id="Clas" prefHeight="25.0" prefWidth="149.0" promptText="Select class" unFocusColor="#f8f8f8" />
+            <JFXComboBox fx:id="SessionComboBox" labelFloat="true" layoutX="66.0" layoutY="126.0" prefHeight="25.0" prefWidth="149.0" promptText="Select class" unFocusColor="#f8f8f8" />
+            <JFXButton fx:id="continueButtonPressed" style="-fx-background-color: #0066CB; -fx-background-radius: 10;" text="Continue" textFill="WHITE" wrapText="true" />
             </children>
 
             <padding>

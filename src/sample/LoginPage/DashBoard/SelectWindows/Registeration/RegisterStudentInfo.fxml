@@ -19,28 +19,29 @@
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="481.0" minWidth="10.0" prefWidth="174.0" />
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="481.0" minWidth="10.0" prefWidth="103.0" />
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="539.0" minWidth="10.0" prefWidth="168.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="481.0" minWidth="0.0" prefWidth="22.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="481.0" minWidth="10.0" prefWidth="147.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="481.0" minWidth="0.0" prefWidth="8.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="481.0" minWidth="10.0" prefWidth="161.0" />
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="481.0" minWidth="6.0" prefWidth="6.0" />
             </columnConstraints>
             <rowConstraints>
                 <RowConstraints maxHeight="113.0" minHeight="10.0" prefHeight="26.0" vgrow="SOMETIMES" />
                 <RowConstraints maxHeight="113.0" minHeight="0.0" prefHeight="34.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="113.0" minHeight="10.0" prefHeight="26.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="113.0" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="113.0" minHeight="0.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="240.0" minHeight="0.0" prefHeight="34.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="315.0" minHeight="0.0" prefHeight="17.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="315.0" minHeight="0.0" prefHeight="42.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="315.0" minHeight="0.0" prefHeight="27.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="315.0" minHeight="3.0" prefHeight="80.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="315.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="315.0" minHeight="0.0" prefHeight="29.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="315.0" minHeight="0.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="113.0" minHeight="10.0" prefHeight="13.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="113.0" minHeight="10.0" prefHeight="29.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="113.0" minHeight="0.0" prefHeight="17.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="240.0" minHeight="0.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="315.0" minHeight="0.0" prefHeight="20.0" vgrow="SOMETIMES" />
                 <RowConstraints maxHeight="315.0" minHeight="0.0" prefHeight="33.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="315.0" minHeight="0.0" prefHeight="38.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="315.0" minHeight="10.0" prefHeight="158.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="315.0" minHeight="10.0" prefHeight="158.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="315.0" minHeight="0.0" prefHeight="15.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="315.0" minHeight="3.0" prefHeight="84.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="315.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="315.0" minHeight="0.0" prefHeight="25.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="315.0" minHeight="0.0" prefHeight="17.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="315.0" minHeight="0.0" prefHeight="41.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="315.0" minHeight="0.0" prefHeight="29.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="315.0" minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="315.0" minHeight="5.0" prefHeight="33.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="378.0" minHeight="10.0" prefHeight="195.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
                 <Label prefHeight="13.0" prefWidth="94.0" text="Student name: " GridPane.rowIndex="1" />
@@ -160,10 +161,9 @@
                         <Font name="System Bold" size="12.0" />
                     </font>
                 </Label>
-                <ImageView fx:id="StudentPhoto" fitHeight="150.0" fitWidth="169.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="6" GridPane.rowIndex="9" />
-                <ImageView fx:id="StudentPhoto" fitHeight="101.0" fitWidth="166.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="6" GridPane.rowIndex="9" />
-                <ImageView fx:id="FatherPicture" fitHeight="144.0" fitWidth="169.0" layoutX="859.0" layoutY="241.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="6" GridPane.rowIndex="15" />
-                <ImageView fx:id="MotherPicture" fitHeight="91.0" fitWidth="139.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="8" GridPane.rowIndex="3" GridPane.rowSpan="2">
+                <ImageView fx:id="StudentPhoto" fitHeight="113.0" fitWidth="166.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="6" GridPane.rowIndex="13" />
+                <ImageView fx:id="FatherPicture" fitHeight="113.0" fitWidth="160.0" layoutX="859.0" layoutY="241.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="8" GridPane.rowIndex="13" />
+                <ImageView fx:id="MotherPicture" fitHeight="121.0" fitWidth="156.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="8" GridPane.rowIndex="5">
                     <GridPane.margin>
                         <Insets top="10.0" />
                     </GridPane.margin>
@@ -185,19 +185,36 @@
                 <JFXTextField fx:id="ClubTextField" labelFloat="true" promptText="Club" GridPane.columnIndex="4" GridPane.rowIndex="13" />
                 <JFXTextField fx:id="RoleModelTextField" labelFloat="true" promptText="Role model" GridPane.columnIndex="6" GridPane.rowIndex="1" />
                 <JFXTextField fx:id="FutureAmbitionTextField" labelFloat="true" promptText="Future ambition" GridPane.columnIndex="6" GridPane.rowIndex="3" />
-                <JFXButton onAction="#StudentPhotoButtonClicked" style="-fx-background-color: #4C7B9E; -fx-background-radius: 10 10 10 10;" text="Select Student Image" textFill="#fcfcfc" GridPane.columnIndex="6" GridPane.rowIndex="7" />
-                <JFXButton onAction="#fatherPhotoButtonClicked" style="-fx-background-color: #4C7B9E; -fx-background-radius: 10 10 10 10;" text="Select Father Image" textFill="WHITE" GridPane.columnIndex="6" GridPane.rowIndex="14" />
+                <JFXButton onAction="#StudentPhotoButtonClicked" style="-fx-background-color: #4C7B9E; -fx-background-radius: 10 10 10 10;" text="Select Student Image" textFill="#fcfcfc" GridPane.columnIndex="6" GridPane.rowIndex="9" />
+                <JFXButton onAction="#fatherPhotoButtonClicked" style="-fx-background-color: #4C7B9E; -fx-background-radius: 10 10 10 10;" text="Select Father Image" textFill="WHITE" GridPane.columnIndex="8" GridPane.rowIndex="9" />
                 <JFXButton onAction="#MotherPictureButtonClicked" prefHeight="25.0" prefWidth="139.0" style="-fx-background-color: #4C7B9E; -fx-background-radius: 10 10 10 10;" text="Select Mother Image" textFill="WHITE" wrapText="true" GridPane.columnIndex="8" GridPane.rowIndex="1" />
-                <JFXButton buttonType="RAISED" onAction="#RegButtonClicked" prefHeight="95.0" prefWidth="80.0" styleClass="NewStudentButton" stylesheets="@../../../../../back.css" text=" " GridPane.columnIndex="4" GridPane.columnSpan="5" GridPane.rowIndex="16" />
-                <Label text="Class:" GridPane.columnIndex="8" GridPane.rowIndex="7" />
-                <JFXComboBox fx:id="classCombobox" prefHeight="25.0" prefWidth="144.0" promptText="Select Class" GridPane.columnIndex="8" GridPane.rowIndex="8" />
+                <JFXButton buttonType="RAISED" onAction="#RegButtonClicked" prefHeight="95.0" prefWidth="80.0" styleClass="NewStudentButton" stylesheets="@../../../../../back.css" text=" " GridPane.columnIndex="4" GridPane.columnSpan="5" GridPane.rowIndex="17" />
+                <Label text="Class:" GridPane.columnIndex="5" GridPane.rowIndex="5" />
+                <JFXComboBox fx:id="classCombobox" prefHeight="25.0" prefWidth="144.0" promptText="Select Class" GridPane.columnIndex="6" GridPane.rowIndex="5" />
                 <Label fx:id="classerror" text="select class" textFill="#f51010" visible="false" GridPane.columnIndex="8" GridPane.rowIndex="9" />
-                <JFXComboBox fx:id="tagComboBox" layoutX="1013.0" layoutY="266.0" prefHeight="25.0" prefWidth="144.0" promptText="Select Tag" GridPane.columnIndex="8" GridPane.rowIndex="12" />
-                <Label fx:id="tagerror" layoutX="1013.0" layoutY="324.0" text="select tag" textFill="#f51010" visible="false" GridPane.columnIndex="8" GridPane.rowIndex="13" />
-                <Label text="Tag:" GridPane.columnIndex="8" GridPane.rowIndex="11" />
-            <Label text="NOTE: if you can not provide information fo a pathicular field,the field must not be empty,instead you enter &quot;nil&quot;." textFill="#00a42f" GridPane.columnSpan="7" GridPane.rowIndex="15">
+                <JFXComboBox fx:id="tagComboBox" layoutX="1013.0" layoutY="266.0" prefHeight="25.0" prefWidth="144.0" promptText="Select Tag" GridPane.columnIndex="6" GridPane.rowIndex="7" />
+                <Label fx:id="tagerror" layoutX="1013.0" layoutY="324.0" text="select tag" textFill="#f51010" visible="false" GridPane.columnIndex="5" GridPane.rowIndex="8" />
+                <Label text="Tag:" GridPane.columnIndex="5" GridPane.rowIndex="7" />
+            <Label prefHeight="102.0" prefWidth="405.0" text="NOTE: if you can not provide information fo a pathicular field,the field must not be empty,instead you enter &quot;nil&quot;." textFill="#00a42f" wrapText="true" GridPane.columnSpan="5" GridPane.rowIndex="15" GridPane.rowSpan="3">
                <font>
                   <Font size="18.0" />
+               </font>
+            </Label>
+            <JFXTextField fx:id="parentPhoneNumberTextField" labelFloat="true" layoutX="180.0" layoutY="78.0" promptText="Parent phone number" GridPane.columnIndex="4" GridPane.rowIndex="15" />
+            <Label layoutX="445.0" layoutY="316.0" text="Parent phone no" GridPane.columnIndex="3" GridPane.rowIndex="15" />
+            <JFXButton layoutX="1007.0" layoutY="36.0" onAction="#OtherPictureButtonClicked" prefHeight="25.0" prefWidth="139.0" style="-fx-background-color: #4C7B9E; -fx-background-radius: 10 10 10 10;" text="Select other Image" textFill="WHITE" wrapText="true" GridPane.columnIndex="8" GridPane.rowIndex="16" />
+            <ImageView fx:id="OtherPicture" fitHeight="158.0" fitWidth="156.0" layoutX="1007.0" layoutY="63.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="8" GridPane.rowIndex="17" />
+            <Label fx:id="ParentPhoneNumberError" prefHeight="19.0" prefWidth="15.0" text="*" textFill="#f52121" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="16">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+            <Label layoutX="20.0" layoutY="181.0" prefHeight="17.0" prefWidth="92.0" text="Guardian" GridPane.rowIndex="15" />
+            <JFXTextField fx:id="GuardianName" labelFloat="true" layoutX="180.0" layoutY="177.0" promptText="Guardian name" GridPane.columnIndex="1" GridPane.rowIndex="15" />
+            <Label prefHeight="17.0" prefWidth="177.0" text="Responsible for parent absent" textFill="#a4382c" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="16" />
+            <Label fx:id="guadianError" text="*" textFill="#ff0d0d" visible="false" GridPane.rowIndex="16">
+               <font>
+                  <Font name="System Bold" size="12.0" />
                </font>
             </Label>
             </children>

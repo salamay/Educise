@@ -1,18 +1,26 @@
 package sample.LoginPage;
 
 public class LoginCredentials {
-    private String username;
+    private String schoolid;
+    private String staffid;
     private String password;
-
     public LoginCredentials() {
     }
 
-    public String getUsername() {
-        return username;
+    public String getSchoolid() {
+        return schoolid;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setSchoolid(String schoolid) {
+        this.schoolid = schoolid;
+    }
+
+    public String getStaffid() {
+        return staffid;
+    }
+
+    public void setStaffid(String staffid) {
+        this.staffid = staffid;
     }
 
     public String getPassword() {

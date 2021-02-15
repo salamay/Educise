@@ -5,11 +5,11 @@ import javax.print.DocFlavor;
 public class EditBookRequest {
     private String entity;
     private String column;
-    private int id;
+    private String id;
     public EditBookRequest() {
     }
 
-    public EditBookRequest(String entity, String column, int id) {
+    public EditBookRequest(String entity, String column, String id) {
         this.entity = entity;
         this.column = column;
         this.id = id;
@@ -31,11 +31,11 @@ public class EditBookRequest {
         this.column = column;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 }

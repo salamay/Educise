@@ -1,31 +1,30 @@
 package sample.LoginPage.DashBoard.Admin.SchoolFee;
 
+import net.sf.jasperreports.engine.JasperPrint;
+
 public class Fee {
-    public String studentname;
-    public String depositorname;
-    public String clas;
-    public String term;
+    private String studentid;
+    private String studentname;
+    private String depositorname;
+    private String clas;
+    private String term;
     public String year;
-    public String modeofpayment;
-    public String date;
-    public String id;
-    public String amount;
-    public String tag;
+    private String modeofpayment;
+    private String date;
+    private String id;
+    private String amount;
+    private String tag;
+    private byte[] pdf;
 
     public Fee() {
     }
 
-    public Fee(String studentname, String depositorname, String clas, String term, String year, String modeofpayment, String date, String id, String amount,String tag) {
-        this.studentname = studentname;
-        this.depositorname = depositorname;
-        this.clas = clas;
-        this.term = term;
-        this.year = year;
-        this.modeofpayment = modeofpayment;
-        this.date = date;
-        this.id = id;
-        this.amount = amount;
-        this.tag=tag;
+    public String getStudentid() {
+        return studentid;
+    }
+
+    public void setStudentid(String studentid) {
+        this.studentid = studentid;
     }
 
     public String getStudentname() {
@@ -106,5 +105,13 @@ public class Fee {
 
     public void setTag(String tag) {
         this.tag = tag;
+    }
+
+    public byte[] getPdf() {
+        return pdf;
+    }
+
+    public void setPdf(byte[] pdf) {
+        this.pdf = pdf;
     }
 }

@@ -16,8 +16,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import okhttp3.*;
+import sample.Configuration.Configuration;
 import sample.ConnectionError;
 import sample.LoginPage.DashBoard.SelectWindows.Registeration.LoadingWindow;
+import sample.LoginPage.LogInModel;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -25,6 +27,7 @@ import java.io.*;
 import java.net.URL;
 import java.nio.file.Files;
 import java.util.ResourceBundle;
+import java.util.concurrent.TimeUnit;
 
 public class NewTeacherController implements Initializable {
     public JFXTextField FirstName;
@@ -41,7 +44,10 @@ public class NewTeacherController implements Initializable {
     public JFXTextField PhoneNo;
     public JFXTextField SchoolAttended;
     public JFXTextField Course;
+    public JFXTextField accountNumberTextField;
+    public JFXTextField accountnameTextField;
     public JFXComboBox<String> MaritalStatus;
+    public JFXComboBox<String> bankNameComboBox;
     public ImageView TeacherImageView;
     public JFXRadioButton Female;
     public JFXRadioButton Male;
@@ -65,23 +71,26 @@ public class NewTeacherController implements Initializable {
     public Label GenderError;
     public Label ErrorLabel;
 
-    String FirstNameInput;
-    String LastNameInput;
-    String MiddleNameInput;
-    String ClassInput;
-    String SubjectOne;
-    String SubjectTwo;
-    String SubjectThree;
-    String SubjectFour;
-    String EmailInput;
-    String AddressInput;
-    String EntryYearInput;
-    String Gender;
-    String MaritalStatusValue;
-    long PhoneNoInput;
-    String SchoolAttendedInput;
-    String CourseInput;
-    File file;
+    private String FirstNameInput;
+    private String LastNameInput;
+    private String MiddleNameInput;
+    private String ClassInput;
+    private String SubjectOne;
+    private String SubjectTwo;
+    private String SubjectThree;
+    private String SubjectFour;
+    private String EmailInput;
+    private String AddressInput;
+    private String EntryYearInput;
+    private String Gender;
+    private String MaritalStatusValue;
+    private String bank;
+    private String bankAccount;
+    private String accountName;
+    private long PhoneNoInput;
+    private String SchoolAttendedInput;
+    private String CourseInput;
+    private File file;
 
 
 
@@ -93,7 +102,8 @@ public class NewTeacherController implements Initializable {
         ObservableList<String> list= FXCollections.observableArrayList();
         list.addAll("Single","Maried","other");
         MaritalStatus.getItems().addAll(list);
-
+        accountnameTextField.setEditable(false);
+        bankNameComboBox.getItems().addAll("First bank");
     }
     public void TeacherImageButtonClicked() throws IOException {
         FileChooser fileChooser=new FileChooser();
@@ -101,9 +111,11 @@ public class NewTeacherController implements Initializable {
                 new FileChooser.ExtensionFilter("PNG","*.PNG"),
                 new FileChooser.ExtensionFilter("JPG","*JPG"));
         file=fileChooser.showOpenDialog(NewTeacherWindow.window);
-        BufferedImage bufferedImage= ImageIO.read(file);
-        Image image= SwingFXUtils.toFXImage(bufferedImage,null);
-        TeacherImageView.setImage(image);
+        if (file!=null){
+            BufferedImage bufferedImage= ImageIO.read(file);
+            Image image= SwingFXUtils.toFXImage(bufferedImage,null);
+            TeacherImageView.setImage(image);
+        }
     }
 
     public void RegButtonClicked(){
@@ -207,19 +219,35 @@ public class NewTeacherController implements Initializable {
         }else {
             Gender="Female";
         }
-
-
+        if (bankNameComboBox.getSelectionModel().getSelectedItem()!=null){
+            bank=bankNameComboBox.getSelectionModel().getSelectedItem();
+        }else {
+            new ConnectionError().Connection("Please select a bank");
+        }
+        if (accountNumberTextField.getText()!=null || !accountNumberTextField.getText().isEmpty()){
+            bankAccount=accountNumberTextField.getText();
+        }else {
+            new ConnectionError().Connection("Please enter a valid account number");
+        }
+        if (accountnameTextField.getText()!=null || !accountnameTextField.getText().isEmpty()){
+            accountName=accountnameTextField.getText();
+        }else {
+            new ConnectionError().Connection("Account is invalid");
+        }
+        if (file==null){
+            new ConnectionError().Connection("Please select teacher image");
+        }
         if(!FirstName.getText().isEmpty() && !LastName.getText().isEmpty() && !MiddleName.getText().isEmpty()
                 && !Class.getText().isEmpty()&& !Subject1.getText().isEmpty()&& !Subject2.getText().isEmpty()
                 &&!Subject3.getText().isEmpty() && !Subject4.getText().isEmpty()&&
                 !Address.getText().isEmpty() && !Email.getText().isEmpty()
                 && !SchoolAttended.getText().isEmpty() && !EntryYear.getText().isEmpty()
-                && !PhoneNo.getText().isEmpty() && !Course.getText().isEmpty() &&
+                && !PhoneNo.getText().isEmpty() && !Course.getText().isEmpty() && !accountNumberTextField.getText().isEmpty()&& !accountnameTextField.getText().isEmpty()&& bankNameComboBox.getSelectionModel().getSelectedItem()!=null&&
                 !PhoneNo.getText().matches("^[a-zA-Z]*$") && Female.isSelected() || Male.isSelected() || file!=null){
 
             new RegisterTecherThread(FirstNameInput,LastNameInput,MiddleNameInput,ClassInput,SubjectOne,SubjectTwo,
                     SubjectThree,SubjectFour,EmailInput,AddressInput,EntryYearInput,Gender,PhoneNoInput,SchoolAttendedInput,
-                    CourseInput,file,MaritalStatusValue).start();
+                    CourseInput,file,MaritalStatusValue,accountName,bankAccount,bank).start();
         }else {
             ErrorLabel.setVisible(true);
         }
@@ -237,6 +265,9 @@ public class NewTeacherController implements Initializable {
         String Address;
         String EntryYear;
         String Gender;
+        String accountName;
+        String bankAccountNumber;
+        String bankname;
         long PhoneNo;
         String MaritalStatus;
         String SchoolAttended;
@@ -246,7 +277,7 @@ public class NewTeacherController implements Initializable {
         public RegisterTecherThread(  String FirstNameInput,String LastNameInput,String MiddleNameInput,String ClassInput,
                                       String Subject1,String Subject2,String Subject3,String Subject4,
                                       String EmailInput,String AddressInput,String EntryYearInput,String Gendr,
-                                      long PhoneNoInput, String SchoolAttendedInput,String CourseInput, File TeacherImage,String Status){
+                                      long PhoneNoInput, String SchoolAttendedInput,String CourseInput, File TeacherImage,String Status,String accountName,String bankAccountNumber,String bankname){
             Platform.runLater(()->{
                 try {
                     new LoadingWindow();
@@ -271,6 +302,9 @@ public class NewTeacherController implements Initializable {
             this.Course=CourseInput;
             this.file=TeacherImage;
             this.MaritalStatus=Status;
+            this.bankAccountNumber=bankAccountNumber;
+            this.accountName=accountName;
+            this.bankname=bankname;
             System.out.println("[RegisterTeacherThread]: "+FirstName);
             System.out.println("[RegisterTeacherThread]: "+LastName);
             System.out.println("[RegisterTeacherThread]: "+MiddleName);
@@ -287,6 +321,9 @@ public class NewTeacherController implements Initializable {
             System.out.println("[RegisterTeacherThread]: "+SchoolAttended);
             System.out.println("[RegisterTeacherThread]: "+Course);
             System.out.println("[RegisterTeacherThread]: "+MaritalStatus);
+            System.out.println("[RegisterTeacherThread]: "+bankname);
+            System.out.println("[RegisterTeacherThread]: "+bankAccountNumber);
+            System.out.println("[RegisterTeacherThread]: "+accountName);
         }
 
         @Override
@@ -310,6 +347,9 @@ public class NewTeacherController implements Initializable {
                 newTeacherRequestEntity.setSchoolattended(SchoolAttended);
                 newTeacherRequestEntity.setCourse(Course);
                 newTeacherRequestEntity.setMaritalstatus(MaritalStatus);
+                newTeacherRequestEntity.setBankname(bankname);
+                newTeacherRequestEntity.setBankaccountnumber(bankAccountNumber);
+                newTeacherRequestEntity.setAccountname(accountName);
                 if (file!=null){
                     byte[] bytes= Files.readAllBytes(file.toPath());
                     newTeacherRequestEntity.setFile(bytes);
@@ -327,36 +367,49 @@ public class NewTeacherController implements Initializable {
                 String rawjson=gson.toJson(newTeacherRequestEntity);
 
                 System.out.println("[NewTeacherController] :Setting up client");
-                OkHttpClient client=new OkHttpClient();
+                OkHttpClient client=new OkHttpClient.Builder()
+                        .connectTimeout(1, TimeUnit.MINUTES)
+                        .readTimeout(1, TimeUnit.MINUTES)
+                        .build();
+
                 System.out.println("[NewTeacherController] :Preparing request body");
                 RequestBody requestBody=RequestBody.create(MediaType.parse("application/json"),rawjson);
+                if (Configuration.ipaddress!=null&&Configuration.port!=null){
+                    Request request=new Request.Builder()
+                            .post(requestBody)
+                            .addHeader("Authorization","Bearer "+ LogInModel.token)
+                            .url("http://"+Configuration.ipaddress+":"+Configuration.port+"/registerteacher")
+                            .build();
+                    Response response=client.newCall(request).execute();
+                    if (response.code()==200){
+                        System.out.println("[NewTeacherController]-->Response:"+response);
+                        System.out.println("[NewTeacherController]-->ResponseBody--->"+response.body());
+                        Platform.runLater(()->{
+                            LoadingWindow.window.close();
+                            boolean error=new ConnectionError().Connection("SUCCESS");
+                            if (error){
 
-                Request request=new Request.Builder()
-                        .post(requestBody)
-                        .addHeader("Authorization","Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzYWxhbWF5IiwiaWF0IjoxNTk4NTA4NTczLCJleHAiOjE1OTg2ODg1NzN9.9nK-QCA6cxUmsU1qBiE8CEhiAMoBqfLuSehQQA9yJbU")
-                        .url("http://localhost:8080/registerteacher")
-                        .build();
-                Response response=client.newCall(request).execute();
-                if (response.code()==201||response.code()==200||response.code()==202){
-                    System.out.println("[NewTeacherController]-->Response:"+response);
-                    System.out.println("[NewTeacherController]-->ResponseBody--->"+response.body());
-                    LoadingWindow.window.close();
-                    Platform.runLater(()->{
-                        boolean error=new ConnectionError().Connection("SUCCESS");
-                        if (error){
-
-                        }
-                    });
+                            }
+                        });
+                        response.close();
+                    }else{
+                        String message=new String(response.body().bytes(),"UTF-8");
+                        System.out.println("[NewTeacherController]--> server return error:"+response.code()+" Unable to Register Teacher");
+                        Platform.runLater(()->{
+                            LoadingWindow.window.close();
+                            boolean error=new ConnectionError().Connection(response.code()+":"+message);
+                            if (error){
+                                System.out.println("[NewTeacherController]--> Connection Error,Window close");
+                            }
+                        });
+                    }
+                    response.close();
                 }else{
-                    System.out.println("[NewTeacherController]--> server return error:"+response.code()+" Unable to Register Teacher");
                     Platform.runLater(()->{
-                        LoadingWindow.window.close();
-                        boolean error=new ConnectionError().Connection("server return error "+response.code()+": Unable to register :CHECK INTERNET CONNECTION");
-                        if (error){
-                            System.out.println("[NewTeacherController]--> Connection Error,Window close");
-                        }
+                        new ConnectionError().Connection("Invalid configuration, please configure your software in the log in page");
                     });
                 }
+
             } catch ( FileNotFoundException e) {
                 e.printStackTrace();
                 System.out.println("[NewTeacherController] : Teacher Registeration Error");

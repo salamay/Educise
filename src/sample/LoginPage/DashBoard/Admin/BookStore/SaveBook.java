@@ -6,11 +6,13 @@ import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableView;
 import okhttp3.*;
+import sample.Configuration.Configuration;
 import sample.ConnectionError;
 import sample.LoginPage.DashBoard.SelectWindows.Registeration.LoadingWindow;
 import sample.LoginPage.LogInModel;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 public class SaveBook extends Thread {
     private ObservableList<Book> books;
@@ -25,7 +27,10 @@ public class SaveBook extends Thread {
     @Override
     public void run() {
         System.out.println("[SaveBook]: Setting up client ");
-        OkHttpClient client=new OkHttpClient();
+        OkHttpClient client=new OkHttpClient.Builder()
+                .connectTimeout(1, TimeUnit.MINUTES)
+                .readTimeout(1, TimeUnit.MINUTES)
+                .build();
         System.out.println("[SaveBook]: Setting up requestbody ");
         GsonBuilder builder=new GsonBuilder();
         builder.serializeNulls();
@@ -34,67 +39,55 @@ public class SaveBook extends Thread {
         String body=gson.toJson(book);
         System.out.println("[SaveBook]: "+body);
         RequestBody requestBody=RequestBody.create(body, MediaType.parse("application/json"));
-
-        Request request=new Request.Builder()
-                .post(requestBody)
-                .url("http://localhost:8080/savebook")
-                .addHeader("Authorization","Bearer "+ LogInModel.token)
-                .build();
-        Response response;
-        try {
-            response = client.newCall(request).execute();
-            System.out.println("[SaveBook]: Saving book ");
-            System.out.println("[SaveBook]:"+response);
-            if (response.code()==200||response.code()==201||response.code()==212||response.code()==202){
+        if (Configuration.ipaddress!=null&&Configuration.port!=null){
+            Request request=new Request.Builder()
+                    .post(requestBody)
+                    .url("http://"+Configuration.ipaddress+":"+Configuration.port+"/savebook")
+                    .addHeader("Authorization","Bearer "+ LogInModel.token)
+                    .build();
+            Response response;
+            try {
+                response = client.newCall(request).execute();
+                System.out.println("[SaveBook]: Saving book ");
+                System.out.println("[SaveBook]:"+response);
+                if (response.code()==200){
+                    String rawBody=new String(response.body().bytes(),"UTF-8");
+                    Platform.runLater(()->{
+                        LoadingWindow.window.close();
+                        new ConnectionError().Connection("SUCCESS");
+                        GsonBuilder builder1=new GsonBuilder();
+                        builder1.serializeNulls();
+                        builder1.setPrettyPrinting();
+                        Gson gson1=builder1.create();
+                        Book book=gson1.fromJson(rawBody,Book.class);
+                        addbooktableview.getItems().add(book);
+                    });
+                    response.close();
+                }else {
+                    String message=new String(response.body().bytes(),"UTF-8");
+                    Platform.runLater(()->{
+                        LoadingWindow.window.close();
+                        boolean error=new ConnectionError().Connection(response.code()+": "+message);
+                        if (error){
+                            addbooktableview.refresh();
+                            System.out.println("[SchoolFeeThread]--> Connection Error");
+                        }
+                    });
+                    response.close();
+                }
+            } catch (IOException e) {
                 Platform.runLater(()->{
                     LoadingWindow.window.close();
-                    new ConnectionError().Connection("SUCCESS");
-                    addbooktableview.getItems().add(book);
-                });
-                response.close();
-            }else {
-                Platform.runLater(()->{
-                    LoadingWindow.window.close();
-                    boolean error=new ConnectionError().Connection("server:error "+response.code()+" Unable to save book");
+                    boolean error=new ConnectionError().Connection("Unable to establish connection,CHECK INTERNET CONNECTION");
                     if (error){
                         addbooktableview.refresh();
-                        System.out.println("[SchoolFeeThread]--> Connection Error");
+                        System.out.println("[SaveBook]--> Connection Error,Window close");
                     }
                 });
-                response.close();
+                e.printStackTrace();
             }
-            if (response.code()==404){
-                //Display alert dialog
-                Platform.runLater(()->{
-                    LoadingWindow.window.close();
-                    boolean error=new ConnectionError().Connection("server return error "+response.code()+": Books not found");
-                    if (error){
-                        System.out.println("[SaveBook]--> unable to save school fee on the server");
-                    }
-                });
-                response.close();
-            }
-            if (response.code()==422){
-                //Display alert dialog
-                Platform.runLater(()->{
-                    LoadingWindow.window.close();
-                    boolean error=new ConnectionError().Connection("server return error "+response.code()+": Server cannot process your request,check fields for invalid character");
-                    if (error){
-                        System.out.println("[SaveBook]--> Connection error");
-                    }
-                });
-                response.close();
-            }
-        } catch (IOException e) {
-            Platform.runLater(()->{
-                LoadingWindow.window.close();
-                boolean error=new ConnectionError().Connection("Unable to establish connection,CHECK INTERNET CONNECTION");
-                if (error){
-                    addbooktableview.refresh();
-                    System.out.println("[SaveBook]--> Connection Error,Window close");
-                }
-            });
-            e.printStackTrace();
+        }else{
+            new ConnectionError().Connection("Invalid configuration settings, Configure your software in the login page");
         }
     }
 }

@@ -13,6 +13,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
@@ -29,6 +30,7 @@ import javax.security.auth.spi.LoginModule;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 //This class displays a window to select session and make the list view after a session has been clicked and also display
@@ -38,7 +40,6 @@ public class SelectParent {
     public static Stage window1;
     public JFXComboBox<String> Clas;
     public static String classSelected;
-    private JFXComboBox<String> ParentSearch;
     private ProgressIndicator progressBar;
     public static String parentname;
 
@@ -70,6 +71,8 @@ public class SelectParent {
         window1.setMinWidth(1200);
         window1.setMinHeight(700);
         window1.centerOnScreen();
+        window1.setTitle("Select parent");
+        window1.getIcons().add(new Image("image/window_icon.png"));
         window1.initModality(Modality.APPLICATION_MODAL);
         window1.show();
 ///////////////////////////////////Displays the window end///////////////////////////
@@ -79,17 +82,8 @@ public class SelectParent {
  //////////////////////////////////////////////////////////////////////////////////////////////
         Clas.setOnAction(event -> {
             classSelected = Clas.getSelectionModel().getSelectedItem();
-            VBox vBox = new VBox();
-            vBox.setSpacing(10);
-            vBox.setMinHeight(700);
-            vBox.setMinWidth(1000);
-            ParentSearch = new JFXComboBox<>();
-            ParentSearch.setEditable(true);
-            ParentSearch.setMinWidth(Control.USE_COMPUTED_SIZE);
-            HBox hBox = new HBox();
-            Label Label = new Label("Search parent name");
-            hBox.getChildren().addAll(Label, ParentSearch);
             ListView<String> Parentlist = new ListView<>();
+            Parentlist.setMinHeight(600);
             Parentlist.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 /////////////////  parent name list view On Mouse Clicked//////////////
             //the newValue variable is a static global variable that will be later reference in the studentParentController class
@@ -112,14 +106,12 @@ public class SelectParent {
             scrollPane.setFitToWidth(true);
             scrollPane.setPannable(true);
             scrollPane.setFitToHeight(true);
-            vBox.getChildren().addAll(hBox, Parentlist);
-            scrollPane.setContent(vBox);
+            scrollPane.setContent(Parentlist);
             Scene scene2 = new Scene(scrollPane);
             SelectParent.window1.setScene(scene2);
             //passing the session selected as an argument to the ParentList Class
             //this enable the database to know which session to fetch parent name
             new ParentListhread(classSelected, Parentlist).start();
-            ParentSearch.setOnAction(event2 -> System.out.println("Search"));
         });
 
     }
@@ -140,19 +132,21 @@ public class SelectParent {
 
         public void run() {
             System.out.println("[Retrieving information session]: setting up okhttp client");
-            OkHttpClient client=new OkHttpClient();
+            OkHttpClient client=new OkHttpClient.Builder()
+                    .connectTimeout(1, TimeUnit.MINUTES)
+                    .readTimeout(1, TimeUnit.MINUTES)
+                    .build();
 
             System.out.println("[Retrieving information session]: setting up okhttp client request");
             Request request=new Request.Builder()
-                    .url("http://localhost:8080/retrieveinformationsession")
+                    .url("http://167.99.91.154:8080/retrieveinformationsession")
                     .addHeader("Authorization","Bearer "+ LogInModel.token)
                     .build();
 
             try {
                 Response response = client.newCall(request).execute();
                 System.out.println("[Retrieving information session]: "+response);
-                if (response.code()==200|| response.code()==212){
-
+                if (response.code()==200|| response.code()==212 ||response.code()==202 ||response.code()==201){
                     System.out.println("[Retrieving information session]: session retrieved");
                     ResponseBody body=response.body();
                     try {
@@ -226,11 +220,14 @@ public class SelectParent {
         @Override
         public void run() {
             System.out.println("[SelectParent]: Retrieving name");
-            OkHttpClient client=new OkHttpClient();
+            OkHttpClient client=new OkHttpClient.Builder()
+                    .connectTimeout(1,TimeUnit.MINUTES)
+                    .readTimeout(1, TimeUnit.MINUTES)
+                    .build();
 
             System.out.println("[SelectParent]: setting up okhttp client request");
             Request request=new Request.Builder()
-                    .url("http://localhost:8080/retrieveparent/"+classSelected)
+                    .url("http://167.99.91.154:8080/retrieveparent/"+classSelected)
                     .addHeader("Authorization","Bearer "+ LogInModel.token)
                     .build();
 

@@ -4,13 +4,16 @@ public class JSON {
 
     private String studentname;
     private String clas;
+    private String session;
     private String tag;
     private int age;
     private String fathername;
     private String mothername;
+    private String guardianname;
     private String nextofkin;
     private String address;
-    private String phoneno;
+    private int phoneno;
+    private int parentphonenumber;
     private String nickname;
     private String hobbies;
     private String turnon;
@@ -21,27 +24,8 @@ public class JSON {
     private String gender;
 
 
-    public JSON() {
-    }
 
-    public JSON(String studentname, int age, String fathername, String mothername, String nextofkin, String address, String phoneno, String nickname, String hobbies, String turnon, String turnoff, String club, String rolemodel, String futureambition, String gender,String clas,String tag) {
-        this.studentname = studentname;
-        this.age = age;
-        this.fathername = fathername;
-        this.mothername = mothername;
-        this.nextofkin = nextofkin;
-        this.address = address;
-        this.phoneno = phoneno;
-        this.nickname = nickname;
-        this.hobbies = hobbies;
-        this.turnon = turnon;
-        this.turnoff = turnoff;
-        this.club = club;
-        this.rolemodel = rolemodel;
-        this.futureambition = futureambition;
-        this.gender = gender;
-        this.clas=clas;
-        this.tag=tag;
+    public JSON() {
     }
 
     public void setStudentname(String studentname) {
@@ -50,6 +34,10 @@ public class JSON {
 
     public void setClas(String clas) {
         this.clas = clas;
+    }
+
+    public void setSession(String session) {
+        this.session = session;
     }
 
     public void setAge(int age) {
@@ -64,6 +52,10 @@ public class JSON {
         this.mothername = mothername;
     }
 
+    public void setGuardianname(String guardianname) {
+        this.guardianname = guardianname;
+    }
+
     public void setNextofkin(String nextofkin) {
         this.nextofkin = nextofkin;
     }
@@ -72,8 +64,12 @@ public class JSON {
         this.address = address;
     }
 
-    public void setPhoneno(String phoneno) {
+    public void setPhoneno(int phoneno) {
         this.phoneno = phoneno;
+    }
+
+    public void setParentphonenumber(int parentphonenumber) {
+        this.parentphonenumber = parentphonenumber;
     }
 
     public void setNickname(String nickname) {

@@ -9,7 +9,7 @@
 
 <TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1200.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.LoginPage.DashBoard.Admin.BookStore.BookStoreWindowController">
   <tabs>
-    <Tab text="Book">
+    <Tab text="Add Book">
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="750.0" prefWidth="1200.0" style="-fx-background-color: #181D30;">
                <children>
@@ -25,7 +25,7 @@
                               <Font name="Algerian" size="24.0" />
                            </font>
                         </Label>
-                        <VBox prefHeight="455.0" prefWidth="1190.0" spacing="5.0" style="-fx-background-color: #202639;">
+                        <VBox prefHeight="429.0" prefWidth="1190.0" spacing="5.0" style="-fx-background-color: #202639;">
                            <children>
                               <Label alignment="CENTER" prefHeight="23.0" prefWidth="47.0" text="Title:" textAlignment="CENTER" textFill="#eee5e5">
                                  <font>
@@ -56,16 +56,19 @@
                                     <Font size="10.0" />
                                  </font>
                               </Label>
-                              <JFXComboBox fx:id="addbuttonsessioncombobox" labelFloat="true" prefHeight="25.0" prefWidth="133.0" promptText="Select Session" />
+                              <JFXComboBox fx:id="addbuttonsessioncombobox" labelFloat="true" prefHeight="25.0" prefWidth="133.0" promptText="Select Session" style="-fx-background-color: #D5D5D5;" />
                               <Label alignment="CENTER" layoutX="20.0" layoutY="258.0" prefHeight="27.0" prefWidth="55.0" text="Term:" textAlignment="CENTER" textFill="#eee5e5">
                                  <font>
                                     <Font size="10.0" />
                                  </font>
                               </Label>
-                              <JFXComboBox fx:id="addbooktermcombobox" labelFloat="true" layoutX="20.0" layoutY="290.0" prefHeight="25.0" prefWidth="133.0" promptText="Select tem" />
-                              <HBox alignment="CENTER" prefHeight="76.0" prefWidth="1170.0">
+                              <JFXComboBox fx:id="addbooktermcombobox" labelFloat="true" layoutX="20.0" layoutY="290.0" prefHeight="25.0" prefWidth="133.0" promptText="Select tem" style="-fx-background-color: #D5D5D5;" />
+                              <HBox alignment="CENTER" prefHeight="48.0" prefWidth="1170.0">
                                  <children>
-                                    <JFXButton buttonType="RAISED" onAction="#addbookbuttonClicked" prefHeight="81.0" prefWidth="75.0" ripplerFill="#082ce1" styleClass="fetch" stylesheets="@../../../../../back.css" text=" " />
+                                    <JFXButton fx:id="addbookbutton" buttonType="RAISED" onAction="#addbookbuttonClicked" prefHeight="36.0" prefWidth="148.0" ripplerFill="#082ce1" style="-fx-background-color: #0066CB; -fx-background-radius: 20 20 20 20;" text="Add book to store" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font></JFXButton>
                                  </children>
                               </HBox>
                            </children>
@@ -75,9 +78,9 @@
                            <padding>
                               <Insets left="10.0" right="10.0" />
                            </padding></VBox>
-                        <ScrollPane fitToHeight="true" fitToWidth="true" pannable="true" prefHeight="154.0" prefWidth="1190.0">
+                        <ScrollPane fitToHeight="true" fitToWidth="true" pannable="true" prefHeight="247.0" prefWidth="1190.0">
                            <content>
-                              <TableView fx:id="addbooktableview" prefHeight="155.0" prefWidth="1188.0" />
+                              <TableView fx:id="addbooktableview" prefHeight="169.0" prefWidth="1188.0" />
                            </content>
                         </ScrollPane>
                      </children>
@@ -88,11 +91,11 @@
                </children></AnchorPane>
       </content>
     </Tab>
-    <Tab text="Sell">
+    <Tab text="Sell Book">
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="750.0" prefWidth="1200.0" style="-fx-background-color: #181D30;">
                <children>
-                  <VBox prefHeight="701.0" prefWidth="1200.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <VBox prefHeight="688.0" prefWidth="1200.0" spacing="10.0" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </padding>
@@ -121,7 +124,7 @@
                                     <Font name="System Italic" size="12.0" />
                                  </font>
                               </JFXTextField>
-                              <JFXButton onAction="#sellbookGoButtonClicked" prefHeight="51.0" prefWidth="187.0" style="-fx-background-color: #0066CB; -fx-background-radius: 20 5 5 20;" text="Search book" textFill="WHITE">
+                              <JFXButton fx:id="searchbook1" onAction="#sellbookGoButtonClicked" prefHeight="51.0" prefWidth="187.0" style="-fx-background-color: #0066CB; -fx-background-radius: 20 5 5 20;" text="Search book" textFill="WHITE">
                                  <font>
                                     <Font name="System Bold" size="24.0" />
                                  </font>
@@ -144,9 +147,9 @@
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Label>
-                        <HBox prefHeight="280.0" prefWidth="1180.0">
+                        <HBox prefHeight="385.0" prefWidth="1180.0">
                            <children>
-                              <TableView fx:id="SellBookTableView" prefHeight="255.0" prefWidth="1180.0">
+                              <TableView fx:id="SellBookTableView" prefHeight="281.0" prefWidth="1180.0">
                                 <columns>
                                   <TableColumn fx:id="sellbookidcolumn" prefWidth="89.0" text="ID" />
                                     <TableColumn fx:id="sellbooktitlecolumn" prefWidth="381.0" text="Title" />
@@ -159,9 +162,12 @@
                               </TableView>
                            </children>
                         </HBox>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                        <HBox alignment="CENTER" prefHeight="53.0" prefWidth="1180.0">
                            <children>
-                              <JFXButton fx:id="soldbutton" buttonType="RAISED" onAction="#sellbookbuttonClicked" prefHeight="71.0" prefWidth="77.0" styleClass="fetch" stylesheets="@../../../../../back.css" text=" " />
+                              <JFXButton fx:id="sellbutton" buttonType="RAISED" onAction="#sellbookbuttonClicked" prefHeight="30.0" prefWidth="117.0" style="-fx-background-color: #0066CB; -fx-background-radius: 20 20 20 20;" text="Sell book" textFill="WHITE" wrapText="true">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font></JFXButton>
                            </children>
                         </HBox>
                      </children>
@@ -199,8 +205,8 @@
                         </Label>
                         <HBox layoutX="20.0" layoutY="20.0" prefHeight="46.0" prefWidth="1180.0" spacing="10.0">
                            <children>
-                              <JFXTextField fx:id="editbooktitletextfield" focusColor="#edeef2" prefHeight="25.0" prefWidth="452.0" promptText="Book title" style="-fx-background-color: #FFFFFF;" />
-                              <JFXButton onAction="#editbooksearchbuttonClicked" prefHeight="39.0" prefWidth="132.0" style="-fx-background-color: #0066CB; -fx-background-radius: 10 10 10 10;" text="Search Book" textFill="#f5e4e4" wrapText="true">
+                              <JFXTextField fx:id="editbooktitletextfield" focusColor="#edeef2" labelFloat="true" prefHeight="25.0" prefWidth="452.0" promptText="Book title" style="-fx-background-color: #FFFFFF;" />
+                              <JFXButton fx:id="searchbook2" onAction="#editbooksearchbuttonClicked" prefHeight="39.0" prefWidth="132.0" style="-fx-background-color: #0066CB; -fx-background-radius: 10 10 10 10;" text="Search Book" textFill="#f5e4e4" wrapText="true">
                                  <font>
                                     <Font name="System Bold" size="18.0" />
                                  </font>
@@ -227,9 +233,9 @@
                               <JFXComboBox fx:id="editbooktermcombobox" focusColor="#eeeff2" labelFloat="true" prefHeight="34.0" prefWidth="196.0" promptText="Term" style="-fx-background-color: #FFFFFF;" />
                            </children>
                         </HBox>
-                        <JFXScrollPane prefHeight="392.0" prefWidth="1180.0">
+                        <JFXScrollPane prefHeight="270.0" prefWidth="1180.0">
                            <children>
-                              <TableView fx:id="editbooktableview" prefHeight="200.0" prefWidth="200.0">
+                              <TableView fx:id="editbooktableview" prefHeight="270.0" prefWidth="1180.0">
                                 <columns>
                                   <TableColumn fx:id="editbookidcolumn" prefWidth="90.0" text="ID" />
                                     <TableColumn fx:id="editbooktitlecolumn" prefWidth="295.0" text="Title" />
@@ -242,34 +248,35 @@
                               </TableView>
                            </children>
                         </JFXScrollPane>
+                        <JFXButton fx:id="deletebookbutton" onAction="#editBookDeletButtonClicked" prefHeight="72.0" prefWidth="74.0" styleClass="delete" stylesheets="@../../../../../back.css" text=" " />
                      </children></VBox>
                </children></AnchorPane>
          </content>
       </Tab>
-      <Tab text="History">
+      <Tab text="book sold history">
          <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="720.0" prefWidth="1200.0" style="-fx-background-color: #181D30;">
                <children>
-                  <VBox layoutY="-29.0" prefHeight="700.0" prefWidth="1200.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <VBox layoutY="-29.0" prefHeight="700.0" prefWidth="1200.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <HBox fx:id="historytophbox" prefHeight="225.0" prefWidth="1180.0" spacing="10.0">
+                        <HBox fx:id="historytophbox" prefHeight="156.0" prefWidth="1180.0" spacing="5.0">
                            <children>
-                              <VBox prefHeight="217.0" prefWidth="411.0" spacing="10.0">
+                              <VBox prefHeight="151.0" prefWidth="410.0" spacing="4.0">
                                  <children>
                                     <Label text="Select session:" textFill="WHITE" />
                                     <JFXComboBox fx:id="historysessioncombobox" labelFloat="true" prefHeight="25.0" prefWidth="153.0" promptText="Session" style="-fx-background-color: #FFFFFF;" />
                                     <Label layoutX="10.0" layoutY="10.0" text="Select term:" textFill="WHITE" />
                                     <JFXComboBox fx:id="historytermcombobox" labelFloat="true" layoutX="10.0" layoutY="27.0" prefHeight="25.0" prefWidth="153.0" promptText="Term" style="-fx-background-color: #FFFFFF;" />
-                                    <JFXButton onAction="#sortHistoryButtonClicked" prefHeight="51.0" prefWidth="218.0" style="-fx-background-color: #0066CB; -fx-background-radius: 10 10 10 10;" text="Get histories" textFill="#e4dede" wrapText="true">
+                                    <JFXButton onAction="#sortHistoryButtonClicked" prefHeight="38.0" prefWidth="218.0" style="-fx-background-color: #0066CB; -fx-background-radius: 10 10 10 10;" text="Get histories" textFill="#e4dede" wrapText="true">
                                        <font>
                                           <Font name="System Bold" size="24.0" />
                                        </font></JFXButton>
                                  </children>
                               </VBox>
                            </children></HBox>
-                        <JFXScrollPane prefHeight="423.0" prefWidth="1180.0">
+                        <JFXScrollPane prefHeight="363.0" prefWidth="1180.0">
                            <children>
-                              <TableView fx:id="historytableview" prefHeight="200.0" prefWidth="200.0">
+                              <TableView fx:id="historytableview" prefHeight="368.0" prefWidth="1180.0">
                                 <columns>
                                   <TableColumn fx:id="historyidcolumn" prefWidth="75.0" text="ID" />
                                   <TableColumn fx:id="historytitlecolumn" prefWidth="265.0" text="Title" />
@@ -283,9 +290,11 @@
                               </TableView>
                            </children>
                         </JFXScrollPane>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                        <JFXTextArea fx:id="bookhistorytextarea" prefHeight="71.0" prefWidth="1180.0" style="-fx-background-color: #FFFFFF;" />
+                        <JFXButton fx:id="printhistorybutton" onAction="#printHistory" prefHeight="103.0" prefWidth="75.0" styleClass="print" stylesheets="@../../../../../back.css" text="  " />
+                        <HBox alignment="CENTER" prefHeight="39.0" prefWidth="1180.0">
                            <children>
-                              <Label text="Total Book sold today:" textFill="#17d72d">
+                              <Label text="Total Book sold:" textFill="#17d72d">
                                  <font>
                                     <Font size="24.0" />
                                  </font>

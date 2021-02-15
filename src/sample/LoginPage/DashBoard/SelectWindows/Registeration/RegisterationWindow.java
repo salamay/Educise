@@ -3,6 +3,7 @@ package sample.LoginPage.DashBoard.SelectWindows.Registeration;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -21,6 +22,8 @@ public class RegisterationWindow {
         window.setResizable(true);
         window.isMaximized();
         window.setScene(scene);
+        window.setTitle("Register student");
+        window.getIcons().add(new Image("image/window_icon.png"));
         window.initModality(Modality.APPLICATION_MODAL);
         window.show();
         System.out.println("[CreateWindow()]: window Created");

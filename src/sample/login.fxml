@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+<?import com.jfoenix.controls.*?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="bodybg" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.LoginPage.Controller">
+   <children>
+      <VBox fx:id="vbox" alignment="CENTER" layoutX="230.0" layoutY="79.0" prefHeight="341.0" prefWidth="171.0" spacing="20.0" AnchorPane.bottomAnchor="-10.0" AnchorPane.leftAnchor="220.0" AnchorPane.rightAnchor="209.0" AnchorPane.topAnchor="69.0">
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+         <children>
+            <JFXTextField fx:id="schoolIdTextField" labelFloat="true" promptText="Enter school id" VBox.vgrow="NEVER" />
+            <JFXTextField fx:id="staffIdTextField" labelFloat="true" layoutX="20.0" layoutY="27.0" promptText="Enter staff id" />
+            <JFXPasswordField fx:id="passwordTextField" labelFloat="true" promptText="Enter password" VBox.vgrow="NEVER" />
+            <Label fx:id="loginError" text="Unable to log in" textFill="#e40606" visible="false">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Button fx:id="LogInButton" alignment="CENTER" mnemonicParsing="false" onAction="#LogInButtonClicked" onMouseEntered="#LogInButtonEntered" onMouseExited="#LogInButtonExited" prefHeight="45.0" prefWidth="52.0" style="-fx-background-radius: 10 0 0 0;" styleClass="Button" stylesheets="@../back.css" textAlignment="CENTER" VBox.vgrow="NEVER" />
+            <StackPane fx:id="stackpane" prefHeight="93.0" prefWidth="201.0" visible="false">
+               <children>
+                  <Circle fx:id="c1" fill="#d8d9d3" radius="40.0" stroke="#1a0dd6" strokeType="INSIDE" strokeWidth="2.0" style="-fx-stroke-dash-array: 40;" />
+                  <Circle fx:id="c2" fill="#d8d9d3" radius="34.0" stroke="#04ff3a" strokeType="INSIDE" strokeWidth="2.0" style="-fx-stroke-dash-array: 30;" />
+                  <Circle fx:id="c3" fill="#d8d9d3" layoutX="111.0" layoutY="50.0" radius="24.0" stroke="#9e6464" strokeType="INSIDE" strokeWidth="2.0" style="-fx-stroke-dash-array: 20;" />
+                  <Circle fx:id="c4" fill="#d8d9d3" layoutX="111.0" layoutY="50.0" radius="15.0" stroke="#ff05a1" strokeType="INSIDE" strokeWidth="2.0" style="-fx-stroke-dash-array: 10;" />
+               </children>
+            </StackPane>
+         </children>
+      </VBox>
+      <VBox alignment="CENTER" layoutX="482.0" layoutY="14.0" prefHeight="39.0" prefWidth="100.0" AnchorPane.bottomAnchor="357.0" AnchorPane.leftAnchor="482.0" AnchorPane.rightAnchor="28.0" AnchorPane.topAnchor="14.0">
+         <children>
+            <JFXButton buttonType="RAISED" onAction="#onConfigureButtonClicked" prefHeight="28.0" prefWidth="88.0" style="-fx-background-color: #2A2928;" text="Configure" textFill="#ddc9c9" />
+         </children>
+      </VBox>
+   </children>
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
+   <stylesheets>
+      <URL value="@../back.css" />
+      <URL value="@../back.css" />
+   </stylesheets>
+   <opaqueInsets>
+      <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />
+   </opaqueInsets>
+</AnchorPane>

@@ -12,12 +12,12 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" style="-fx-background-color: #FEFEFE;" styleClass="bck2" stylesheets="@../../../back.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.LoginPage.DashBoard.DashboardController">
     <children>
-        <VBox fx:id="vbox" alignment="BASELINE_LEFT" layoutX="8.0" layoutY="87.0" prefHeight="517.0" prefWidth="171.0" spacing="10.0" style="-fx-background-color: #1E306E;" AnchorPane.bottomAnchor="21.0" AnchorPane.leftAnchor="-2.0" AnchorPane.topAnchor="77.0">
+        <VBox fx:id="vbox" alignment="BASELINE_LEFT" layoutX="28.0" layoutY="107.0" prefHeight="562.0" prefWidth="219.0" spacing="20.0" style="-fx-background-color: #1E306E;" AnchorPane.bottomAnchor="41.0" AnchorPane.leftAnchor="18.0" AnchorPane.topAnchor="97.0">
             <padding>
                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
             </padding>
             <children>
-            <JFXButton fx:id="studentinfobutton" alignment="TOP_LEFT" onAction="#StudentButtonClicked" prefHeight="36.0" prefWidth="214.0" ripplerFill="#dacbcb" text="Student info" textAlignment="RIGHT" textFill="#f2f2f2" VBox.vgrow="ALWAYS">
+            <JFXButton fx:id="studentinformationbutton" alignment="TOP_LEFT" onAction="#StudentButtonClicked" onMouseEntered="#studentInformationOnMouseEnter" onMouseExited="#studentInformationOnMouseExited" prefHeight="36.0" prefWidth="214.0" ripplerFill="#dacbcb" text="Student information" textAlignment="RIGHT" textFill="#f2f2f2" VBox.vgrow="ALWAYS">
                <graphic>
                   <ImageView fitHeight="28.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -25,8 +25,23 @@
                      </image>
                   </ImageView>
                </graphic>
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
             </JFXButton>
-            <JFXButton alignment="TOP_LEFT" layoutX="15.0" layoutY="241.0" prefHeight="36.0" prefWidth="179.0" ripplerFill="#e00b0b" text="Parent Info" textFill="#f2f2f2" VBox.vgrow="ALWAYS">
+            <JFXButton fx:id="editStudentInformationButton" alignment="TOP_LEFT" layoutX="15.0" layoutY="19.0" onAction="#EditStudentInformationButtonClicked" onMouseEntered="#EditStudentInformationButtonEntered" onMouseExited="#EditStudentInformationButtonExited" prefHeight="36.0" prefWidth="200.0" ripplerFill="#dacbcb" text="Edit student information" textAlignment="RIGHT" textFill="#f2f2f2">
+               <graphic>
+                  <ImageView fitHeight="28.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../image/lesson.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </JFXButton>
+            <JFXButton fx:id="parentButton" alignment="TOP_LEFT" layoutX="15.0" layoutY="241.0" onAction="#ParentPortalClickedtwo" onMouseEntered="#ParentInfoButtonEntered" onMouseExited="#ParentInfoButtonExited" prefHeight="36.0" prefWidth="179.0" ripplerFill="#dacbcb" text="Parent information" textFill="#f2f2f2" VBox.vgrow="ALWAYS">
                <graphic>
                   <ImageView fitHeight="28.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -34,17 +49,23 @@
                      </image>
                   </ImageView>
                </graphic>
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
             </JFXButton>
-            <JFXButton fx:id="teacherinfobutton" alignment="TOP_LEFT" layoutX="15.0" layoutY="289.0" prefHeight="36.0" prefWidth="174.0" ripplerFill="#e00b0b" text="Teacher info" textFill="#f2f2f2" VBox.vgrow="ALWAYS">
+            <JFXButton fx:id="teacherInfoButton" alignment="TOP_LEFT" layoutX="15.0" layoutY="289.0" onAction="#NewTeacherButtonClickedtwo" onMouseEntered="#NewTeacherButtonEntered" onMouseExited="#NewTeacherButtonExited" prefHeight="36.0" prefWidth="174.0" ripplerFill="#dacbcb" text="Teacher information" textFill="#f2f2f2" VBox.vgrow="ALWAYS">
                <graphic>
                   <ImageView fitHeight="28.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../libary_icon.jpeg" />
+                        <Image url="@../../../image/New_Teacher.jpeg" />
                      </image>
                   </ImageView>
                </graphic>
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
             </JFXButton>
-            <JFXButton alignment="TOP_LEFT" layoutX="15.0" layoutY="237.0" onAction="#CreateStudentSessionClicked" prefHeight="36.0" prefWidth="174.0" ripplerFill="#e00b0b" text="Create new Session" textFill="#f2f2f2" VBox.vgrow="ALWAYS">
+            <JFXButton fx:id="createSessionButton" alignment="TOP_LEFT" layoutX="15.0" layoutY="237.0" onAction="#CreateStudentSessionClicked" onMouseEntered="#CreateStudentSessionEntered" onMouseExited="#CreateStudentSessionExited" prefHeight="36.0" prefWidth="174.0" ripplerFill="#dacbcb" text="Create new Session" textFill="#f2f2f2" VBox.vgrow="ALWAYS">
                <graphic>
                   <ImageView fitHeight="28.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -52,8 +73,11 @@
                      </image>
                   </ImageView>
                </graphic>
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
             </JFXButton>
-            <JFXButton alignment="TOP_LEFT" layoutX="15.0" layoutY="249.0" onAction="#AdminButtonClicked" prefHeight="36.0" prefWidth="174.0" ripplerFill="#e00b0b" text="Admin" textFill="#f2f2f2">
+            <JFXButton fx:id="adminButton" alignment="TOP_LEFT" layoutX="15.0" layoutY="249.0" onAction="#AdminButtonClicked" onMouseEntered="#AdminButtonEntered" onMouseExited="#AdminButtonExited" prefHeight="36.0" prefWidth="174.0" ripplerFill="#dacbcb" text="Admin" textFill="#f2f2f2">
                <graphic>
                   <ImageView fitHeight="28.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -61,29 +85,32 @@
                      </image>
                   </ImageView>
                </graphic>
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
             </JFXButton>
             </children>
         </VBox>
         <HBox layoutX="-2.0" prefHeight="58.0" prefWidth="695.0" style="-fx-background-color: #1E306E;" AnchorPane.leftAnchor="-2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="0.0" />
-        <HBox alignment="TOP_CENTER" layoutX="232.0" layoutY="87.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="128.0" prefWidth="684.0" spacing="10.0">
+        <HBox alignment="TOP_CENTER" layoutX="266.0" layoutY="87.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="128.0" prefWidth="833.0" spacing="10.0">
             <padding>
                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
             </padding>
             <children>
                 <Region HBox.hgrow="ALWAYS" />
-                <Button mnemonicParsing="false" prefHeight="104.0" prefWidth="156.0" styleClass="Student_Background" stylesheets="@../../../back.css" HBox.hgrow="ALWAYS">
+                <Button mnemonicParsing="false" prefHeight="104.0" prefWidth="156.0" styleClass="Student_Background" stylesheets="@../../../back.css">
                     <effect>
                         <DropShadow color="#bcb7b7" offsetX="10.0" offsetY="10.0" />
                     </effect>
                 </Button>
                 <Region HBox.hgrow="ALWAYS" />
-                <Button alignment="CENTER" layoutX="20.0" layoutY="20.0" mnemonicParsing="false" prefHeight="105.0" prefWidth="156.0" styleClass="employee_Background" stylesheets="@../../../back.css" HBox.hgrow="ALWAYS">
+                <Button alignment="CENTER" layoutX="20.0" layoutY="20.0" mnemonicParsing="false" prefHeight="105.0" prefWidth="156.0" styleClass="employee_Background" stylesheets="@../../../back.css">
                     <effect>
                         <DropShadow color="#cdc5c5" offsetX="10.0" offsetY="10.0" />
                     </effect>
                 </Button>
                 <Region HBox.hgrow="ALWAYS" />
-                <Button alignment="CENTER_RIGHT" layoutX="186.0" layoutY="20.0" mnemonicParsing="false" prefHeight="104.0" prefWidth="156.0" styleClass="Revenue_Background" stylesheets="@../../../back.css" HBox.hgrow="ALWAYS">
+                <Button alignment="CENTER_RIGHT" layoutX="186.0" layoutY="20.0" mnemonicParsing="false" prefHeight="104.0" prefWidth="156.0" styleClass="Revenue_Background" stylesheets="@../../../back.css">
                     <effect>
                         <DropShadow color="#d3cece" offsetX="10.0" offsetY="10.0" />
                     </effect>
@@ -97,26 +124,23 @@
             </effect>
         </VBox>
         <Region layoutX="629.0" layoutY="386.0" prefHeight="188.0" prefWidth="171.0" />
-        <HBox layoutX="232.0" layoutY="215.0" prefHeight="122.0" prefWidth="664.0" spacing="10.0">
+        <HBox layoutX="360.0" layoutY="215.0" prefHeight="122.0" prefWidth="729.0" spacing="10.0">
             <padding>
                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
             </padding>
             <children>
-                <Region prefHeight="102.0" prefWidth="70.0" />
-            <JFXButton onAction="#NewStudentButtonClicked" prefHeight="102.0" prefWidth="120.0" ripplerFill="#1e36d0" styleClass="NewStudentButton" stylesheets="@../../../back.css" text=" " />
-                <Region layoutX="20.0" layoutY="20.0" prefHeight="102.0" prefWidth="85.0" />
-            <JFXButton buttonType="RAISED" onAction="#StudentAssessmentButtonClicked" prefHeight="102.0" prefWidth="120.0" ripplerFill="#1c37d0" styleClass="StudentAssessment" stylesheets="@../../../back.css" text=" " />
-                <Region layoutX="234.0" layoutY="20.0" prefHeight="102.0" prefWidth="85.0" />
-            <JFXButton layoutX="95.0" layoutY="20.0" onAction="#ParentPortalClicked" prefHeight="102.0" prefWidth="120.0" ripplerFill="#1d39d7" styleClass="Parent" stylesheets="@../../../back.css" text=" " />
+            <JFXButton fx:id="NewStudentButton" onAction="#NewStudentButtonClicked" onMouseEntered="#NewStudentButtonEntered" onMouseExited="#NewStudentButtonExited" prefHeight="102.0" prefWidth="120.0" ripplerFill="#1e36d0" styleClass="NewStudentButton" stylesheets="@../../../back.css" text=" " />
+                <Region layoutX="20.0" layoutY="20.0" prefHeight="102.0" prefWidth="169.0" HBox.hgrow="ALWAYS" />
+            <JFXButton fx:id="StudentAssessmentButton" buttonType="RAISED" onAction="#StudentAssessmentButtonClicked" onMouseEntered="#StudentAssessmentButtonEntered" onMouseExited="#StudentAssessmentButtonExited" prefHeight="102.0" prefWidth="120.0" ripplerFill="#1c37d0" styleClass="StudentAssessment" stylesheets="@../../../back.css" text=" " />
+                <Region layoutX="234.0" layoutY="20.0" prefHeight="102.0" prefWidth="115.0" HBox.hgrow="ALWAYS" />
+            <JFXButton fx:id="ParentPortal" layoutX="95.0" layoutY="20.0" onAction="#ParentPortalClicked" onMouseEntered="#ParentPortalEntered" onMouseExited="#ParentPortalExited" prefHeight="102.0" prefWidth="120.0" ripplerFill="#1d39d7" styleClass="Parent" stylesheets="@../../../back.css" text=" " />
             </children>
 
         </HBox>
-      <HBox layoutX="233.0" layoutY="330.0" prefHeight="122.0" prefWidth="664.0" spacing="10.0">
+      <HBox layoutX="361.0" layoutY="333.0" prefHeight="122.0" prefWidth="729.0" spacing="10.0">
          <children>
-            <Region prefHeight="102.0" prefWidth="70.0" />
-            <JFXButton onAction="#NewTeacherButtonClicked" prefHeight="102.0" prefWidth="120.0" ripplerFill="#1e36d0" styleClass="NewTeacher" stylesheets="@../../../back.css" text=" " />
+            <JFXButton fx:id="NewTeacherButton" onAction="#NewTeacherButtonClicked" onMouseEntered="#NewTeacherButtonEntered2" onMouseExited="#NewTeacherButtonExited2" prefHeight="102.0" prefWidth="129.0" ripplerFill="#1e36d0" styleClass="NewTeacher" stylesheets="@../../../back.css" text=" " />
             <Region layoutX="20.0" layoutY="20.0" prefHeight="102.0" prefWidth="85.0" />
-            <Region layoutX="234.0" layoutY="20.0" prefHeight="102.0" prefWidth="85.0" />
          </children>
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

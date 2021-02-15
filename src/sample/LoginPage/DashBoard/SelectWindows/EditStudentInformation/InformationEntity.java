@@ -1,14 +1,16 @@
 package sample.LoginPage.DashBoard.SelectWindows.EditStudentInformation;
 
 public class InformationEntity {
-    private int id;
+    private String id;
     private String studentname;
     private String age;
     private String fathername;
     private String mothername;
+    private String guardianname;
     private String nextofkin;
     private String address;
     private String phoneno;
+    private String parentphoneno;
     private String nickname;
     private String hobbies;
     private String turnon;
@@ -20,41 +22,20 @@ public class InformationEntity {
     private byte[] student;
     private byte[] father;
     private byte[] mother;
+    private byte[] other;
     private String tag;
     private String clas;
+    private String session;
 
     public InformationEntity() {
     }
 
-    public InformationEntity(int id, String studentname, String age, String fathername, String mothername, String nextofkin, String address, String phoneno, String nickname, String hobbies, String turnon, String turnoff, String club, String rolemodel, String futureambition, String gender, byte[] student, byte[] father, byte[] mother, String tag, String clas) {
-        this.id = id;
-        this.studentname = studentname;
-        this.age = age;
-        this.fathername = fathername;
-        this.mothername = mothername;
-        this.nextofkin = nextofkin;
-        this.address = address;
-        this.phoneno = phoneno;
-        this.nickname = nickname;
-        this.hobbies = hobbies;
-        this.turnon = turnon;
-        this.turnoff = turnoff;
-        this.club = club;
-        this.rolemodel = rolemodel;
-        this.futureambition = futureambition;
-        this.gender = gender;
-        this.student = student;
-        this.father = father;
-        this.mother = mother;
-        this.tag = tag;
-        this.clas = clas;
-    }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -216,5 +197,37 @@ public class InformationEntity {
 
     public void setClas(String clas) {
         this.clas = clas;
+    }
+
+    public String getGuardianname() {
+        return guardianname;
+    }
+
+    public void setGuardianname(String guardianname) {
+        this.guardianname = guardianname;
+    }
+
+    public String getParentphoneno() {
+        return parentphoneno;
+    }
+
+    public void setParentphoneno(String parentphoneno) {
+        this.parentphoneno = parentphoneno;
+    }
+
+    public byte[] getOther() {
+        return other;
+    }
+
+    public void setOther(byte[] other) {
+        this.other = other;
+    }
+
+    public String getSession() {
+        return session;
+    }
+
+    public void setSession(String session) {
+        this.session = session;
     }
 }

@@ -1,6 +1,7 @@
 package sample.LoginPage.DashBoard.SelectWindows.Teacher;
 
 public class NewTeacherRequestEntity {
+
     private String firstname;
     private String lastname;
     private String middlename;
@@ -17,7 +18,11 @@ public class NewTeacherRequestEntity {
     private String phoneno;
     private String schoolattended;
     private String course;
+    private String accountname;
+    private String bankaccountnumber;
+    private String bankname;
     private byte[] file;
+
     public NewTeacherRequestEntity() {
     }
 
@@ -155,5 +160,29 @@ public class NewTeacherRequestEntity {
 
     public void setFile(byte[] file) {
         this.file = file;
+    }
+
+    public String getAccountname() {
+        return accountname;
+    }
+
+    public void setAccountname(String accountname) {
+        this.accountname = accountname;
+    }
+
+    public String getBankaccountnumber() {
+        return bankaccountnumber;
+    }
+
+    public void setBankaccountnumber(String bankaccountnumber) {
+        this.bankaccountnumber = bankaccountnumber;
+    }
+
+    public String getBankname() {
+        return bankname;
+    }
+
+    public void setBankname(String bankname) {
+        this.bankname = bankname;
     }
 }

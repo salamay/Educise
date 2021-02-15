@@ -1,17 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import com.jfoenix.controls.*?>
 <?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane styleClass="bck" stylesheets="@../../../../../back.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.LoginPage.DashBoard.SelectWindows.Information.SelectInformationSessionController">
+<AnchorPane styleClass="bck" stylesheets="@../../../../../back.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.LoginPage.DashBoard.SelectWindows.Information.SelectInformationSessionAndClassController">
    <children>
       <VBox fx:id="vbox" alignment="CENTER" layoutX="95.0" layoutY="65.0" prefHeight="136.0" prefWidth="232.0" spacing="20.0" AnchorPane.bottomAnchor="65.0" AnchorPane.leftAnchor="95.0" AnchorPane.rightAnchor="73.0" AnchorPane.topAnchor="65.0">
          <children>
             <ProgressIndicator fx:id="ProgressBar" prefHeight="58.0" prefWidth="192.0" />
-            <JFXComboBox fx:id="Clas" focusColor="#e8b4d2" labelFloat="true" prefHeight="25.0" prefWidth="161.0" promptText="select class" unFocusColor="#f8f8f8" />
+            <JFXComboBox fx:id="Clas" focusColor="#e8b4d2" labelFloat="true" layoutX="46.0" layoutY="101.0" prefHeight="25.0" prefWidth="161.0" promptText="select class" unFocusColor="#f8f8f8" />
+            <JFXComboBox fx:id="SessionComBoBox" focusColor="#e8b4d2" labelFloat="true" prefHeight="25.0" prefWidth="161.0" promptText="select session" unFocusColor="#f8f8f8" />
+            <JFXButton fx:id="continueButtonPressed" buttonType="RAISED" style="-fx-background-color: #0066CB; -fx-background-radius: 10;" text="Continue" textFill="#f5f5f5">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </JFXButton>
          </children>
 
          <padding>

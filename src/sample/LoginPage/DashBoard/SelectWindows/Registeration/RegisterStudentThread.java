@@ -5,6 +5,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import javafx.application.Platform;
 import okhttp3.*;
+import sample.Configuration.Configuration;
+import sample.Configuration.ConfigureApplication;
 import sample.ConnectionError;
 import sample.LoginPage.LogInModel;
 
@@ -17,30 +19,31 @@ public class RegisterStudentThread extends  Thread {
     private File file;
     private File MotherPictureFile;
     private File FatherPictureFile;
+    private File OtherPictureFile;
     private File NotAvailableFile = new File("src/image/not_available.jpg");
     private double counter = 0.0;
     private JSON json;
-    private String session;
     private LoadingWindow loadingWindow;
 
     public RegisterStudentThread() {
 
     }
 
-    public RegisterStudentThread(String studentname, int age, String fathername, String mothername, String NextOfKin,
-                                 String address, String PhoneNo, String NickName, String Hobbies, String TurnOn,
+    public RegisterStudentThread(String studentname, int age, String fathername, String mothername,String guardianName, String NextOfKin,
+                                 String address, int PhoneNo,int parentPhoneNumber, String NickName, String Hobbies, String TurnOn,
                                  String TurnOff, String Club, String RoleModel, String FutureAmbition, String Gender, String session,
-                                 File file, File FatherPicture, File Mother,String clas,String tag) {
-        this.session = session;
+                                 File file, File FatherPicture, File Mother,File Other,String clas,String tag) {
         // setting the json parameterJSON object
         json = new JSON();
         json.setStudentname(studentname);
         json.setAge(age);
         json.setFathername(fathername);
         json.setMothername(mothername);
+        json.setGuardianname(guardianName);
         json.setNextofkin(NextOfKin);
         json.setAddress(address);
-        json.setPhoneno(String.valueOf(PhoneNo));
+        json.setPhoneno(PhoneNo);
+        json.setParentphonenumber(parentPhoneNumber);
         json.setNickname(NickName);
         json.setHobbies(Hobbies);
         json.setTurnon(TurnOn);
@@ -50,10 +53,12 @@ public class RegisterStudentThread extends  Thread {
         json.setFutureambition(FutureAmbition);
         json.setGender(Gender);
         json.setClas(clas);
+        json.setSession(session);
         json.setTag(tag);
         this.file = file;
         this.FatherPictureFile = FatherPicture;
         this.MotherPictureFile = Mother;
+        this.OtherPictureFile=Other;
     }
 
     @Override
@@ -82,8 +87,14 @@ public class RegisterStudentThread extends  Thread {
             System.out.println("[RegisterstudentThread]: "+"initializing Mother picture to nothavailable file");
             MotherPictureFile=NotAvailableFile;
         }
+        if (OtherPictureFile==null){
+            System.out.println("[RegisterstudentThread]: "+"Other picture is equal to null");
+            System.out.println("[RegisterstudentThread]: "+"initializing Other picture to nothavailable file");
+            OtherPictureFile=NotAvailableFile;
+        }
 
         ////////////////Checking end//////////////////////////////////////////////////////////////////////////////////
+
         ////////////////Preparing Gson /////////////////////////////
         System.out.println("[RegisterStudentThread]: " + "Preparing json ");
         GsonBuilder gsonBuilder = new GsonBuilder();
@@ -110,20 +121,23 @@ public class RegisterStudentThread extends  Thread {
                     .addFormDataPart("studentpicture",file.getName(),RequestBody.create(MediaType.parse("image/jpeg"),file))
                     .addFormDataPart("fatherpicture",FatherPictureFile.getName(),RequestBody.create(MediaType.parse("image/jpeg"),FatherPictureFile))
                     .addFormDataPart("motherpicture",MotherPictureFile.getName(),RequestBody.create(MediaType.parse("image/jpeg"),MotherPictureFile))
+                    .addFormDataPart("otherpicture",OtherPictureFile.getName(),RequestBody.create(MediaType.parse("image/jpeg"),OtherPictureFile))
                     .build();
+
             System.out.println("[RegisterstudentThread]: "+" Finished preparing request body");
             System.out.println("[RegisterstudentThread]: "+"sending request");
+
+        if (Configuration.ipaddress!=null || Configuration.port!=null){
             Request  request=new Request.Builder()
-                    .url("http://167.99.91.154:8080/register/"+session)
+                    .url("http://"+Configuration.ipaddress+":"+Configuration.port+"/register")
                     .post(requestBody)
                     .addHeader("Authorization","Bearer "+ LogInModel.token)
                     .build();
             try {
-
                 Response response=client.newCall(request).execute();
                 System.out.println(request);
                 System.out.println(response.toString());
-                if (response.code()==200|| response.code()==201|| response.code()==202|| response.code()==203-209){
+                if (response.code()==200){
                     Platform.runLater(()->{
                         LoadingWindow.window.close();
                         boolean error=new ConnectionError().Connection("SUCCESS");
@@ -133,23 +147,14 @@ public class RegisterStudentThread extends  Thread {
                     });
                     response.close();
                 }else {
+                    //when something wrong happens, the server send the cause of the problem as a response body
+                    String message=new String(response.body().bytes(),"UTF-8");
                     System.out.println("[RegisterstudentThread]--> server:error:"+response.code()+" Unable to Register Student");
                     Platform.runLater(()->{
                         LoadingWindow.window.close();
-                        boolean error=new ConnectionError().Connection("server:error "+response.code()+" Unable to Register Student,CHECK INTERNET CONNECTION");
+                        boolean error=new ConnectionError().Connection(response.code()+":"+message);
                         if (error){
                             System.out.println("[RegisterstudentThread]--> Connection Error,Window close");
-                        }
-                    });
-                    response.close();
-                }
-                if (response.code()==403){
-                    //Display alert dialog
-                    Platform.runLater(()->{
-                        LoadingWindow.window.close();
-                        boolean error=new ConnectionError().Connection("server return error "+response.code()+": Access denied");
-                        if (error){
-                            System.out.println("Access denied");
                         }
                     });
                     response.close();
@@ -159,13 +164,18 @@ public class RegisterStudentThread extends  Thread {
                     LoadingWindow.window.close();
                     boolean error=new ConnectionError().Connection("Unable to establish connection,CHECK INTERNET CONNECTION");
                     if (error){
-
                         System.out.println("[RegisterstudentThread]--> Connection Error,Window close");
                     }
                 });
                 System.out.println("[RegisterstudentThread]: "+"Request failled");
                 e.printStackTrace();
             }
+        }else{
+            Platform.runLater(()->{
+                new ConnectionError().Connection("Invalid configuration, please configure your software in the log in page");
+            });
+        }
+
         ////////////////////////////Preparing request end////////////////////////////////////
             ///////////////////////////////////////////////////////////
 

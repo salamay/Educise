@@ -5,18 +5,14 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextArea;
 
 import com.jfoenix.controls.JFXTextField;
-import com.school.webapp.SchoolFee.SaveSchoolFee.getDebtors.Jasperprintdoc;
 import javafx.animation.ScaleTransition;
 import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
 
-import javafx.print.Printer;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.Duration;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperPrintManager;
 import sample.ConnectionError;
 import sample.LoginPage.DashBoard.Admin.SchoolFee.getSchoolFees.DeleteSchoolFee.DeleteSchoolFee;
 import sample.LoginPage.DashBoard.Admin.SchoolFee.getSchoolFees.SaveSchoolFee;
@@ -26,23 +22,15 @@ import sample.LoginPage.DashBoard.Admin.SchoolFee.getSchoolFees.getSchoolFeeWith
 import sample.LoginPage.DashBoard.Admin.SchoolFee.getSchoolFees.insertTerm;
 import sample.LoginPage.DashBoard.Printing.PrinterManager;
 import sample.LoginPage.DashBoard.SelectWindows.Registeration.LoadingWindow;
+import sample.LoginPage.DashBoard.SelectWindows.Utility.GetClassThread;
+import sample.LoginPage.DashBoard.SelectWindows.Utility.GetSessionThread;
 
 
-import javax.print.*;
-import javax.print.attribute.*;
-import javax.print.attribute.standard.MediaSizeName;
-import javax.print.attribute.standard.Sides;
-import javax.print.event.PrintJobEvent;
-import javax.print.event.PrintJobListener;
 import java.io.*;
 import java.net.URL;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.List;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 
 public class SchoolFeeWindowController implements Initializable {
     public JFXComboBox<String> classcombobox;
@@ -118,11 +106,12 @@ public class SchoolFeeWindowController implements Initializable {
         saveschoolfeebutton.setOnMouseExited(event -> {
             RestoreScale(saveschoolfeebutton);
         });
-
-        classcombobox.getItems().addAll("Nursery 1","Nursery 2","Primary 1","Primary 2","Primary 3","Primary 4","Primary 5","Jss 1","Jss 2","Jss 3","SS 1","SS 2","SS 3");
         tagcombobox.getItems().addAll("DAY","BOARDER");
-        sessioncombobox.getItems().addAll("2019-2020","2020-2021","2021-2022","2022-2023","2023-2024","2024-2025","2025-2026","2026-2027","2027-2028","2028-2029","2029-2030");
         termcombobox.getItems().addAll("Cancel","1","2","3");
+        ////////////Starting to get sessions from server
+        new GetSessionThread(sessioncombobox, new ProgressIndicator(), "retrievesession").start();
+        ///////////Starting to get class end
+        new GetClassThread(classcombobox, new ProgressIndicator(), "retrieveclasses").start();
         termcombobox.getSelectionModel().selectFirst();
         ////////Set table view Editable
         tableview.setEditable(true);
@@ -149,14 +138,12 @@ public class SchoolFeeWindowController implements Initializable {
             if (!state){
                 if (e.getNewValue().matches("^[0-9]*$")){
                     saveDataToSchoolfeetable(amountcolumn,e);
-                    e.getRowValue().setAmount(e.getNewValue());
                 }else{
                     new ConnectionError().Connection("Invalid character detected,delete the character");
                 }
             }else {
                 boolean error=new ConnectionError().Connection("Pls enter term field first");
                 System.out.println("Pls enter term field first");
-                tableview.getItems().clear();
             }
         });
         //Class column
@@ -170,11 +157,9 @@ public class SchoolFeeWindowController implements Initializable {
             boolean state=CheckTermColumn(rowvalue,e);
             if (!state){
                 saveDataToSchoolfeetable(classcolumn,e);
-                e.getRowValue().setClas(e.getNewValue());
             }else {
                 boolean error=new ConnectionError().Connection("Pls enter term field first");
                 System.out.println("Pls enter term field first");
-                tableview.getItems().clear();
             }
         });
 
@@ -194,11 +179,9 @@ public class SchoolFeeWindowController implements Initializable {
             boolean state=CheckTermColumn(rowvalue,e);
             if (!state){
                 saveDataToSchoolfeetable(modeofpaymentcolumn,e);
-                e.getRowValue().setModeofpayment(e.getNewValue());
             }else {
                 boolean error=new ConnectionError().Connection("Pls enter term field first");
                 System.out.println("Pls enter term field first");
-                tableview.getItems().clear();
             }
 
         });
@@ -218,11 +201,9 @@ public class SchoolFeeWindowController implements Initializable {
             boolean state=CheckTermColumn(rowvalue,e);
             if (!state){
                 saveDataToSchoolfeetable(datecolumn,e);
-                e.getRowValue().setDate(e.getNewValue());
             }else {
                 boolean error=new ConnectionError().Connection("Pls enter term field first");
                 System.out.println("Pls enter term field first");
-                tableview.getItems().clear();
             }
         });
 
@@ -237,11 +218,9 @@ public class SchoolFeeWindowController implements Initializable {
             boolean state=CheckTermColumn(rowvalue,e);
             if (!state){
                 saveDataToSchoolfeetable(depositorcolumn,e);
-                e.getRowValue().setDepositorname(e.getNewValue());
             }else {
                 boolean error=new ConnectionError().Connection("Pls enter term field first");
                 System.out.println("Pls enter term field first");
-                tableview.getItems().clear();
             }
         });
 
@@ -256,11 +235,9 @@ public class SchoolFeeWindowController implements Initializable {
             boolean state=CheckTermColumn(rowvalue,e);
             if (!state){
                 saveDataToSchoolfeetable(transactionidcolumn,e);
-                e.getRowValue().setId(e.getNewValue());
             }else {
                 boolean error=new ConnectionError().Connection("Pls enter term field first");
                 System.out.println("Pls enter term field first");
-                tableview.getItems().clear();
             }
         });
 
@@ -273,29 +250,22 @@ public class SchoolFeeWindowController implements Initializable {
         //////whenever the user want to input schoolfee information,the term is crucial,it must be first specified before
         /////other column will be ready to accept data
         termcolumn.setOnEditCommit((ce)->{
-            String newvalue=ce.getNewValue();
-            System.out.println("SchoolFeeWindowController: Term: "+newvalue);
-            if (!newvalue.isEmpty()&&newvalue.matches("^[0-9]*$")){
-                //get the student name in the selected row
-                String studentnameInTheColumn=ce.getRowValue().getStudentname();
-                System.out.println("SchoolFeeWindowController: student name: "+studentnameInTheColumn);
-                //get session from the selected row
-                String session=ce.getRowValue().getYear();
-                System.out.println("SchoolFeeWindowController: Session: "+session);
-                //get the class for the selected row
-                String clas=ce.getRowValue().getClas();
-                System.out.println("SchoolFeeWindowController: class: "+clas);
-                //get the tag from the selcted row
-                String tag=ce.getRowValue().getTag();
-                System.out.println("SchoolFeeWindowController: tag: "+tag);
-                //Start the thread to insert term
-                //newValue instace is the term
-                new insertTerm(studentnameInTheColumn,session,clas,tag,newvalue,ce,termcolumn).start();
+            String term=ce.getNewValue();
+            String studentid=ce.getRowValue().getStudentid();
+            System.out.println("SchoolFeeWindowController: Term: "+term);
+            if (term!=null&&term.matches("^[0-9]*$")){
+                if (studentid!=null){
+                    new insertTerm(studentid,term,ce,termcolumn).start();
+                }else{
+                    new ConnectionError().Connection("invalid student id, try reload data");
+                }
             }else {
-                ce.getRowValue().setTerm(null);
-                boolean err=new ConnectionError().Connection("Please provide a number to the field");
+                ce.getRowValue().
+                        setTerm(null);
+                boolean err=new ConnectionError().Connection("Invalid term");
+                ce.getTableView().refresh();
                 System.out.println("SchoolFeeWindowController: Please provide a anumber to the field");
-                tableview.getItems().clear();
+
             }
         });
         tableview.getColumns().addAll(idcolumn,namecolumn,amountcolumn,classcolumn,tagcolumn,termcolumn,yearcolumn,modeofpaymentcolumn,transactionidcolumn,datecolumn,depositorcolumn);
@@ -685,7 +655,7 @@ public class SchoolFeeWindowController implements Initializable {
     public void saveDataToSchoolfeetable(TableColumn<?, ?> column, TableColumn.CellEditEvent<Fee, ?> e){
         String newvalue=e.getNewValue().toString().replaceAll("/","-");
         System.out.println("SchoolFeeWindowController: entity: "+newvalue);
-       if (!newvalue.isEmpty()&&newvalue.matches("^[A-Za-z[-/ ]0-9]*$")){
+       if (newvalue!=null&&newvalue.matches("^[A-Za-z[-/ ]0-9]*$")){
            //get the student id in the selected row
            String studentid=e.getRowValue().getStudentid();
            //Get column table of the selected
@@ -693,7 +663,7 @@ public class SchoolFeeWindowController implements Initializable {
            System.out.println("SchoolFeeWindowController: column: "+columntable);
            System.out.println("SchoolFeeWindowController: term: "+term);
            if (studentid!=null){
-               new saveDataIntoSchoolFeeTable(studentid,newvalue,columntable,column).start();
+               new saveDataIntoSchoolFeeTable(studentid,newvalue,columntable,column,tableview).start();
            }else {
                tableview.getItems().clear();
                new ConnectionError().Connection("Student id is not present, Consider reloading the school fees from server to get an id");

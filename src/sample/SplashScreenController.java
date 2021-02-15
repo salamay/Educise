@@ -12,6 +12,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import sample.Configuration.Configuration;
+import sample.Configuration.InitializeConfigOnStart;
 
 import java.io.IOException;
 import java.net.URL;
@@ -36,7 +38,7 @@ public class SplashScreenController implements Initializable {
         Fade(edulabel,4000);
         Fade(ciselabel,5000);
         Fade(managemyschoollabel,7000);
-
+        new InitializeConfiguration().start();
     }
     public void Rotate(Circle c,boolean reverse,int angle,int duration){
         RotateTransition rotateTransition=new RotateTransition(new Duration(duration),c);
@@ -82,5 +84,16 @@ public class SplashScreenController implements Initializable {
             });
 
         }
+    }
+}
+
+///This class Initialize Configuration on start
+class InitializeConfiguration extends Thread{
+    @Override
+    public void run() {
+        InitializeConfigOnStart initializeConfigOnStart=new InitializeConfigOnStart();
+        Configuration configuration=new Configuration();
+        configuration.setIpaddress(initializeConfigOnStart.getIpAddress());
+        configuration.setPort(initializeConfigOnStart.getPort());
     }
 }

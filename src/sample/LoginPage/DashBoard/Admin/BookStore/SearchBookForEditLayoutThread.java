@@ -10,6 +10,7 @@ import javafx.scene.control.TableView;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import sample.Configuration.Configuration;
 import sample.ConnectionError;
 import sample.LoginPage.DashBoard.SelectWindows.Registeration.LoadingWindow;
 import sample.LoginPage.LogInModel;
@@ -38,73 +39,59 @@ public class SearchBookForEditLayoutThread extends Thread {
                 .readTimeout(1, TimeUnit.MINUTES)
                 .build();
 
-        Request request=new Request.Builder()
-                .url("http://167.99.91.154:8080/searchbook/"+bookname+"/"+session+"/"+term)
-                .addHeader("Authorization","Bearer "+ LogInModel.token)
-                .build();
-        try {
-            Response response=client.newCall(request).execute();
-            System.out.println("[SearchBookForEditLayout]: Retrieving response ");
-            System.out.println("[SearchBookForEditLayout]:"+response);
-            System.out.println("[SearchBookForEditLayout]:"+response.body());
-            if (response.code()==200||response.code()==201||response.code()==212||response.code()==202){
-                byte [] rawbytes = response.body().bytes();
-                String rawBody=new String(rawbytes,"UTF-8");
-                System.out.println("[SearchBookForEditLayout]: "+rawBody);
-                System.out.println("[SearchBookForEditLayout]: Processing response Body");
-                GsonBuilder builder=new GsonBuilder();
-                builder.setPrettyPrinting();
-                builder.serializeNulls();
-                Gson gson=builder.create();
-                //This parse the list of json to a list of  book class with the help of type token
-                //we cant specify directly to convert the json to book because rawBody variable contains
-                //a list of json
-                List<Book> books=gson.fromJson(rawBody,new TypeToken<List<Book>>(){}.getType());
-                //Since table view accept observable list,we need to convert it to Observable list
-                ObservableList<Book> tableList= FXCollections.observableList(books);
+        if (Configuration.ipaddress!=null&&Configuration.port!=null){
+            Request request=new Request.Builder()
+                    .url("http://"+Configuration.ipaddress+":"+Configuration.port+"/searchbook/"+bookname+"/"+session+"/"+term)
+                    .addHeader("Authorization","Bearer "+ LogInModel.token)
+                    .build();
+            try {
+                Response response=client.newCall(request).execute();
+                System.out.println("[SearchBookForEditLayout]: Retrieving response ");
+                System.out.println("[SearchBookForEditLayout]:"+response);
+                System.out.println("[SearchBookForEditLayout]:"+response.body());
+                if (response.code()==200){
+                    byte [] rawbytes = response.body().bytes();
+                    String rawBody=new String(rawbytes,"UTF-8");
+                    System.out.println("[SearchBookForEditLayout]: "+rawBody);
+                    System.out.println("[SearchBookForEditLayout]: Processing response Body");
+                    GsonBuilder builder=new GsonBuilder();
+                    builder.setPrettyPrinting();
+                    builder.serializeNulls();
+                    Gson gson=builder.create();
+                    //This parse the list of json to a list of  book class with the help of type token
+                    //we cant specify directly to convert the json to book because rawBody variable contains
+                    //a list of json
+                    List<Book> books=gson.fromJson(rawBody,new TypeToken<List<Book>>(){}.getType());
+                    //Since table view accept observable list,we need to convert it to Observable list
+                    ObservableList<Book> tableList= FXCollections.observableList(books);
+                    Platform.runLater(()->{
+                        LoadingWindow.window.close();
+                        editbooktableview.setItems(tableList);
+                    });
+                    response.close();
+                }else {
+                    String message=new String(response.body().bytes(),"UTF-8");
+                    Platform.runLater(()->{
+                        LoadingWindow.window.close();
+                        boolean error=new ConnectionError().Connection(response.code()+": "+message);
+                        if (error){
+                            System.out.println("[SearchBookForEditLayout]--> Connection Error");
+                        }
+                    });
+                    response.close();
+                }
+            } catch (IOException e) {
                 Platform.runLater(()->{
                     LoadingWindow.window.close();
-                    editbooktableview.setItems(tableList);
-                });
-                response.close();
-            }else {
-                Platform.runLater(()->{
-                    LoadingWindow.window.close();
-                    boolean error=new ConnectionError().Connection("server:error "+response.code()+" Unable to get book");
+                    boolean error=new ConnectionError().Connection("Unable to establish connection,CHECK INTERNET CONNECTION");
                     if (error){
-                        System.out.println("[SearchBookForEditLayout]--> Connection Error");
+                        System.out.println("[SearchBookForEditLayout]--> Connection Error,Window close");
                     }
                 });
-                response.close();
+                e.printStackTrace();
             }
-            if (response.code()==204){
-                LoadingWindow.window.close();
-                boolean error=new ConnectionError().Connection("book not found");
-                if (error){
-                    System.out.println("[getBookSoldHistory]--> Connection Error");
-                }
-                response.close();
-            }
-            if (response.code()==403){
-                //Display alert dialog
-                Platform.runLater(()->{
-                    LoadingWindow.window.close();
-                    boolean error=new ConnectionError().Connection("server return error "+response.code()+": Access denied");
-                    if (error){
-                        System.out.println("Access denied");
-                    }
-                });
-                response.close();
-            }
-        } catch (IOException e) {
-            Platform.runLater(()->{
-                LoadingWindow.window.close();
-                boolean error=new ConnectionError().Connection("Unable to establish connection,CHECK INTERNET CONNECTION");
-                if (error){
-                    System.out.println("[SearchBookForEditLayout]--> Connection Error,Window close");
-                }
-            });
-            e.printStackTrace();
+        }else{
+            new ConnectionError().Connection("Invalid configuration settings, Configure your software in the login page");
         }
     }
 }

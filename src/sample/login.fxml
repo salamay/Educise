@@ -16,7 +16,8 @@
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding>
          <children>
-            <JFXTextField fx:id="usernameTextField" labelFloat="true" promptText="Enter username" VBox.vgrow="NEVER" />
+            <JFXTextField fx:id="schoolIdTextField" labelFloat="true" promptText="Enter school id" VBox.vgrow="NEVER" />
+            <JFXTextField fx:id="staffIdTextField" labelFloat="true" layoutX="20.0" layoutY="27.0" promptText="Enter staff id" />
             <JFXPasswordField fx:id="passwordTextField" labelFloat="true" promptText="Enter password" VBox.vgrow="NEVER" />
             <Label fx:id="loginError" text="Unable to log in" textFill="#e40606" visible="false">
                <font>
@@ -32,6 +33,11 @@
                   <Circle fx:id="c4" fill="#d8d9d3" layoutX="111.0" layoutY="50.0" radius="15.0" stroke="#ff05a1" strokeType="INSIDE" strokeWidth="2.0" style="-fx-stroke-dash-array: 10;" />
                </children>
             </StackPane>
+         </children>
+      </VBox>
+      <VBox alignment="CENTER" layoutX="482.0" layoutY="14.0" prefHeight="39.0" prefWidth="100.0" AnchorPane.bottomAnchor="357.0" AnchorPane.leftAnchor="482.0" AnchorPane.rightAnchor="28.0" AnchorPane.topAnchor="14.0">
+         <children>
+            <JFXButton buttonType="RAISED" onAction="#onConfigureButtonClicked" prefHeight="28.0" prefWidth="88.0" style="-fx-background-color: #2A2928;" text="Configure" textFill="#ddc9c9" />
          </children>
       </VBox>
    </children>

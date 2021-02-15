@@ -1,7 +1,6 @@
 package sample.LoginPage.DashBoard.SelectWindows.Score;
 
 public class UpdateScoreRequestEntity {
-    private String table;
     private String id;
     private double score;
     private String ca;
@@ -15,14 +14,6 @@ public class UpdateScoreRequestEntity {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getTable() {
-        return table;
-    }
-
-    public void setTable(String table) {
-        this.table = table;
     }
 
     public double getScore() {

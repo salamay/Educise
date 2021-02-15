@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import com.jfoenix.controls.*?>
 <?import java.lang.*?>
 <?import javafx.geometry.*?>
@@ -12,6 +13,12 @@
             <children>
                 <ProgressIndicator fx:id="ProgressBar" prefHeight="58.0" prefWidth="192.0" />
                 <JFXComboBox fx:id="Clas" focusColor="#e8b4d2" labelFloat="true" prefHeight="25.0" prefWidth="161.0" promptText="select class" unFocusColor="#f8f8f8" />
+            <JFXComboBox fx:id="SessionComBoBox" focusColor="#e8b4d2" labelFloat="true" layoutX="46.0" layoutY="105.0" prefHeight="25.0" prefWidth="161.0" promptText="select session" unFocusColor="#f8f8f8" />
+            <JFXButton fx:id="continueButtonPressed" buttonType="RAISED" style="-fx-background-color: #0066CB; -fx-background-radius: 10;" text="Continue" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </JFXButton>
             </children>
 
             <padding>

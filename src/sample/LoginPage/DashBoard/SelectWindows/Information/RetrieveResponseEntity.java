@@ -5,9 +5,11 @@ public class RetrieveResponseEntity {
     private int age;
     private String fathername;
     private String mothername;
+    private String guardianname;
     private String nextofkin;
     private String address;
     private String phoneno;
+    private String parentphoneno;
     private String nickname;
     private String hobbies;
     private String turnon;
@@ -18,9 +20,11 @@ public class RetrieveResponseEntity {
     private String gender;
     private String tag;
     private String clas;
+    private String session;
     private byte[] student;
     private byte[] father;
     private byte[] mother;
+    private byte[] other;
 
     public RetrieveResponseEntity() {
     }
@@ -55,6 +59,14 @@ public class RetrieveResponseEntity {
 
     public void setMothername(String mothername) {
         this.mothername = mothername;
+    }
+
+    public String getGuardianname() {
+        return guardianname;
+    }
+
+    public void setGuardianname(String guardianname) {
+        this.guardianname = guardianname;
     }
 
     public String getNextofkin() {
@@ -183,5 +195,29 @@ public class RetrieveResponseEntity {
 
     public void setClas(String clas) {
         this.clas = clas;
+    }
+
+    public String getSession() {
+        return session;
+    }
+
+    public void setSession(String session) {
+        this.session = session;
+    }
+
+    public String getParentphoneno() {
+        return parentphoneno;
+    }
+
+    public void setParentphoneno(String parentphoneno) {
+        this.parentphoneno = parentphoneno;
+    }
+
+    public byte[] getOther() {
+        return other;
+    }
+
+    public void setOther(byte[] other) {
+        this.other = other;
     }
 }

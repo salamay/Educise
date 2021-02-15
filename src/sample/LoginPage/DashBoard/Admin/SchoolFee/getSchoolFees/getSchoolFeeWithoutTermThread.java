@@ -11,6 +11,7 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import sample.Configuration.Configuration;
 import sample.ConnectionError;
 import sample.LoginPage.DashBoard.Admin.SchoolFee.Fee;
 import sample.LoginPage.DashBoard.Admin.SchoolFee.SchoolFeeWindowController;
@@ -45,90 +46,60 @@ public class getSchoolFeeWithoutTermThread extends Thread {
                 .connectTimeout(1, TimeUnit.MINUTES)
                 .readTimeout(1, TimeUnit.MINUTES)
                 .build();
-
-        Request request=new Request.Builder()
-                .url("http://167.99.91.154:8080/getschoolfeewithoutterm/"+clas+"/"+year+"/"+tag)
-                .addHeader("Authorization","Bearer "+ LogInModel.token)
-                .build();
-        try {
-            Response response=client.newCall(request).execute();
-            System.out.println("[getSchoolFeeWithoutTermThread]: Retrieving response ");
-            System.out.println("[getSchoolFeeWithoutTermThread]:"+response);
-            System.out.println("[getSchoolFeeWithoutTermThread]:"+response.body());
-            if (response.code()==200||response.code()==201||response.code()==212||response.code()==202){
-                byte [] rawbytes = response.body().bytes();
-                String rawBody=new String(rawbytes,"UTF-8");
-                System.out.println("[getSchoolFeeWithoutTermThread]: "+rawBody);
-                System.out.println("[getSchoolFeeWithoutTermThread]: Processing response Body");
-                GsonBuilder builder=new GsonBuilder();
-                builder.setPrettyPrinting();
-                builder.serializeNulls();
-                Gson gson=builder.create();
-                //This parse the list of json to a list of  fee class with the help of type token
-                //we cant specify directly to convert the json to fee because rawBody variable contains
-                //a list of json
-                List<Fee> schoolfees=gson.fromJson(rawBody,new TypeToken<List<Fee>>(){}.getType());
-                //Since table view accept observable list,we need to convert it to Observable list
-                ObservableList<Fee> tableList= FXCollections.observableList(schoolfees);
+        if (Configuration.ipaddress!=null&&Configuration.port!=null) {
+            Request request=new Request.Builder()
+                    .url("http://"+Configuration.ipaddress+":"+Configuration.port+"/getschoolfeewithoutterm/"+clas+"/"+year+"/"+tag)
+                    .addHeader("Authorization","Bearer "+ LogInModel.token)
+                    .build();
+            try {
+                Response response=client.newCall(request).execute();
+                System.out.println("[getSchoolFeeWithoutTermThread]: Retrieving response ");
+                System.out.println("[getSchoolFeeWithoutTermThread]:"+response);
+                System.out.println("[getSchoolFeeWithoutTermThread]:"+response.body());
+                if (response.code()==200){
+                    byte [] rawbytes = response.body().bytes();
+                    String rawBody=new String(rawbytes,"UTF-8");
+                    System.out.println("[getSchoolFeeWithoutTermThread]: "+rawBody);
+                    System.out.println("[getSchoolFeeWithoutTermThread]: Processing response Body");
+                    GsonBuilder builder=new GsonBuilder();
+                    builder.setPrettyPrinting();
+                    builder.serializeNulls();
+                    Gson gson=builder.create();
+                    //This parse the list of json to a list of  fee class with the help of type token
+                    //we cant specify directly to convert the json to fee because rawBody variable contains
+                    //a list of json
+                    List<Fee> schoolfees=gson.fromJson(rawBody,new TypeToken<List<Fee>>(){}.getType());
+                    //Since table view accept observable list,we need to convert it to Observable list
+                    ObservableList<Fee> tableList= FXCollections.observableList(schoolfees);
+                    Platform.runLater(()->{
+                        LoadingWindow.window.close();
+                        tableView.setItems(tableList);
+                    });
+                    response.close();
+                }else {
+                    String message=new String(response.body().bytes(),"UTF-8");
+                    Platform.runLater(()->{
+                        LoadingWindow.window.close();
+                        tableView.getItems().clear();
+                        boolean error=new ConnectionError().Connection(response.code()+":"+message);
+                        if (error){
+                            System.out.println("[getSchoolFeeWithoutTermThread]--> Connection Error");
+                        }
+                    });
+                    response.close();
+                }
+            } catch (IOException e) {
                 Platform.runLater(()->{
                     LoadingWindow.window.close();
-                    tableView.setItems(tableList);
-                });
-                response.close();
-            }else {
-                Platform.runLater(()->{
-                    LoadingWindow.window.close();
-                    boolean error=new ConnectionError().Connection("server:error "+response.code()+" Unable to get School fee");
+                    boolean error=new ConnectionError().Connection("Unable to establish connection,CHECK INTERNET CONNECTION");
                     if (error){
                         System.out.println("[getSchoolFeeWithoutTermThread]--> Connection Error");
                     }
                 });
-                response.close();
+                e.printStackTrace();
             }
-            if (response.code()==404){
-                //Display alert dialog
-                Platform.runLater(()->{
-                    LoadingWindow.window.close();
-                    boolean error=new ConnectionError().Connection("server return error "+response.code()+": School fee not found");
-                    if (error){
-                        tableView.getItems().clear();
-                        System.out.println("[getSchoolFeeWithoutTermThread]--> school fee  not found on the server");
-                    }
-                });
-                response.close();
-            }
-            if (response.code()==422){
-                //Display alert dialog
-                Platform.runLater(()->{
-                    LoadingWindow.window.close();
-                    boolean error=new ConnectionError().Connection("server return error "+response.code()+": Server cannot process your request");
-                    if (error){
-                        System.out.println("[getSchoolFeeWithoutTermThread]--> Connection error");
-                    }
-                });
-                response.close();
-            }
-            if (response.code()==403){
-                //Display alert dialog
-                Platform.runLater(()->{
-                    LoadingWindow.window.close();
-                    boolean error=new ConnectionError().Connection("server return error "+response.code()+": Access denied");
-                    if (error){
-                        tableView.getItems().clear();
-                        System.out.println("Access denied");
-                    }
-                });
-                response.close();
-            }
-        } catch (IOException e) {
-            Platform.runLater(()->{
-                LoadingWindow.window.close();
-                boolean error=new ConnectionError().Connection("Unable to establish connection,CHECK INTERNET CONNECTION");
-                if (error){
-                    System.out.println("[getSchoolFeeWithoutTermThread]--> Connection Error");
-                }
-            });
-            e.printStackTrace();
+        }else {
+
         }
     }
 }

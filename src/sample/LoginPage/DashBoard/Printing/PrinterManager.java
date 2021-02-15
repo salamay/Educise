@@ -1,23 +1,13 @@
 package sample.LoginPage.DashBoard.Printing;
 
-import com.jfoenix.controls.JFXTextArea;
-import com.school.webapp.SchoolFee.SaveSchoolFee.getDebtors.Jasperprintdoc;
+import sample.LoginPage.DashBoard.Admin.SchoolFee.getDebtors.Jasperprintdoc;
 import javafx.application.Platform;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperPrintManager;
 import sample.ConnectionError;
 import sample.LoginPage.DashBoard.SelectWindows.Registeration.LoadingWindow;
 
-import javax.print.*;
-import javax.print.attribute.HashPrintRequestAttributeSet;
-import javax.print.attribute.PrintRequestAttributeSet;
-import javax.print.attribute.standard.MediaSizeName;
-import javax.print.attribute.standard.Sides;
-import javax.print.event.PrintJobEvent;
-import javax.print.event.PrintJobListener;
 import java.io.*;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 public class PrinterManager extends Thread{
 

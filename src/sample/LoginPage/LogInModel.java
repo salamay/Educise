@@ -17,6 +17,8 @@ import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import okhttp3.*;
+import sample.Configuration.Configuration;
+import sample.Configuration.ConfigureApplication;
 import sample.ConnectionError;
 import sample.SplashScreenController;
 
@@ -25,7 +27,8 @@ import java.util.concurrent.TimeUnit;
 
 
 public class LogInModel extends Thread{
-    private String email;
+    private String schoolid;
+    private String staffid;
     private String password;
     public static String token;
     private Label loginError;
@@ -35,14 +38,15 @@ public class LogInModel extends Thread{
     private Circle c2;
     private Circle c3;
     private Circle c4;
-    public LogInModel(String email, String password, Label loginError, VBox vbox, StackPane stackpane, Circle c1, Circle c2, Circle c3, Circle c4) {
+    public LogInModel(String schoolid, String staffid,String password, Label loginError, VBox vbox, StackPane stackpane, Circle c1, Circle c2, Circle c3, Circle c4) {
         this.vBox=vbox;
         this.stackPane=stackpane;
         this.c1=c1;
         this.c2=c2;
         this.c3=c3;
         this.c4=c4;
-        this.email=email;
+        this.schoolid=schoolid;
+        this.staffid=staffid;
         this.password=password;
         this.loginError=loginError;
     }
@@ -61,72 +65,72 @@ public class LogInModel extends Thread{
         builder.serializeNulls();
         Gson gson=builder.create();
         LoginCredentials loginCredentials=new LoginCredentials();
-        loginCredentials.setUsername(email);
+        loginCredentials.setSchoolid(schoolid);
+        loginCredentials.setStaffid(staffid);
         loginCredentials.setPassword(password);
         String json=gson.toJson(loginCredentials);
         RequestBody requestBody=RequestBody.create(MediaType.parse("application/json"),json);
 
-        Request request=new Request.Builder()
-                .url("http://167.99.91.154:8080/authenticate")
-                .post(requestBody)
-                .build();
-        try {
-            Response response=client.newCall(request).execute();
-            System.out.println("[LogInModel]: response--> "+response);
-            if (response.code()==200||response.code()==201||response.code()==202||response.code()==212){
-                loginError.setVisible(false);
-                byte[] rawbody=response.body().bytes();
-                System.out.println("RawBody: "+rawbody);
-                String jwt=new String(rawbody,"UTF-8");
-                Jwt j=new Jwt();
-                GsonBuilder builder1=new GsonBuilder();
-                j=gson.fromJson(jwt,Jwt.class);
-                token=j.getJwt();
-                System.out.println("token: "+token);
-                if (token!=null){
+        if (Configuration.ipaddress!=null ||Configuration.port!=null){
+            Request request=new Request.Builder()
+                    .url("http://"+ Configuration.ipaddress +":"+Configuration.port+"/authenticate")
+                    .post(requestBody)
+                    .build();
+            try {
+                Response response=client.newCall(request).execute();
+                if (response.code()==200){
+                    loginError.setVisible(false);
+                    String jwt=new String(response.body().bytes(),"UTF-8");
+                    GsonBuilder builder1=new GsonBuilder();
+                    Gson gson1=builder1.create();
+                    Jwt j=gson1.fromJson(jwt,Jwt.class);
+                    token=j.getJwt();
+                    System.out.println("token: "+token);
+                    if (token!=null){
+                        Platform.runLater(()->{
+                            SplashScreenController.window1.close();
+                            Parent root = null;
+                            try {
+                                root = FXMLLoader.load(getClass().getResource("DashBoard/DB.fxml"));
+                            } catch (IOException ex) {
+                                ex.printStackTrace();
+                            }
+                            Stage window2 = new Stage();
+                            window2.setTitle("welcome to management Board");
+                            window2.setMinWidth(800);
+                            window2.setMinHeight(700);
+                            window2.setMaximized(true);
+                            window2.isMaximized();
+                            window2.setResizable(false);
+                            window2.getIcons().add(new Image("image/window_icon.png"));
+                            Scene scene = new Scene(root,1200,700);
+                            window2.setScene(scene);
+                            window2.show();
+                        });
+                    }
+                }else {
+                    //when something wrong happens, the server send the cause of the problem as a response body
+                    String message=new String(response.body().bytes(),"UTF-8");
                     Platform.runLater(()->{
-                        SplashScreenController.window1.close();
-                        Parent root = null;
-                        try {
-                            root = FXMLLoader.load(getClass().getResource("DashBoard/DB.fxml"));
-                        } catch (IOException ex) {
-                            ex.printStackTrace();
-                        }
-                        Stage window2 = new Stage();
-                        window2.setTitle("welcome to management Board");
-                        window2.setMinWidth(800);
-                        window2.setMinHeight(700);
-                        window2.setMaximized(true);
-                        window2.isMaximized();
-                        window2.setResizable(false);
-                        window2.getIcons().add(new Image("image/window_icon.png"));
-                        Scene scene = new Scene(root,1200,700);
-                        window2.setScene(scene);
-                        window2.show();
+                        RestoreAnimation();
+                        new ConnectionError().Connection(message);
                     });
                 }
                 response.close();
+            } catch (IOException e) {
+                Platform.runLater(()->{
+                    boolean error=new ConnectionError().Connection("Unable to connect to internet");
+                    if (error){
+                        RestoreAnimation();
+                        System.out.println("[LoginModel]--> Connection Error");
+                    }
+                });
+                e.printStackTrace();
             }
-            if (response.code()==404){
-               Platform.runLater(()->{
-                   loginError.setVisible(true);
-                   //LoginStatusWindow.window.close();
-                   boolean error=new ConnectionError().Connection("User not found,provide correct credentials");
-                   if (error){
-                       RestoreAnimation();
-                       System.out.println("[getBookSoldHistory]--> Connection Error");
-                   }
-               });
-            }
-        } catch (IOException e) {
+        }else{
             Platform.runLater(()->{
-                boolean error=new ConnectionError().Connection("Unable to connect to internet");
-                if (error){
-                    RestoreAnimation();
-                    System.out.println("[LoginModel]--> Connection Error");
-                }
+                new ConnectionError().Connection("Invalid configuration, please configure your software in the log in page");
             });
-            e.printStackTrace();
         }
     }
     public void RestoreAnimation(){

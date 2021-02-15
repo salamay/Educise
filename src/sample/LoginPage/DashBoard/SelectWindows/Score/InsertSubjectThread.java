@@ -1,10 +1,15 @@
 package sample.LoginPage.DashBoard.SelectWindows.Score;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.control.TableView;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import sample.Configuration.Configuration;
 import sample.ConnectionError;
 import sample.LoginPage.DashBoard.SelectWindows.Registeration.LoadingWindow;
 import sample.LoginPage.LogInModel;
@@ -26,10 +31,8 @@ public class InsertSubjectThread extends Thread {
         this.term=term;
         System.out.println("[InsertSubjectThread]-->Subject: "+subject);
         System.out.println("[InsertSubjectThread]-->session: "+session);
-        System.out.println("[InsertSubjectThread]-->student name: "+term);
+        System.out.println("[InsertSubjectThread]-->term: "+term);
         System.out.println("[InsertSubjectThread]-->student name: "+name);
-
-
     }
     @Override
     public void run() {
@@ -39,58 +42,46 @@ public class InsertSubjectThread extends Thread {
                 .readTimeout(1, TimeUnit.MINUTES)
                 .build();
 
+        if (Configuration.ipaddress!=null&&Configuration.port!=null){
+
+        }else {
+            Platform.runLater(()->{
+                new ConnectionError().Connection("Invalid configuration, please configure your software in the log in page");
+            });
+        }
         Request request=new Request.Builder()
                 .addHeader("Authorization","Bearer "+ LogInModel.token)
-                .url("http://167.99.91.154:8080/insertsubject/"+subject+"/"+session+"/"+name+"/"+term)
+                .url("http://"+Configuration.ipaddress+":"+Configuration.port+"/insertsubject/"+subject+"/"+session+"/"+name+"/"+term)
                 .build();
         try {
             Response response=client.newCall(request).execute();
             System.out.println("[InsertSubjectThread]--> response: "+response);
-            if (response.code()==200||response.code()==212||response.code()==202){
+            if (response.code()==200){
                 Platform.runLater(()->{
-                    Scores scores=new Scores();
-                    scores.setSubject(subject);
-                    scores.setTerm(term);
-                    //Add the score to table row
-                    tableView.getItems().add(scores);
-                    response.close();
+                    try {
+                        byte[] bytes=response.body().bytes();
+                        String rawData=new String(bytes,"UTF-8");
+                        //Processing gson response to the table
+                        GsonBuilder builder=new GsonBuilder();
+                        builder.serializeNulls();
+                        builder.setPrettyPrinting();
+                        Gson gson=builder.create();
+                        Scores scores=gson.fromJson(rawData,Scores.class);
+                        tableView.getItems().add(scores);
+                        tableView.refresh();
+                        System.out.println(scores.getSubject());
+                        response.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        response.close();
+                    }
                 });
             }else {
+                String message=new String(response.body().bytes(),"UTF-8");
                 Platform.runLater(()->{
-                    boolean error=new ConnectionError().Connection("server return error "+response.code()+": Unable to insert subject:check field for invalid characters");
+                    boolean error=new ConnectionError().Connection(response.code()+":"+message);
                     if (error){
-                        tableView.getColumns().clear();
                         System.out.println("[InsertSubjectThread]--> server error,unable to insert subject");
-                    }
-                });
-                response.close();
-            }
-            if (response.code()==422){
-                //Display alert dialog
-                Platform.runLater(()->{
-                    boolean error=new ConnectionError().Connection("server return error "+response.code()+": Server cannot process your request,check for invalid characters");
-                    if (error){
-                        System.out.println("[InsertSubjectThread]--> Server error ,server cannot process request");
-                    }
-                });
-                response.close();
-            }
-            if (response.code()==400){
-                //Display alert dialog
-                Platform.runLater(()->{
-                    boolean error=new ConnectionError().Connection("server return error "+response.code()+": Bad request,check field for invalid characters");
-                    if (error){
-                        System.out.println("[InsertSubjectThread]--> server error,bad request");
-                    }
-                });
-                response.close();
-            }
-            if (response.code()==403){
-                //Display alert dialog
-                Platform.runLater(()->{
-                    boolean error=new ConnectionError().Connection("server return error "+response.code()+": Access denied");
-                    if (error){
-                        System.out.println("Access denied");
                     }
                 });
                 response.close();
@@ -105,6 +96,5 @@ public class InsertSubjectThread extends Thread {
             });
             e.printStackTrace();
         }
-
     }
 }

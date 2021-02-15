@@ -15,7 +15,7 @@ public class NewTeacherWindow {
         System.out.println("[CreateWindow()]: creating window");
         window=new Stage();
         window.setTitle("Student Registeration");
-        Parent root= FXMLLoader.load(getClass().getResource("teacher.fxml"));
+        Parent root= FXMLLoader.load(getClass().getResource("teacherDashboard.fxml"));
 
         Scene scene=new Scene(root,1200,700);
         window.setResizable(true);

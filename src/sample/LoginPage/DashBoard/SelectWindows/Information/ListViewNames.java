@@ -1,12 +1,11 @@
 package sample.LoginPage.DashBoard.SelectWindows.Information;
 
+import java.util.Collection;
+
 public class ListViewNames {
     private String name;
+    private String id;
     public ListViewNames(){
-    }
-
-    public ListViewNames(String name) {
-        this.name = name;
     }
 
     public String getName() {
@@ -15,5 +14,13 @@ public class ListViewNames {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

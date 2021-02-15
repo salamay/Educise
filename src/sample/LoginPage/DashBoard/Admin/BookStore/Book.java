@@ -1,8 +1,6 @@
 package sample.LoginPage.DashBoard.Admin.BookStore;
 
 public class Book {
-
-
     public String id;
     public String title;
     public String author;

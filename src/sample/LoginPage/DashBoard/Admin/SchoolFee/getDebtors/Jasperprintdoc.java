@@ -1,4 +1,4 @@
-package com.school.webapp.SchoolFee.SaveSchoolFee.getDebtors;
+package sample.LoginPage.DashBoard.Admin.SchoolFee.getDebtors;
 
 import net.sf.jasperreports.engine.JasperPrint;
 

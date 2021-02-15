@@ -10,15 +10,14 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class EditStudentInformationLayoutWindow {
+    //These variables are made static so as to be reference in EditingLayoutController class which serve as a
+    // parameter to retrieve student information
+    //From the datatbase
     public static Stage StudentWindow;
-    public static String clas;
-    public static String studentname;
-
-    public void loadWindow(String session,String studentname){
-        this.clas=session;
-        this.studentname=studentname;
-        System.out.println("[EditStudentInformationLayoutWindow]: session");
-        System.out.println("[EditStudentInformationLayoutWindow]: studentname");
+    public static String studentid;
+    public void loadWindow(String id){
+        this.studentid=id;
+        System.out.println("[EditStudentInformationLayoutWindow]: studentname :"+studentid);
         StudentWindow = new Stage();
         Parent root= null;
         try {

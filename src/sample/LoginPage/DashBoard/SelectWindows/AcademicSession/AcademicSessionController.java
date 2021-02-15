@@ -44,27 +44,11 @@ public class AcademicSessionController {
         String nur2sessionName=nur2SessionTextField.getText();
         System.out.println(ss3sessionName);
         System.out.println(jss3sessionName);
-        if(jss1SessionTextField.getText().isEmpty() || jss2SessionTextField.getText().isEmpty()
-                || jss3SessionTextField.getText().isEmpty() || ss1SessionTextField.getText().isEmpty()||
-                ss2SessionTextField.getText().isEmpty() || ss3SessionTextField.getText().isEmpty()||
-                pr1SessionTextField.getText().isEmpty() || pr2SessionTextField.getText().isEmpty()
-                || pr3SessionTextField.getText().isEmpty() || pr4SessionTextField.getText().isEmpty()||
-                pr5SessionTextField.getText().isEmpty() || nur1SessionTextField.getText().isEmpty()||nur2SessionTextField.getText().isEmpty()||
-                !jss1sessionName.matches("^[a-zA-z[_]0-9]*$")||!jss2sessionName.matches("^[a-zA-z[_]0-9]*$")||
-                !jss3sessionName.matches("^[a-zA-z[_]0-9]*$")||!ss1sessionName.matches("^[a-zA-z[_]0-9]*$")||
-                !ss2sessionName.matches("^[a-zA-z[_]0-9]*$")||!ss3sessionName.matches("^[a-zA-z[_]0-9]*$")||
-                !pr1sessionName.matches("^[a-zA-z[_]0-9]*$")||!pr2sessionName.matches("^[a-zA-z[_]0-9]*$")||
-                !pr3sessionName.matches("^[a-zA-z[_]0-9]*$")||!pr4sessionName.matches("^[a-zA-z[_]0-9]*$")||
-                !pr5sessionName.matches("^[a-zA-z[_]0-9]*$")||!nur1sessionName.matches("^[a-zA-z[_]0-9]*$")||!nur2sessionName.matches("^[a-zA-z[_]0-9]*$")
-        ){
-            Error.setVisible(true);
-            new ConnectionError().Connection("One of the field is missing or the field contains invalid character ");
-        }
-        else {
+
             Error.setVisible(false);
             new LoadingWindow();
             new CreatingSessionThread(jss1sessionName, jss2sessionName, jss3sessionName, ss1sessionName,
                     ss2sessionName, ss3sessionName,pr1sessionName,pr2sessionName,pr3sessionName,pr4sessionName,pr5sessionName,nur1sessionName,nur2sessionName).start();
-        }
+
     }
 }

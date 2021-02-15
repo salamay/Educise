@@ -4,8 +4,10 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.jfoenix.controls.JFXTextField;
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.scene.control.TableView;
 import okhttp3.*;
+import sample.Configuration.Configuration;
 import sample.ConnectionError;
 import sample.LoginPage.DashBoard.Admin.SchoolFee.Fee;
 import sample.LoginPage.DashBoard.SelectWindows.Registeration.LoadingWindow;
@@ -48,7 +50,6 @@ public class SaveSchoolFee extends Thread {
         schoolFeeRequestEntity.setTag(tag);
         schoolFeeRequestEntity.setTerm(term);
         System.out.println("[SaveSchoolFee]: Setting up client ");
-
         OkHttpClient client=new OkHttpClient.Builder()
                 .connectTimeout(1, TimeUnit.MINUTES)
                 .readTimeout(1, TimeUnit.MINUTES)
@@ -62,85 +63,61 @@ public class SaveSchoolFee extends Thread {
         String json=gson.toJson(schoolFeeRequestEntity);
         System.out.println(json);
         RequestBody body=RequestBody.create(json, MediaType.parse("application/json"));
-        Request request=new Request.Builder()
-                .url("http://167.99.91.154:8080/savestudentnametoschoolfee")
-                .addHeader("Authorization","Bearer "+ LogInModel.token)
-                .post(body)
-                .build();
-        try {
-            Response response=client.newCall(request).execute();
-            System.out.println("[SaveSchoolFee]: Retrieving response ");
-            System.out.println("[SaveSchoolFee]:"+response);
-            System.out.println("[SaveSchoolFee]:"+response.body());
-            if (response.code()==200||response.code()==201||response.code()==212||response.code()==202){
+        if (Configuration.ipaddress!=null&&Configuration.port!=null){
+
+            Request request=new Request.Builder()
+                    .url("http:"+Configuration.ipaddress+":"+Configuration.port+"/savestudentnametoschoolfee")
+                    .addHeader("Authorization","Bearer "+ LogInModel.token)
+                    .post(body)
+                    .build();
+            try {
+                Response response=client.newCall(request).execute();
+                System.out.println("[SaveSchoolFee]: Retrieving response ");
+                System.out.println("[SaveSchoolFee]:"+response);
+                System.out.println("[SaveSchoolFee]:"+response.body());
+                if(response.code()==200){
+                    String rawData=new String(response.body().bytes(),"UTF-8");
+                    Platform.runLater(()->{
+                        LoadingWindow.window.close();
+                        studentnameTextField.clear();
+                        GsonBuilder builder1=new GsonBuilder();
+                        builder1.serializeNulls();
+                        builder1.setPrettyPrinting();
+                        Gson gson1=builder1.create();
+                        Fee fee=gson1.fromJson(rawData,Fee.class);
+                        ObservableList<Fee> allFee,selectedFee;
+                        allFee=tableview.getItems();
+                        selectedFee=tableview.getSelectionModel().getSelectedItems();
+                        selectedFee.forEach(allFee::remove);
+                        tableview.getItems().add(fee);
+                        tableview.refresh();
+                    });
+                    response.close();
+                }else {
+                    String message=new String(response.body().bytes(),"UTF-8");
+                    Platform.runLater(()->{
+                        LoadingWindow.window.close();
+                        boolean error=new ConnectionError().Connection(response.code()+":"+message);
+                        if (error){
+                            System.out.println("[SaveSchoolFee]--> Connection Error");
+                        }
+                    });
+                    response.close();
+                }
+            } catch (IOException e) {
                 Platform.runLater(()->{
                     LoadingWindow.window.close();
-                    studentnameTextField.clear();
-                    Fee fee=new Fee();
-                    fee.setTerm(term);
-                    fee.setStudentname(studentname);
-                    fee.setYear(session);
-                    fee.setTag(tag);
-                    fee.setClas(clas);
-                    tableview.getItems().add(fee);
-                    tableview.refresh();
-                });
-                response.close();
-            }else {
-                Platform.runLater(()->{
-                    LoadingWindow.window.close();
-                    boolean error=new ConnectionError().Connection("server:error "+response.code()+" Unable to SaveSchoolFee term,CHECK INTERNET CONNECTION");
+                    boolean error=new ConnectionError().Connection("Unable to establish connection,CHECK INTERNET CONNECTION");
                     if (error){
 
                         System.out.println("[SaveSchoolFee]--> Connection Error");
                     }
                 });
-                response.close();
+                e.printStackTrace();
             }
-            if (response.code()==400){
-                //Display alert dialog
-                Platform.runLater(()->{
-                    LoadingWindow.window.close();
-                    boolean error=new ConnectionError().Connection("server return error "+response.code()+": unable to insert term");
-                    if (error){
-                        System.out.println("[SaveSchoolFee]--> school fee  not found on the server");
-                    }
-                });
-                response.close();
-            }
-            if (response.code()==422){
-                //Display alert dialog
-                Platform.runLater(()->{
-                    LoadingWindow.window.close();
-                    boolean error=new ConnectionError().Connection("server return error "+response.code()+": Server cannot process your request,check fields for invalid character");
-                    if (error){
-                        System.out.println("[SaveSchoolFee]--> Connection error");
-                    }
-                });
-                response.close();
-            }
-            if (response.code()==403){
-                //Display alert dialog
-                Platform.runLater(()->{
-                    LoadingWindow.window.close();
-                    boolean error=new ConnectionError().Connection("server return error "+response.code()+": Access denied");
-                    if (error){
 
-                        System.out.println("Access denied");
-                    }
-                });
-                response.close();
-            }
-        } catch (IOException e) {
-            Platform.runLater(()->{
-                LoadingWindow.window.close();
-                boolean error=new ConnectionError().Connection("Unable to establish connection,CHECK INTERNET CONNECTION");
-                if (error){
-
-                    System.out.println("[SaveSchoolFee]--> Connection Error");
-                }
-            });
-            e.printStackTrace();
+        }else{
+            new ConnectionError().Connection("Invalid configuration settings, Configure your software in the login page");
         }
     }
 }

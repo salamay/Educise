@@ -17,6 +17,7 @@ import sample.LoginPage.DashBoard.Admin.SchoolFee.saveDataIntoSchoolFeeTable;
 import sample.LoginPage.DashBoard.AreYouSure.AreYouSureWindow;
 import sample.LoginPage.DashBoard.Printing.PrinterManager;
 import sample.LoginPage.DashBoard.SelectWindows.Registeration.LoadingWindow;
+import sample.LoginPage.DashBoard.SelectWindows.Utility.GetSessionThread;
 
 import java.io.File;
 import java.io.IOException;
@@ -136,15 +137,15 @@ public class BookStoreWindowController implements Initializable {
         todaysdate.setStyle("-fx-text-fill:#FFFFFF;");
         sellbookhbox.getChildren().addAll(todaysdate, sellbookDatePicker);
         addbooktermcombobox.getItems().addAll("1", "2", "3");
-        addbuttonsessioncombobox.getItems().addAll("2019-2020", "2020-2021", "2021-2022", "2023-2024", "2024-2025", "2025-2026", "2026-2027", "2027-2028");
+        new GetSessionThread(addbuttonsessioncombobox, new ProgressIndicator(), "retrievesession").start();
         sellbooktermcombobox.getItems().addAll("1", "2", "3");
-        sellbooksessioncombobox.getItems().addAll("2019-2020", "2020-2021", "2021-2022", "2023-2024", "2024-2025", "2025-2026", "2026-2027", "2027-2028");
+        new GetSessionThread(sellbooksessioncombobox, new ProgressIndicator(), "retrievesession").start();
         historytermcombobox.getItems().addAll("1", "2", "3");
-        historysessioncombobox.getItems().addAll("2019-2020", "2020-2021", "2021-2022", "2023-2024", "2024-2025", "2025-2026", "2026-2027", "2027-2028");
-        editbooksessioncombobox.getItems().addAll("2019-2020", "2020-2021", "2021-2022", "2023-2024", "2024-2025", "2025-2026", "2026-2027", "2027-2028");
+        new GetSessionThread(historysessioncombobox, new ProgressIndicator(), "retrievesession").start();
         editbooktermcombobox.getItems().addAll("1", "2", "3");
-        //History layout
+        new GetSessionThread(editbooksessioncombobox, new ProgressIndicator(), "retrievesession").start();
 
+        //History layout
         historytitlecolumn.setCellValueFactory(new PropertyValueFactory<>("title"));
         historyidcolumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         historypricecolumn.setCellValueFactory(new PropertyValueFactory<>("amountsold"));
@@ -328,13 +329,13 @@ public class BookStoreWindowController implements Initializable {
             ObservableList<Book> books = FXCollections.observableArrayList();
             books.add(book);
             new SaveBook(books, book, addbooktableview).start();
-
         }
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////SELL BOOK START/////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //This actually fires when the search button is clicked, it search for the books
     public void sellbookGoButtonClicked() throws IOException {
         //Getting name of the book
         System.out.println("[BookStoreWindowController]-->[Sell Book]:Getting and checking name");

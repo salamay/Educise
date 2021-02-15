@@ -10,11 +10,13 @@ import sample.ConnectionError;
 import sample.LoginPage.DashBoard.Admin.AdminWindow;
 import sample.LoginPage.DashBoard.SelectWindows.AcademicSession.SelectAcademicSession;
 import sample.LoginPage.DashBoard.SelectWindows.EditStudentInformation.EditstudentInformationWindow;
-import sample.LoginPage.DashBoard.SelectWindows.Information.SelectInformationSesssionWindow;
+import sample.LoginPage.DashBoard.SelectWindows.Information.SelectInformationSesssionAndClassWindow;
 import sample.LoginPage.DashBoard.SelectWindows.Parent.SelectParent;
 import sample.LoginPage.DashBoard.SelectWindows.Score.StudentSelectAssessmentSessionWindow;
 import sample.LoginPage.DashBoard.SelectWindows.Registeration.RegisterationWindow;
 import sample.LoginPage.DashBoard.SelectWindows.Teacher.NewTeacherWindow;
+import sample.LoginPage.DashBoard.SelectWindows.Teacher.PreInformationWindow;
+import sample.LoginPage.DashBoard.SelectWindows.Teacher.retrieveTeacherWindow;
 
 import java.io.IOException;
 import java.net.URL;
@@ -40,8 +42,7 @@ public class DashboardController implements Initializable {
     }
 
     public void StudentButtonClicked() throws IOException {
-     new SelectInformationSesssionWindow();
-
+     new SelectInformationSesssionAndClassWindow();
     }
     public void EditStudentInformationButtonClicked(){
         new EditstudentInformationWindow();
@@ -49,15 +50,12 @@ public class DashboardController implements Initializable {
 
     public void NewStudentButtonClicked() throws IOException {
         new RegisterationWindow();
-
     }
     public void NewTeacherButtonClicked() throws IOException {
-        new ConnectionError().Connection("Not available");
         new NewTeacherWindow();
     }
     public void NewTeacherButtonClickedtwo() throws IOException {
-        new ConnectionError().Connection("Not available");
-        //new NewTeacherWindow();
+        new PreInformationWindow();
     }
 
     public void CreateStudentSessionClicked() throws IOException {

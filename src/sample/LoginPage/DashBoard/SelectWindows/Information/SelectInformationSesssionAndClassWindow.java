@@ -9,10 +9,10 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 //This class load the window to select csession
-public class SelectInformationSesssionWindow {
+public class SelectInformationSesssionAndClassWindow {
 
     public static Stage StudentWindow;
-   public SelectInformationSesssionWindow() throws IOException {
+   public SelectInformationSesssionAndClassWindow() throws IOException {
 
        StudentWindow = new Stage();
        Parent root= FXMLLoader.load(getClass().getResource("SelectClass.fxml"));

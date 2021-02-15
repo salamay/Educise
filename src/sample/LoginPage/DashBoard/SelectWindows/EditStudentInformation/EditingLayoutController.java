@@ -19,6 +19,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
+import sample.Configuration.Configuration;
 import sample.ConnectionError;
 import sample.LoginPage.DashBoard.SelectWindows.Registeration.LoadingWindow;
 import sample.LoginPage.LogInModel;
@@ -36,16 +37,17 @@ import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
 
 public class EditingLayoutController implements Initializable {
-    private String session;
-    private String studentname;
+    private String studentid;
     public TableView<InformationEntity> tableView;
     public TableColumn<InformationEntity,String> studentnamecolumn;
     public TableColumn<InformationEntity,String> agecolumn;
     public TableColumn<InformationEntity,String> fathernamecolumn;
     public TableColumn<InformationEntity,String> mothernamecolumn;
+    public TableColumn<InformationEntity,String> othernamecolumn;
     public TableColumn<InformationEntity,String>nextofkincolumn;
     public TableColumn<InformationEntity,String> addresscolumn;
     public TableColumn<InformationEntity,String> phonenumbercolumn;
+    public TableColumn<InformationEntity,String> parentphonenumbercolumn;
     public TableColumn<InformationEntity,String> nicknamecolumn;
     public TableColumn<InformationEntity,String> hobbiescolumn;
     public TableColumn<InformationEntity,String> turnoncolumn;
@@ -55,26 +57,27 @@ public class EditingLayoutController implements Initializable {
     public TableColumn<InformationEntity,String> futureambitioncolumn;
     public TableColumn<InformationEntity,String> gendercolumn;
     public TableColumn<InformationEntity,String> studentclasscolumn;
+    public TableColumn<InformationEntity,String> sessioncolumn;
     public TableColumn<InformationEntity,String> tagcolumn;
     public TableColumn<InformationEntity,Integer> idcolumn;
     public ImageView studentpicture;
     public ImageView fatherpicture;
     public ImageView motherpicture;
+    public ImageView guardianPicture;
     private File file;
     private File MotherImageFile;
     private File FatherImageFile;
+    private File GuardianImageFile;
     private BufferedImage bufferedImage;
     private BufferedImage bufferedImage2;
     private BufferedImage bufferedImage3;
+    private BufferedImage bufferedImage4;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         tableView.setEditable(true);
-        this.session=EditStudentInformationLayoutWindow.clas;
-        this.studentname=EditStudentInformationLayoutWindow.studentname;
-        System.out.println("[EditingLayoutController]:Session:"+session);
-        System.out.println("[EditingLayoutController]:studentname:"+studentname);
-
+        //This student id is used to fetch information by the Inner class
+        this.studentid=EditStudentInformationLayoutWindow.studentid;
         idcolumn.setCellValueFactory(new PropertyValueFactory<>("id"));
 
         studentnamecolumn.setCellValueFactory(new PropertyValueFactory<>("studentname"));
@@ -108,6 +111,16 @@ public class EditingLayoutController implements Initializable {
             tableView.refresh();
         });
 
+        othernamecolumn.setCellValueFactory(new PropertyValueFactory<>("guardianname"));
+        othernamecolumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        othernamecolumn.setOnEditCommit((e)->{
+            editColumn(othernamecolumn,e);
+            e.getRowValue().setGuardianname(e.getNewValue());
+            tableView.refresh();
+        });
+
+        sessioncolumn.setCellValueFactory(new PropertyValueFactory<>("session"));
+
         nextofkincolumn.setCellValueFactory(new PropertyValueFactory<>("nextofkin"));
         nextofkincolumn.setCellFactory(TextFieldTableCell.forTableColumn());
         nextofkincolumn.setOnEditCommit((e)->{
@@ -129,6 +142,14 @@ public class EditingLayoutController implements Initializable {
         phonenumbercolumn.setOnEditCommit((e)->{
             editColumn(phonenumbercolumn,e);
             e.getRowValue().setPhoneno(e.getNewValue());
+            tableView.refresh();
+        });
+
+        parentphonenumbercolumn.setCellValueFactory(new PropertyValueFactory<>("parentphoneno"));
+        parentphonenumbercolumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        parentphonenumbercolumn.setOnEditCommit((e)->{
+            editColumn(parentphonenumbercolumn,e);
+            e.getRowValue().setParentphoneno(e.getNewValue());
             tableView.refresh();
         });
 
@@ -197,12 +218,6 @@ public class EditingLayoutController implements Initializable {
             tableView.refresh();
         });
         studentclasscolumn.setCellValueFactory(new PropertyValueFactory<>("clas"));
-        studentclasscolumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        studentclasscolumn.setOnEditCommit((e)->{
-            editColumn(studentclasscolumn,e);
-            e.getRowValue().setClas(e.getNewValue());
-            tableView.refresh();
-        });
 
         tagcolumn.setCellValueFactory(new PropertyValueFactory<>("tag"));
         tagcolumn.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -211,33 +226,32 @@ public class EditingLayoutController implements Initializable {
             e.getRowValue().setTag(e.getNewValue());
             tableView.refresh();
         });
-
         new RetrieveInformationThread().start();
     }
     public void editColumn(TableColumn<?, ?> column, TableColumn.CellEditEvent<InformationEntity, ?> e){
         //Getting field input
         System.out.println("[EditingLayoutController]:-->Getting filed input");
         String newValue=e.getNewValue().toString();
-        int id=e.getRowValue().getId();
+        String id=e.getRowValue().getId();
         String columnname=column.getText();
         System.out.println("[EditingLayoutController]:-->new value: "+newValue);
-        System.out.println("[EditingLayoutController]:-->id: "+id);
+        System.out.println("[EditingLayoutController]:-->Student id: "+id);
         System.out.println("[EditingLayoutController]:-->column: "+columnname);
-        if (newValue!=null && id!=0 && columnname!=null && newValue.matches("^[A-Za-z[,. ]0-9]*$")){
+        if (newValue!=null && id!=null && columnname!=null && newValue.matches("^[A-Za-z[,. ]0-9]*$")){
             System.out.println("[EditingLayoutController]:-->Starting thread");
-            tableView.refresh();
-            new EditInformation(newValue,id,columnname,session,studentname,tableView).start();
+            new EditInformation(newValue,id,columnname,tableView).start();
         }else {
             new ConnectionError().Connection("Invalid symbols detected,please provide valid input");
         }
 
     }
+
     public void deleteStudent() throws IOException {
         ObservableList<InformationEntity> selecteditem=tableView.getSelectionModel().getSelectedItems();
-        if (selecteditem.get(0)!=null&&selecteditem.get(0).getId()!=0){
-            System.out.println("[EditingLayoutController]: "+selecteditem.get(0).getId());
+        if (selecteditem.get(0)!=null&&selecteditem.get(0).getId()!=null){
+            System.out.println("[EditingLayoutController]:Student id:"+selecteditem.get(0).getId());
             new LoadingWindow();
-            new DeleteStudent(selecteditem.get(0).getId(),session,tableView).start();
+            new DeleteStudent(selecteditem.get(0).getId(),tableView).start();
         }else {
             new ConnectionError().Connection("Please select a student to delete");
         }
@@ -258,13 +272,12 @@ public class EditingLayoutController implements Initializable {
             try {
                 bufferedImage= ImageIO.read(file);
                 Image image= SwingFXUtils.toFXImage(bufferedImage,null);
-                String clas=tableView.getItems().get(0).getClas();
-                if (clas!=null){
-                    new SavePicture(image,file,studentpicture,studentname,session,"student",clas).start();
+                String id=tableView.getItems().get(0).getId();
+                if (id!=null){
+                    new SavePicture(image,file,studentpicture,"student",id).start();
                 }else {
-                    new ConnectionError().Connection("Student information not loaded");
+                    new ConnectionError().Connection("Student id is missing, try reloading information");
                 }
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -276,16 +289,16 @@ public class EditingLayoutController implements Initializable {
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("All Image","*.*"),
                 new FileChooser.ExtensionFilter("PNG","*.PNG"),
                 new FileChooser.ExtensionFilter("JPG","*.JPG"));
-//        Image Processing
+//      Image Processing
         FatherImageFile=fileChooser.showOpenDialog(new Stage());
         if (FatherImageFile!=null){
             BufferedImage bufferedImage=ImageIO.read(FatherImageFile);
             Image image=SwingFXUtils.toFXImage(bufferedImage,null);
-            String clas=tableView.getItems().get(0).getClas();
-            if (clas!=null){
-                new SavePicture(image,FatherImageFile,fatherpicture,studentname,session,"father",clas).start();
+            String id=tableView.getItems().get(0).getId();
+            if (id!=null){
+                new SavePicture(image,FatherImageFile,fatherpicture,"father",id).start();
             }else {
-                new ConnectionError().Connection("Student information not loaded");
+                new ConnectionError().Connection("Student id is missing, try reloading information");
             }
 
         }
@@ -302,16 +315,38 @@ public class EditingLayoutController implements Initializable {
         if (MotherImageFile!=null){
             BufferedImage bufferedImage=ImageIO.read(MotherImageFile);
             Image image=SwingFXUtils.toFXImage(bufferedImage,null);
-            String clas=tableView.getItems().get(0).getClas();
-            if (clas!=null){
-                new SavePicture(image,MotherImageFile,motherpicture,studentname,session,"mother",clas).start();
+            String id=tableView.getItems().get(0).getId();
+            if (id!=null){
+                new SavePicture(image,MotherImageFile,motherpicture,"mother",id).start();
             }else {
-                new ConnectionError().Connection("Student information not loaded");
+                new ConnectionError().Connection("Student id is missing, try reloading information");
             }
         }
     }
-    private class RetrieveInformationThread extends Thread{
 
+    public void changeGuardianPicture() throws IOException {
+        //        File Chooser
+        FileChooser fileChooser=new FileChooser();
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("All Image","*.*"),
+                new FileChooser.ExtensionFilter("PNG","*.PNG"),
+                new FileChooser.ExtensionFilter("JPG","*.JPG"));
+//        Image Processing
+        GuardianImageFile=fileChooser.showOpenDialog(new Stage());
+        if (GuardianImageFile!=null){
+            BufferedImage bufferedImage=ImageIO.read(GuardianImageFile);
+            Image image=SwingFXUtils.toFXImage(bufferedImage,null);
+            String id=tableView.getItems().get(0).getId();
+            if (id!=null){
+                new SavePicture(image,GuardianImageFile,guardianPicture,"guardian",id).start();
+            }else {
+                new ConnectionError().Connection("Cannot edit information,Some fields are missing");
+            }
+        }
+    }
+
+
+    //This class retrieve information of the student selected from the Listview for editing student information
+    private class RetrieveInformationThread extends Thread{
         @Override
         public void run() {
             Platform.runLater(()->{
@@ -321,157 +356,160 @@ public class EditingLayoutController implements Initializable {
                     e.printStackTrace();
                 }
             });
-            OkHttpClient client=new OkHttpClient.Builder()
-                    .connectTimeout(1, TimeUnit.MINUTES)
-                    .readTimeout(1, TimeUnit.MINUTES)
-                    .build();
-            Request request=new Request.Builder()
-                    .url("http://167.99.91.154:8080/retrievestudentinformation/"+studentname+"/"+session)
-                    .addHeader("Authorization","Bearer "+ LogInModel.token)
-                    .build();
-            Response response;
-            try {
-                response=client.newCall(request).execute();
-                System.out.println("[EditingLayoutController]"+response);
-                if (response.code()==200||response.code()==202||response.code()==212||response.code()==201){
-                    ResponseBody responseBody=response.body();
-                    System.out.println("[EditingLayoutController]"+responseBody);
-                    /////Retrieving and processing body,The response contains images and string value
-                    //Images is received as bytes and converted back from json to respective object
-                    byte[] bytes=responseBody.bytes();
-                    System.out.println("[EditingLayoutController]: byte retrieved from server");
-                    String data=new String(bytes,"UTF-8");
-                    System.out.println("[EditingLayoutController]"+responseBody);
-                    System.out.println("[EditingLayoutController]:Converting Json body");
-                    GsonBuilder builder=new GsonBuilder();
-                    builder.setPrettyPrinting();
-                    builder.serializeNulls();
-                    Gson gson=builder.create();
-                    InformationEntity informationEntity=gson.fromJson(data,InformationEntity.class);
-                    System.out.println("[student byte]: "+ Arrays.toString(informationEntity.getStudent()));
-                    Platform.runLater(()->{
-                        LoadingWindow.window.close();
-                        ObservableList<InformationEntity> info= FXCollections.observableArrayList();
-                        info.add(informationEntity);
-                        tableView.setItems(info);
-                        tableView.refresh();
-                    });
-                    byte[] student=informationEntity.getStudent();
-                    byte[] father=informationEntity.getFather();
-                    byte[] mother=informationEntity.getMother();
-                    Path path= Paths.get(System.getProperty("user.dir")+"/MyChildSchool");
-                    Files.createDirectories(path);
-                    System.out.println("[EditingLayoutController]: Creating path on the Pc to store Images");
-                    if (Files.exists(path)){
-                        System.out.println("[EditingLayoutController]:Creating new Path");
-                        System.out.println("[EditingLayoutController]:Processing student image");
-                        File studentimage=new File(System.getProperty("user.dir")+"/MyChildSchool/student");
-                        FileOutputStream sout=new FileOutputStream(studentimage);
-                        sout.write(student);
-                        if (studentimage!=null){
-                            System.out.println("[EditingLayoutController]:student image is valid");
-                            bufferedImage=ImageIO.read(studentimage);
-                            Image s=SwingFXUtils.toFXImage(bufferedImage,null);
-                            System.out.println("[EditingLayoutController]:Displaying student image");
-                            Platform.runLater(()->{
-                                studentpicture.setImage(s);
-                            });
-                            System.out.println("[EditingLayoutController]:Processing student image successful");
-                        }
-                        else {
-                            System.out.println("[EditingLayoutController]:student image is null cannot read file");
-                        }
-                        //////Processing Father Image
-                        System.out.println("[EditingLayoutController]:Processing father image ");
-                        File fatherimage=new File(System.getProperty("user.dir")+"/MyChildSchool/father");
-                        FileOutputStream fout=new FileOutputStream(fatherimage);
-                        fout.write(father);
-                        if (fatherimage!=null){
-                            System.out.println("[EditingLayoutController]:father image is valid");
-                            bufferedImage2=ImageIO.read(fatherimage);
-                            Image f=SwingFXUtils.toFXImage(bufferedImage2,null);
-                            System.out.println("[EditingLayoutController]:Displaying Father image");
-                            Platform.runLater(()->{
-                                fatherpicture.setImage(f);
-                            });
-                            System.out.println("[EditingLayoutController]:Processing father image successful");
-                        }else {
-                            System.out.println("[EditingLayoutController]:father image is null cannot read file");
-                        }
-                        ///Processing Mother image
-                        System.out.println("[EditingLayoutController]:Processing mother image ");
-                        File motherimage=new File(System.getProperty("user.dir")+"/MyChildSchool/mother");
-                        FileOutputStream mout=new FileOutputStream(motherimage);
-                        mout.write(mother);
-                        if (motherimage!=null){
-                            System.out.println("[EditingLayoutController]:mother image is valid");
-                            bufferedImage3=ImageIO.read(motherimage);
-                            Image m=SwingFXUtils.toFXImage(bufferedImage3,null);
-                            System.out.println("[EditingLayoutController]:Displaying mother image");
-                            Platform.runLater(()->{
-                                motherpicture.setImage(m);
-                            });
-                            System.out.println("[EditingLayoutController]:Processing mother image successful");
-                        }
-                        else {
-                            System.out.println("[EditingLayoutController]:mother image is null cannot read file");
-                        }
+            if (Configuration.ipaddress!=null && Configuration.port!=null){
 
+                OkHttpClient client=new OkHttpClient.Builder()
+                        .connectTimeout(1, TimeUnit.MINUTES)
+                        .readTimeout(1, TimeUnit.MINUTES)
+                        .build();
+                Request request=new Request.Builder()
+                        .url("http://"+Configuration.ipaddress+":"+Configuration.port+"/retrievestudentinformation/"+studentid)
+                        .addHeader("Authorization","Bearer "+ LogInModel.token)
+                        .build();
+                Response response;
+                try {
+                    response=client.newCall(request).execute();
+                    System.out.println("[EditingLayoutController]"+response);
+                    if (response.code()==200){
+                        ResponseBody responseBody=response.body();
+                        System.out.println("[EditingLayoutController]"+responseBody);
+                        /////Retrieving and processing body,The response contains images and string value
+                        //Images is received as bytes and converted back from json to respective object
+                        byte[] bytes=responseBody.bytes();
+                        System.out.println("[EditingLayoutController]: byte retrieved from server");
+                        String data=new String(bytes,"UTF-8");
+                        System.out.println("[EditingLayoutController]"+responseBody);
+                        System.out.println("[EditingLayoutController]:Converting Json body");
+                        GsonBuilder builder=new GsonBuilder();
+                        builder.setPrettyPrinting();
+                        builder.serializeNulls();
+                        Gson gson=builder.create();
+                        InformationEntity informationEntity=gson.fromJson(data,InformationEntity.class);
+                        System.out.println("[student byte]: "+ Arrays.toString(informationEntity.getStudent()));
+                        Platform.runLater(()->{
+                            LoadingWindow.window.close();
+                            ObservableList<InformationEntity> info= FXCollections.observableArrayList();
+                            info.add(informationEntity);
+                            tableView.setItems(info);
+                            tableView.refresh();
+                        });
+                        byte[] student=informationEntity.getStudent();
+                        byte[] father=informationEntity.getFather();
+                        byte[] mother=informationEntity.getMother();
+                        byte[] other=informationEntity.getOther();
+                        Path path= Paths.get(System.getProperty("user.dir")+"/MyChildSchool");
+                        Files.createDirectories(path);
+                        System.out.println("[EditingLayoutController]: Creating path on the Pc to store Images");
+                        if (Files.exists(path)){
+                            System.out.println("[EditingLayoutController]:Creating new Path");
+                            System.out.println("[EditingLayoutController]:Processing student image");
+                            File studentimage=new File(System.getProperty("user.dir")+"/MyChildSchool/student");
+                            FileOutputStream sout=new FileOutputStream(studentimage);
+                            sout.write(student);
+                            if (studentimage!=null){
+                                System.out.println("[EditingLayoutController]:student image is valid");
+                                bufferedImage=ImageIO.read(studentimage);
+                                Image s=SwingFXUtils.toFXImage(bufferedImage,null);
+                                System.out.println("[EditingLayoutController]:Displaying student image");
+                                Platform.runLater(()->{
+                                    studentpicture.setImage(s);
+                                });
+                                System.out.println("[EditingLayoutController]:Processing student image successful");
+                            }
+                            else {
+                                System.out.println("[EditingLayoutController]:student image is null cannot read file");
+                            }
+                            //////Processing Father Image
+                            System.out.println("[EditingLayoutController]:Processing father image ");
+                            File fatherimage=new File(System.getProperty("user.dir")+"/MyChildSchool/father");
+                            FileOutputStream fout=new FileOutputStream(fatherimage);
+                            fout.write(father);
+                            if (fatherimage!=null){
+                                System.out.println("[EditingLayoutController]:father image is valid");
+                                bufferedImage2=ImageIO.read(fatherimage);
+                                Image f=SwingFXUtils.toFXImage(bufferedImage2,null);
+                                System.out.println("[EditingLayoutController]:Displaying Father image");
+                                Platform.runLater(()->{
+                                    fatherpicture.setImage(f);
+                                });
+                                System.out.println("[EditingLayoutController]:Processing father image successful");
+                            }else {
+                                System.out.println("[EditingLayoutController]:father image is null cannot read file");
+                            }
+                            ///Processing Mother image
+                            System.out.println("[EditingLayoutController]:Processing mother image ");
+                            File motherimage=new File(System.getProperty("user.dir")+"/MyChildSchool/mother");
+                            FileOutputStream mout=new FileOutputStream(motherimage);
+                            mout.write(mother);
+                            if (motherimage!=null){
+                                System.out.println("[EditingLayoutController]:mother image is valid");
+                                bufferedImage3=ImageIO.read(motherimage);
+                                Image m=SwingFXUtils.toFXImage(bufferedImage3,null);
+                                System.out.println("[EditingLayoutController]:Displaying mother image");
+                                Platform.runLater(()->{
+                                    motherpicture.setImage(m);
+                                });
+                                System.out.println("[EditingLayoutController]:Processing mother image successful");
+                            }
+                            else {
+                                System.out.println("[EditingLayoutController]:mother image is null cannot read file");
+                            }
+
+                            ///Processing Guardian image
+                            System.out.println("[EditingLayoutController]:Processing Guardian image ");
+                            File otherimage=new File(System.getProperty("user.dir")+"/MyChildSchool/mother");
+                            FileOutputStream oout=new FileOutputStream(otherimage);
+                            oout.write(other);
+                            if (otherimage!=null){
+                                System.out.println("[EditingLayoutController]:guardian image is valid");
+                                bufferedImage4=ImageIO.read(otherimage);
+                                Image o=SwingFXUtils.toFXImage(bufferedImage4,null);
+                                System.out.println("[EditingLayoutController]:Displaying guardian image");
+                                Platform.runLater(()->{
+                                    guardianPicture.setImage(o);
+                                });
+                                System.out.println("[EditingLayoutController]:Processing guardian image successful");
+                            }
+                            else {
+                                System.out.println("[EditingLayoutController]:guardian image is null cannot read file");
+                            }
+
+                        }else {
+                            System.out.println("[EditingLayoutController]:path to store images does not exists" );
+                        }
+                        System.out.println("[class]"+informationEntity.getClass());
+                        response.close();
                     }else {
-                        System.out.println("[EditingLayoutController]:path to store images does not exists" );
+                        String message=new String(response.body().bytes(),"UTF-8");
+                        //Display alert dialog
+                        Platform.runLater(()->{
+                            boolean error=new ConnectionError().Connection(response.code()+":"+message);
+                            if (error){
+                                LoadingWindow.window.close();
+                                EditstudentInformationWindow.StudentWindow.close();
+                                System.out.println("[EditingLayoutController]--> Connection Error,Window close");
+                                response.close();
+                            }
+                        });
                     }
-                    System.out.println("[class]"+informationEntity.getClass());
-                    response.close();
-                }else {
-                    //Display alert dialog
+                } catch (IOException e) {
+                    //Display an Alert dialog
                     Platform.runLater(()->{
-                        boolean error=new ConnectionError().Connection("server return error "+response.code()+": Unable to  get Information");
+                        boolean error=new ConnectionError().Connection("Unable to establish,CHECK INTERNET CONNECTION");
                         if (error){
                             LoadingWindow.window.close();
                             EditstudentInformationWindow.StudentWindow.close();
                             System.out.println("[EditingLayoutController]--> Connection Error,Window close");
-                            response.close();
                         }
                     });
+                    System.out.println("[EditingLayoutController]: Request failed");
+                    e.printStackTrace();
                 }
-                if (response.code()==404){
-                    //Display alert dialog
-                    Platform.runLater(()->{
-                        boolean error=new ConnectionError().Connection("server return error "+response.code()+": Information not found");
-                        if (error){
-                            LoadingWindow.window.close();
-                            EditstudentInformationWindow.StudentWindow.close();
-                            System.out.println("[EditingLayoutController]--> Connection Error");
-                            response.close();
-                        }
-                    });
-                }
-                if (response.code()==403){
-                    //Display alert dialog
-                    Platform.runLater(()->{
-                        boolean error=new ConnectionError().Connection("server return error "+response.code()+": Access denied");
-                        if (error){
-                            LoadingWindow.window.close();
-                            EditstudentInformationWindow.StudentWindow.close();
-                            System.out.println("[CreatingSessionThread]--> Access denied");
-                        }
-                    });
-                    response.close();
-                }
-            } catch (IOException e) {
-                //Display an Alert dialog
+            }else{
                 Platform.runLater(()->{
-                    boolean error=new ConnectionError().Connection("Unable to establish,CHECK INTERNET CONNECTION");
-                    if (error){
-                        LoadingWindow.window.close();
-                        EditstudentInformationWindow.StudentWindow.close();
-                        System.out.println("[EditingLayoutController]--> Connection Error,Window close");
-                    }
+                    new ConnectionError().Connection("Invalid configuration, please configure your software in the log in page");
                 });
-                System.out.println("[EditingLayoutController]: Request failed");
-                e.printStackTrace();
             }
         }
     }
-
 }

@@ -44,10 +44,7 @@ public class NewTeacherController implements Initializable {
     public JFXTextField PhoneNo;
     public JFXTextField SchoolAttended;
     public JFXTextField Course;
-    public JFXTextField accountNumberTextField;
-    public JFXTextField accountnameTextField;
     public JFXComboBox<String> MaritalStatus;
-    public JFXComboBox<String> bankNameComboBox;
     public ImageView TeacherImageView;
     public JFXRadioButton Female;
     public JFXRadioButton Male;
@@ -84,10 +81,7 @@ public class NewTeacherController implements Initializable {
     private String EntryYearInput;
     private String Gender;
     private String MaritalStatusValue;
-    private String bank;
-    private String bankAccount;
-    private String accountName;
-    private long PhoneNoInput;
+    private String PhoneNoInput;
     private String SchoolAttendedInput;
     private String CourseInput;
     private File file;
@@ -102,8 +96,6 @@ public class NewTeacherController implements Initializable {
         ObservableList<String> list= FXCollections.observableArrayList();
         list.addAll("Single","Maried","other");
         MaritalStatus.getItems().addAll(list);
-        accountnameTextField.setEditable(false);
-        bankNameComboBox.getItems().addAll("First bank");
     }
     public void TeacherImageButtonClicked() throws IOException {
         FileChooser fileChooser=new FileChooser();
@@ -195,12 +187,23 @@ public class NewTeacherController implements Initializable {
         }
         if (PhoneNo.getText().isEmpty()){
             PhoneNoError.setVisible(true);
+            PhoneNoError.setText("no input");
         }else {
-          try{
-              PhoneNoInput=Long.parseLong(PhoneNo.getText());
-          }catch (NumberFormatException e){
-              PhoneNoError.setVisible(false);
-          }
+              PhoneNoInput=PhoneNo.getText();
+              if(PhoneNo.getText().isEmpty()){
+                  PhoneNoError.setText("no input");
+                  PhoneNoError.setVisible(true);
+            }else{
+                  PhoneNoError.setVisible(false);
+                if (!PhoneNoInput.matches("\\d{11}")||!PhoneNoInput.matches("^[0-9]*$")){
+                    PhoneNoError.setText("invalid number");
+                    PhoneNoError.setVisible(true);
+                }else {
+                    PhoneNoError.setVisible(false);
+                    PhoneNoError.setText("invalid number");
+                }
+            }
+
         }
         if (SchoolAttended.getText().isEmpty()){
             SchoolError.setVisible(true);
@@ -219,21 +222,8 @@ public class NewTeacherController implements Initializable {
         }else {
             Gender="Female";
         }
-        if (bankNameComboBox.getSelectionModel().getSelectedItem()!=null){
-            bank=bankNameComboBox.getSelectionModel().getSelectedItem();
-        }else {
-            new ConnectionError().Connection("Please select a bank");
-        }
-        if (accountNumberTextField.getText()!=null || !accountNumberTextField.getText().isEmpty()){
-            bankAccount=accountNumberTextField.getText();
-        }else {
-            new ConnectionError().Connection("Please enter a valid account number");
-        }
-        if (accountnameTextField.getText()!=null || !accountnameTextField.getText().isEmpty()){
-            accountName=accountnameTextField.getText();
-        }else {
-            new ConnectionError().Connection("Account is invalid");
-        }
+
+
         if (file==null){
             new ConnectionError().Connection("Please select teacher image");
         }
@@ -242,12 +232,12 @@ public class NewTeacherController implements Initializable {
                 &&!Subject3.getText().isEmpty() && !Subject4.getText().isEmpty()&&
                 !Address.getText().isEmpty() && !Email.getText().isEmpty()
                 && !SchoolAttended.getText().isEmpty() && !EntryYear.getText().isEmpty()
-                && !PhoneNo.getText().isEmpty() && !Course.getText().isEmpty() && !accountNumberTextField.getText().isEmpty()&& !accountnameTextField.getText().isEmpty()&& bankNameComboBox.getSelectionModel().getSelectedItem()!=null&&
-                !PhoneNo.getText().matches("^[a-zA-Z]*$") && Female.isSelected() || Male.isSelected() || file!=null){
+                && !PhoneNo.getText().isEmpty()&&PhoneNo.getText().matches("\\d{11}") && !Course.getText().isEmpty() &&
+                PhoneNo.getText().matches("^[0-9]*$") && Female.isSelected() || Male.isSelected() || file!=null){
 
             new RegisterTecherThread(FirstNameInput,LastNameInput,MiddleNameInput,ClassInput,SubjectOne,SubjectTwo,
                     SubjectThree,SubjectFour,EmailInput,AddressInput,EntryYearInput,Gender,PhoneNoInput,SchoolAttendedInput,
-                    CourseInput,file,MaritalStatusValue,accountName,bankAccount,bank).start();
+                    CourseInput,file,MaritalStatusValue).start();
         }else {
             ErrorLabel.setVisible(true);
         }
@@ -268,7 +258,7 @@ public class NewTeacherController implements Initializable {
         String accountName;
         String bankAccountNumber;
         String bankname;
-        long PhoneNo;
+        String PhoneNo;
         String MaritalStatus;
         String SchoolAttended;
         String Course;
@@ -277,7 +267,7 @@ public class NewTeacherController implements Initializable {
         public RegisterTecherThread(  String FirstNameInput,String LastNameInput,String MiddleNameInput,String ClassInput,
                                       String Subject1,String Subject2,String Subject3,String Subject4,
                                       String EmailInput,String AddressInput,String EntryYearInput,String Gendr,
-                                      long PhoneNoInput, String SchoolAttendedInput,String CourseInput, File TeacherImage,String Status,String accountName,String bankAccountNumber,String bankname){
+                                      String PhoneNoInput, String SchoolAttendedInput,String CourseInput, File TeacherImage,String Status){
             Platform.runLater(()->{
                 try {
                     new LoadingWindow();
@@ -347,9 +337,6 @@ public class NewTeacherController implements Initializable {
                 newTeacherRequestEntity.setSchoolattended(SchoolAttended);
                 newTeacherRequestEntity.setCourse(Course);
                 newTeacherRequestEntity.setMaritalstatus(MaritalStatus);
-                newTeacherRequestEntity.setBankname(bankname);
-                newTeacherRequestEntity.setBankaccountnumber(bankAccountNumber);
-                newTeacherRequestEntity.setAccountname(accountName);
                 if (file!=null){
                     byte[] bytes= Files.readAllBytes(file.toPath());
                     newTeacherRequestEntity.setFile(bytes);
@@ -383,7 +370,6 @@ public class NewTeacherController implements Initializable {
                     Response response=client.newCall(request).execute();
                     if (response.code()==200){
                         System.out.println("[NewTeacherController]-->Response:"+response);
-                        System.out.println("[NewTeacherController]-->ResponseBody--->"+response.body());
                         Platform.runLater(()->{
                             LoadingWindow.window.close();
                             boolean error=new ConnectionError().Connection("SUCCESS");

@@ -191,8 +191,16 @@ public class InformationWindow {
         ambition2.setWrapText(true);
         infocontainer2.getChildren().addAll(ageLabel,phoneNoLabel,parentPhoneNumberLabel,fatherNameLabel,motherNameLabel,addressLabel,
                 nextOfKinLabel,genderLabel,clubLabel,rOleModelLabel,Class2,Session2,Tag2,ambition2);
+        /// QR container
+        VBox qrvbox=new VBox();
+        ImageView qrImage=new ImageView();
+        qrImage.setFitHeight(250);
+        qrImage.setFitWidth(250);
+        qrvbox.getChildren().add(qrImage);
+        bdp.setRight(qrvbox);
         bdp.setCenter(infocontainer2);
         borderPane.setBottom(bdp);
+        borderPane.setPadding(new Insets(10,10,10,10));
         window1.initModality(Modality.APPLICATION_MODAL);
         window1.setMaximized(true);
         window1.setResizable(true);
@@ -206,7 +214,7 @@ public class InformationWindow {
         SelectInformationSesssionAndClassWindow.StudentWindow.close();
         //this get the student information,the clas and new value is the class and the student name respectively
         new ClassInformationThread(studentid,NameLabel,ageLabel,phoneNoLabel,parentPhoneNumberLabel,fatherNameLabel,motherNameLabel,
-                addressLabel,nextOfKinLabel,genderLabel,clubLabel,rOleModelLabel,image,FatherImage,MotherImage,otherImage,FatherName,MotherName,otherName,Class2,Tag2,ambition2,Session2).start();
+                addressLabel,nextOfKinLabel,genderLabel,clubLabel,rOleModelLabel,image,FatherImage,MotherImage,otherImage,FatherName,MotherName,otherName,Class2,Tag2,ambition2,Session2,qrImage).start();
     }
 
 }

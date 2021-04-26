@@ -12,8 +12,8 @@ public class JSON {
     private String guardianname;
     private String nextofkin;
     private String address;
-    private int phoneno;
-    private int parentphonenumber;
+    private String phoneno;
+    private String parentphonenumber;
     private String nickname;
     private String hobbies;
     private String turnon;
@@ -64,11 +64,11 @@ public class JSON {
         this.address = address;
     }
 
-    public void setPhoneno(int phoneno) {
+    public void setPhoneno(String phoneno) {
         this.phoneno = phoneno;
     }
 
-    public void setParentphonenumber(int parentphonenumber) {
+    public void setParentphonenumber(String parentphonenumber) {
         this.parentphonenumber = parentphonenumber;
     }
 

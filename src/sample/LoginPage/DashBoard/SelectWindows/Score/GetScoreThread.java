@@ -84,12 +84,10 @@ public class GetScoreThread extends Thread {
             try {
                 response=client.newCall(request).execute();
                 System.out.println(response);
-                System.out.println(response.body());
                 if (response.code()==200){
                     Platform.runLater(()->{
                         LoadingWindow.window.close();
                     });
-                    System.out.println("[GetScoreThread]--> Response:"+response.body());
                     System.out.println("[GetScoreThread]--> Processing response");
                     byte[] bytes=response.body().bytes();
                     String raw=new String(bytes,"UTF-8");
@@ -120,7 +118,6 @@ public class GetScoreThread extends Thread {
                     }
                     if (!listofscores.isEmpty()){
                         //Document to be printed
-                        System.out.println("DOCUMENT: "+listofscores.get(listofscores.size()-1).getPdfdocumenbytes());
                         StudentSelectAssessmentSessionWindowController.pdfdocumentbytes=listofscores.get(listofscores.size()-1).getPdfdocumenbytes();
                     }
                     if (listofscores.isEmpty()){
@@ -156,6 +153,7 @@ public class GetScoreThread extends Thread {
             }
         }else {
             Platform.runLater(()->{
+                LoadingWindow.window.close();
                 new ConnectionError().Connection("Invalid configuration, please configure your software in the log in page");
             });
         }

@@ -239,11 +239,6 @@
                 <JFXTextField fx:id="PhoneNo" focusColor="#d77980" labelFloat="true" promptText="Phone number" unFocusColor="#eeeeee" GridPane.columnIndex="5" GridPane.rowIndex="3" />
                 <JFXTextField fx:id="SchoolAttended" focusColor="#d77980" labelFloat="true" promptText="School Attended" unFocusColor="#f2efef" GridPane.columnIndex="5" GridPane.rowIndex="4" />
                 <JFXTextField fx:id="Course" focusColor="#d77980" labelFloat="true" promptText="Course" unFocusColor="WHITE" GridPane.columnIndex="5" GridPane.rowIndex="5" />
-                <JFXComboBox fx:id="bankNameComboBox" labelFloat="true" prefHeight="25.0" prefWidth="133.0" promptText="Bank name" GridPane.columnIndex="8" />
-                <Label text="Bank name:" GridPane.columnIndex="7" />
-                <JFXTextField fx:id="accountNumberTextField" promptText="Account number" GridPane.columnIndex="8" GridPane.rowIndex="1" />
-                <JFXTextField fx:id="accountnameTextField" GridPane.columnIndex="8" GridPane.rowIndex="2" />
-                <Label text="Account number:" GridPane.columnIndex="7" GridPane.rowIndex="1" />
             </children>
             <BorderPane.margin>
                 <Insets bottom="5.0" right="5.0" top="10.0" />

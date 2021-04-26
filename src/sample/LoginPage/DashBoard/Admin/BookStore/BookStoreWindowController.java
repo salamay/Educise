@@ -43,7 +43,7 @@ public class BookStoreWindowController implements Initializable {
     public JFXComboBox<String> sellbooksessioncombobox;
     public JFXTextField sellbookbuyernamefield;
     public TableView<Book> SellBookTableView;
-    public TableColumn<Book, Integer> sellbookidcolumn;
+    public TableColumn<Book, String> sellbookidcolumn;
     public TableColumn<Book, String> sellbooktitlecolumn;
     public TableColumn<Book, String> sellbookauthorcolumn;
     public TableColumn<Book, String> sellbookpricecolumn;
@@ -58,7 +58,7 @@ public class BookStoreWindowController implements Initializable {
     public JFXComboBox<String> editbooksessioncombobox;
     public JFXComboBox<String> editbooktermcombobox;
     public TableView<Book> editbooktableview;
-    public TableColumn<Book,Integer> editbookidcolumn;
+    public TableColumn<Book,String> editbookidcolumn;
     public TableColumn<Book,String> editbooktitlecolumn;
     public TableColumn<Book,String> editbookauthorcolumn;
     public TableColumn<Book,Integer> editbookpricecolumn;
@@ -72,7 +72,7 @@ public class BookStoreWindowController implements Initializable {
     public JFXComboBox<String> historysessioncombobox;
     public HBox historytophbox;
     public TableView<BookHistory> historytableview;
-    public TableColumn<Book, Integer> historyidcolumn;
+    public TableColumn<Book, String> historyidcolumn;
     public TableColumn<Book, String> historytitlecolumn;
     public TableColumn<Book, String> historyauthorcolumn;
     public TableColumn<Book, String> historypricecolumn;

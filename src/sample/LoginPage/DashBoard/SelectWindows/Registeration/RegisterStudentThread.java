@@ -30,7 +30,7 @@ public class RegisterStudentThread extends  Thread {
     }
 
     public RegisterStudentThread(String studentname, int age, String fathername, String mothername,String guardianName, String NextOfKin,
-                                 String address, int PhoneNo,int parentPhoneNumber, String NickName, String Hobbies, String TurnOn,
+                                 String address, String PhoneNo,String parentPhoneNumber, String NickName, String Hobbies, String TurnOn,
                                  String TurnOff, String Club, String RoleModel, String FutureAmbition, String Gender, String session,
                                  File file, File FatherPicture, File Mother,File Other,String clas,String tag) {
         // setting the json parameterJSON object
@@ -113,7 +113,7 @@ public class RegisterStudentThread extends  Thread {
                 .build();
 
             System.out.println("[RegisterstudentThread]: "+"preparing Json body");
-            RequestBody jsonBody=RequestBody.create(entity,MediaType.parse("application/json"));
+            RequestBody jsonBody=RequestBody.create(MediaType.parse("application/json"), entity);
             System.out.println("[RegisterstudentThread]: "+"making request body");
             RequestBody requestBody=new MultipartBody.Builder()
                     .setType(MultipartBody.FORM)
@@ -172,6 +172,7 @@ public class RegisterStudentThread extends  Thread {
             }
         }else{
             Platform.runLater(()->{
+                LoadingWindow.window.close();
                 new ConnectionError().Connection("Invalid configuration, please configure your software in the log in page");
             });
         }

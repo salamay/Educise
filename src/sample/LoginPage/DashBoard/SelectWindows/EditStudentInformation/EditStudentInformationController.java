@@ -49,15 +49,10 @@ public class EditStudentInformationController implements Initializable {
                 //Creating Window
                 JFXListView<String> listview;
                 ScrollPane layout = new ScrollPane();
-                layout.setPannable(true);
-                layout.setFitToHeight(true);
-                layout.setFitToWidth(true);
-
                 listview = new JFXListView<>();
-                listview.setExpanded(true);
-                listview.setMinHeight(600);
+                listview.setMinHeight(700);
+                listview.setMinWidth(1200);
                 listview.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-                listview.isExpanded();
                 listview.getSelectionModel().selectedItemProperty().addListener((v, OldValue, NewValue) -> {
                     EditstudentInformationWindow.StudentWindow.close();
                     //This load the exact edition window layout whivh is hard coded
@@ -71,8 +66,6 @@ public class EditStudentInformationController implements Initializable {
                 VBox box = new VBox();
                 box.setAlignment(Pos.TOP_LEFT);
                 box.getChildren().addAll(label, listview);
-                layout.setFitToWidth(true);
-                layout.setFitToWidth(true);
                 layout.setContent(box);
                 layout.setPadding(new Insets(10, 10, 10, 10));
                 Scene scene = new Scene(layout);

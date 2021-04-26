@@ -19,6 +19,7 @@ import sample.LoginPage.LogInModel;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.nio.Buffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -51,6 +52,7 @@ public class ClassInformationThread extends  Thread {
     private ImageView FatherImageView;
     private ImageView MotherImageView;
     private ImageView otherImageView;
+    private ImageView qrCodeImage;
     //Buffered Image
     BufferedImage bufferedImage2;
     BufferedImage bufferedImage3;
@@ -59,9 +61,8 @@ public class ClassInformationThread extends  Thread {
         public ClassInformationThread( String id, Label namelabel, Label ageLabel, Label phoneNoLabel, Label parentPhoneNoLabel, Label fatherNameLabel,
                                       Label motherNameLabel, Label addressLabel, Label nextOfKinLabel, Label genderLabel,
                                       Label clubLabel, Label rOleModelLabel, ImageView image, ImageView Father,
-                                      ImageView Mother, ImageView otherImage, Label FatherName, Label MotherName, Label otherName, Label class2, Label tag2, Label ambition2, Label session2){
+                                      ImageView Mother, ImageView otherImage, Label FatherName, Label MotherName, Label otherName, Label class2, Label tag2, Label ambition2, Label session2,ImageView qrcodeimage){
             this.studentid=id;
-
             this.namelabel=namelabel;
             this.ageLabel=ageLabel;
             this.phoneNoLabel=phoneNoLabel;
@@ -85,6 +86,7 @@ public class ClassInformationThread extends  Thread {
             this.sessionLabel=session2;
             this.tag2=tag2;
             this.ambition2=ambition2;
+            this.qrCodeImage=qrcodeimage;
             System.out.println(" [ClassInformationThread] >> Student id: "+studentid);
         }
         @Override
@@ -111,13 +113,11 @@ public class ClassInformationThread extends  Thread {
                     response=client.newCall(request).execute();
                     System.out.println("[ClassInformationThread] >> Response:"+response);
                     if (response.code()==200){
-                        System.out.println("[ClassInformationThread]"+response.body());
                         /////Retrieving and processing body,The response contains images and sting value
                         //Images is received as bytes and converted back from json to respective object
                         byte[] bytes=response.body().bytes();
                         System.out.println("[ClassInformationThread]: byte retrieved from server");
                         String data=new String(bytes,"UTF-8");
-                        System.out.println("[ClassInformationThread] >> Response body:"+response.body());
                         System.out.println("[ClassInformationThread]:Converting Json body");
                         GsonBuilder builder=new GsonBuilder();
                         builder.setPrettyPrinting();
@@ -128,6 +128,7 @@ public class ClassInformationThread extends  Thread {
                         byte[] father=retrieveResponseEntity.getFather();
                         byte[] mother=retrieveResponseEntity.getMother();
                         byte[] other=retrieveResponseEntity.getOther();
+                        byte[] qrcodebytes=retrieveResponseEntity.getQrcode();
                         Path path=Paths.get(System.getProperty("user.dir")+"/MyChildSchool");
                         Files.createDirectories(path);
                         System.out.println("[ClassInformationThread]: Creating path on the Pc to store Images");
@@ -146,9 +147,7 @@ public class ClassInformationThread extends  Thread {
                                     imageView.setImage(s);
                                 });
                                 System.out.println("[ClassInformationThread]:Processing student image successful");
-                            }
-                            else {
-                                Files.createDirectories(path);
+                            }else {
                                 System.out.println("[ClassInformationThread]:student image is null cannot read file");
                             }
                             //////Processing Father Image
@@ -186,7 +185,7 @@ public class ClassInformationThread extends  Thread {
                             else {
                                 System.out.println("[ClassInformationThread]:mother image is null cannot read file");
                             }
-                            ///Processing Mother image
+                            ///Processing other image
                             System.out.println("[ClassInformationThread]:Processing other image ");
                             File otherimage=new File(System.getProperty("user.dir")+"/MyChildSchool/other");
                             FileOutputStream oout=new FileOutputStream(otherimage);
@@ -204,6 +203,22 @@ public class ClassInformationThread extends  Thread {
                             else {
                                 System.out.println("[ClassInformationThread]:other image is null cannot read file");
                             }
+                            System.out.println("[ClassInformationThread]:Processing qrcode image ");
+                            File qrfile=new File(System.getProperty("user.dir")+"/MyChildSchool/qr.png");
+                            FileOutputStream qrOutputstream=new FileOutputStream(qrfile);
+                            qrOutputstream.write(qrcodebytes);
+                            if (qrfile!=null){
+                                System.out.println("[ClassInformationThread]:Qr image is valid");
+                                BufferedImage  qrbuffer=ImageIO.read(qrfile);
+                                Image qrimage=SwingFXUtils.toFXImage(qrbuffer,null);
+                                Platform.runLater(()->{
+                                    qrCodeImage.setImage(qrimage);
+                                });
+                            }else {
+                                System.out.println("[ClassInformationThread]:student image is null cannot read file");
+                            }
+
+
                             Platform.runLater(()->{
                                 MotherName.setWrapText(true);
                                 fatherNameLabel.setWrapText(true);
@@ -238,6 +253,7 @@ public class ClassInformationThread extends  Thread {
                             });
 
                         }else {
+                            Files.createDirectories(path);
                             System.out.println("[ClassInformationThread]:path to store images does not exists" );
                         }
                         response.close();
@@ -271,6 +287,7 @@ public class ClassInformationThread extends  Thread {
                 }
             }else{
                 Platform.runLater(()->{
+                    LoadingWindow.window.close();
                     new ConnectionError().Connection("Invalid configuration, please configure your software in the log in page");
                 });
             }

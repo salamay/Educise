@@ -25,7 +25,7 @@ public class RetrieveResponseEntity {
     private byte[] father;
     private byte[] mother;
     private byte[] other;
-
+    private byte[] qrcode;
     public RetrieveResponseEntity() {
     }
 
@@ -219,5 +219,13 @@ public class RetrieveResponseEntity {
 
     public void setOther(byte[] other) {
         this.other = other;
+    }
+
+    public byte[] getQrcode() {
+        return qrcode;
+    }
+
+    public void setQrcode(byte[] qrcode) {
+        this.qrcode = qrcode;
     }
 }

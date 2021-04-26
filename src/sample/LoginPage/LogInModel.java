@@ -18,7 +18,6 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import okhttp3.*;
 import sample.Configuration.Configuration;
-import sample.Configuration.ConfigureApplication;
 import sample.ConnectionError;
 import sample.SplashScreenController;
 
@@ -65,8 +64,8 @@ public class LogInModel extends Thread{
         builder.serializeNulls();
         Gson gson=builder.create();
         LoginCredentials loginCredentials=new LoginCredentials();
-        loginCredentials.setSchoolid(schoolid);
-        loginCredentials.setStaffid(staffid);
+        //it send the username and schoolid so as to authenticate with schoolid also
+        loginCredentials.setStaffid(staffid+","+schoolid);
         loginCredentials.setPassword(password);
         String json=gson.toJson(loginCredentials);
         RequestBody requestBody=RequestBody.create(MediaType.parse("application/json"),json);
@@ -91,7 +90,7 @@ public class LogInModel extends Thread{
                             SplashScreenController.window1.close();
                             Parent root = null;
                             try {
-                                root = FXMLLoader.load(getClass().getResource("DashBoard/DB.fxml"));
+                                root = FXMLLoader.load(getClass().getResource("Dash.fxml"));
                             } catch (IOException ex) {
                                 ex.printStackTrace();
                             }

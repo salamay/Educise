@@ -9,6 +9,7 @@ import javafx.util.Duration;
 import sample.ConnectionError;
 import sample.LoginPage.DashBoard.Admin.AdminWindow;
 import sample.LoginPage.DashBoard.SelectWindows.AcademicSession.SelectAcademicSession;
+import sample.LoginPage.DashBoard.SelectWindows.Attendance.AttendanceWindow;
 import sample.LoginPage.DashBoard.SelectWindows.EditStudentInformation.EditstudentInformationWindow;
 import sample.LoginPage.DashBoard.SelectWindows.Information.SelectInformationSesssionAndClassWindow;
 import sample.LoginPage.DashBoard.SelectWindows.Parent.SelectParent;
@@ -34,7 +35,7 @@ public class DashboardController implements Initializable {
     public JFXButton StudentAssessmentButton;
     public JFXButton ParentPortal;
     public JFXButton NewTeacherButton;
-
+    public JFXButton attendanceButton;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -53,6 +54,9 @@ public class DashboardController implements Initializable {
     }
     public void NewTeacherButtonClicked() throws IOException {
         new NewTeacherWindow();
+    }
+    public void AttendanceButtonClicked() throws IOException {
+        new AttendanceWindow();
     }
     public void NewTeacherButtonClickedtwo() throws IOException {
         new PreInformationWindow();
@@ -111,6 +115,7 @@ public class DashboardController implements Initializable {
         disableColor(teacherInfoButton); RestoreScale(teacherInfoButton);
     }
 
+
     public void CreateStudentSessionEntered(){
         setColor(createSessionButton); ScaleTrans(createSessionButton);
     }
@@ -152,7 +157,12 @@ public class DashboardController implements Initializable {
         RestoreScale(NewTeacherButton);
     }
 
-
+    public void AttendanceButtonEntered(){
+        ScaleTrans(attendanceButton);
+    }
+    public void AttendanceButtonExited(){
+        RestoreScale(attendanceButton);
+    }
 
     public void setColor(JFXButton button){
         button.setStyle("-fx-background-color:#4C7B9E;");

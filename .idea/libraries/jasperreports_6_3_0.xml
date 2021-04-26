@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="jasperreports-6.3.0">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/net/sf/jasperreports/jasperreports/6.3.0/jasperreports-6.3.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

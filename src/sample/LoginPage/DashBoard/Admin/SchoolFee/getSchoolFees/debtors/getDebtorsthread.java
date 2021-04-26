@@ -82,7 +82,6 @@ public class getDebtorsthread extends Thread{
                     });
                     if (!schoolfees.isEmpty()){
                         SchoolFeeWindowController.pdf=schoolfees.get(schoolfees.size()-1).getPdf();
-                        System.out.println("Document:"+schoolfees.get(schoolfees.size()-1).getPdf());
                     }
                     response.close();
                 }else {

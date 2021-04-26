@@ -4,14 +4,23 @@ package sample.LoginPage.DashBoard.SelectWindows.Teacher;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import javafx.application.Platform;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import sample.Configuration.Configuration;
 import sample.ConnectionError;
 import sample.LoginPage.LogInModel;
+
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -32,9 +41,7 @@ public class retrieveTeacherWindowController implements Initializable {
     public Label schoolAttendedLabel;
     public Label phoneNumberLabel;
     public Label courseLabel;
-    public Label banknameLabel;
-    public Label accountNumberLabel;
-    public Label accountNameLabel;
+    public ImageView teacherImageView;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -62,13 +69,18 @@ public class retrieveTeacherWindowController implements Initializable {
                     System.out.println("[retrieveTeacherWindowController] :Response->"+response);
                     if (response.code()==200){
                         String rawData=new String(response.body().bytes(),"UTF-8");
-                        System.out.println(rawData);
                         GsonBuilder builder=new GsonBuilder();
                         builder.serializeNulls();
                         builder.setPrettyPrinting();
                         Gson gson=builder.create();
                         //NewTeacherRequestEntity class is used to retrieve teacher information because it corresponds to the data being retrieved
                         NewTeacherRequestEntity newTeacherRequestEntity=gson.fromJson(rawData,NewTeacherRequestEntity.class);
+                        byte[] bytes=newTeacherRequestEntity.getFile();
+                        File teacher=new File(System.getProperty("user.dir")+"/MyChildSchool/teacher");
+                        FileOutputStream fileOutputStream=new FileOutputStream(teacher);
+                        fileOutputStream.write(bytes);
+                        BufferedImage teacherimage= ImageIO.read(teacher);
+                        Image t= SwingFXUtils.toFXImage(teacherimage,null);
                         Platform.runLater(()->{
                             teacherNameLabel.setText(newTeacherRequestEntity.getLastname()+" "+newTeacherRequestEntity.getMiddlename()+" "+newTeacherRequestEntity.getLastname());
                             classHeldLabel.setText(newTeacherRequestEntity.getClas());
@@ -84,9 +96,7 @@ public class retrieveTeacherWindowController implements Initializable {
                             schoolAttendedLabel.setText(newTeacherRequestEntity.getSchoolattended());
                             phoneNumberLabel.setText(newTeacherRequestEntity.getPhoneno());
                             courseLabel.setText(newTeacherRequestEntity.getCourse());
-                            banknameLabel.setText(newTeacherRequestEntity.getBankname());
-                            accountNameLabel.setText(newTeacherRequestEntity.getAccountname());
-                            accountNumberLabel.setText(newTeacherRequestEntity.getBankaccountnumber());
+                            teacherImageView.setImage(t);
                         });
                     }else {
                         String message=new String(response.body().bytes(),"UTF-8");

@@ -76,7 +76,6 @@ public class StudentSelectAssessmentSessionWindowController implements Initializ
             listvie.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
             //Creating Window
             ScrollPane layout = new ScrollPane();
-            layout.setPannable(true);
 
             //This Listview Contains the names of student,The ClassnameThread retrieve the names from the database,the class name thread takes in
             //the value selected from the combo boxes and fetch in from the value
@@ -428,6 +427,7 @@ public class StudentSelectAssessmentSessionWindowController implements Initializ
                     }
                     if (!sub.isEmpty() && sub.matches("^[A-Z[ ]0-9a-z]*$") && session!= null&&term.getSelectionModel().getSelectedItem()!=null) {
                         ///This thread does the actual adding
+                        //NewValue here is the name of the student
                         new InsertSubjectThread(sub, NewValue, session, tableview, term.getSelectionModel().getSelectedItem()).start();
                         labelerror.setVisible(false);
                         subject.clear();
@@ -508,7 +508,6 @@ public class StudentSelectAssessmentSessionWindowController implements Initializ
                 ScorevBox.getChildren().addAll(label, term, button, tableview, textArea, printbutton, scoreHbox, vb);
                 scrollpane.setContent(ScorevBox);
                 Scene scene = new Scene(scrollpane);
-                StudentSelectAssessmentSessionWindow.window.setMaximized(true);
                 StudentSelectAssessmentSessionWindow.window.setScene(scene);
             });
 
@@ -517,16 +516,13 @@ public class StudentSelectAssessmentSessionWindowController implements Initializ
 
 
             listvie.setMinHeight(700);
+            listvie.setMinWidth(1200);
             Label label = new Label("Select Student");
             VBox box = new VBox();
             box.setAlignment(Pos.TOP_LEFT);
             box.getChildren().addAll(label, listvie);
-            layout.setFitToWidth(true);
-            layout.setFitToHeight(true);
             layout.setContent(box);
-            layout.setPannable(true);
             layout.setPadding(new Insets(10, 10, 10, 10));
-            StudentSelectAssessmentSessionWindow.window.setMaximized(true);
             Scene scene = new Scene(layout);
             StudentSelectAssessmentSessionWindow.window.setTitle("Student score");
             StudentSelectAssessmentSessionWindow.window.setScene(scene);

@@ -16,16 +16,12 @@ public class StudentSelectAssessmentSessionWindow {
         window=new Stage();
         window.setTitle("Select Academic Session");
         Parent root= FXMLLoader.load(getClass().getResource("SelectAssessmentAcademicSession.fxml"));
-        Scene scene=new Scene(root);
         window.initModality(Modality.APPLICATION_MODAL);
-        window.setScene(scene);
-        window.setResizable(true);
-        window.setMaximized(true);
-        window.isMaximized();
+        Scene scene=new Scene(root,1360,750);
         window.centerOnScreen();
+        window.setMaximized(true);
         window.getIcons().add(new Image("image/window_icon.png"));
-        window.setMinHeight(700);
-        window.setMinWidth(1200);
+        window.setScene(scene);
         window.show();
 
     }

@@ -77,7 +77,7 @@ public class ConfigureApplication implements Initializable {
         }
     }
     public void saveConfig(String ipAddress, String port){
-        String raw="ipaddress="+configuration.getIpaddress()+"\n port="+configuration.getPort();
+        String raw="ipaddress="+ipAddress+"\n port="+port;
         try {
             FileOutputStream fos=new FileOutputStream(path.toFile());
             fos.write(raw.getBytes());

@@ -1,2 +1,11 @@
 # Educise
-A school management software  for  managing student affairs like student assessment recording,managing of student schoolfees, book shoop management, keeping and retrieving student information and payment of staff salary
+An Enterprise software  for  managing student affairs like student assessment record,managing of student school fees, book shoop management, keeping and retrieving student information and attendance management.
+The software can be used by multiple private schools,each schools used the same database but have different datas so as to lower cost and time. 
+The software is purely written in java for window and linux. It collect student information and stores it in the database with the help of educise API.
+It can be used to preview student information e.g each student parent names and their pictures.
+ Teachers can mage their student assessment by inputing their scores in the software so as to be able to retrieve it anytime anywhere.
+Also, admin board use this software to save students  school fee, also to generate a document of students owing them. 
+Admin can also keep tracks of books in the inventory and also generate a report containing the amount of books sold in a day.
+With the help of the software, teachers can view the students attendance sheet from the software.
+
+

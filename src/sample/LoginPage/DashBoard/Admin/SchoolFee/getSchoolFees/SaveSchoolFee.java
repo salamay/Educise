@@ -62,7 +62,7 @@ public class SaveSchoolFee extends Thread {
         Gson gson=builder.create();
         String json=gson.toJson(schoolFeeRequestEntity);
         System.out.println(json);
-        RequestBody body=RequestBody.create(json, MediaType.parse("application/json"));
+        RequestBody body=RequestBody.create(MediaType.parse("application/json"), json);
         if (Configuration.ipaddress!=null&&Configuration.port!=null){
 
             Request request=new Request.Builder()

@@ -507,6 +507,7 @@ public class EditingLayoutController implements Initializable {
                 }
             }else{
                 Platform.runLater(()->{
+                    LoadingWindow.window.close();
                     new ConnectionError().Connection("Invalid configuration, please configure your software in the log in page");
                 });
             }

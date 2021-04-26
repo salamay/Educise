@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.Circle?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="splashscreen" stylesheets="@../back.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.SplashScreenController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" stylesheets="@../back.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.SplashScreenController">
    <children>
       <VBox alignment="CENTER" layoutX="183.0" layoutY="40.0" prefHeight="250.0" prefWidth="255.0" AnchorPane.bottomAnchor="110.0" AnchorPane.leftAnchor="183.0" AnchorPane.rightAnchor="162.0" AnchorPane.topAnchor="40.0">
          <children>

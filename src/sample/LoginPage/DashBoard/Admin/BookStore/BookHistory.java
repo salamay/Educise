@@ -1,7 +1,7 @@
 package sample.LoginPage.DashBoard.Admin.BookStore;
 
 public class BookHistory {
-    private int id;
+    private String id;
     private String title;
     private String author;
     private String amountsold;
@@ -14,11 +14,11 @@ public class BookHistory {
     }
 
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

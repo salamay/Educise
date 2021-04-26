@@ -1,7 +1,7 @@
 package sample.LoginPage.DashBoard.Admin.BookStore;
 
 public class BookHistoryResponse {
-    private int id;
+    private String id;
     private String title;
     private String author;
     private String amountsold;
@@ -13,7 +13,7 @@ public class BookHistoryResponse {
     public BookHistoryResponse() {
     }
 
-    public BookHistoryResponse(int id, String title, String author, String amountsold, String buyer, String date, String session, String term) {
+    public BookHistoryResponse(String id, String title, String author, String amountsold, String buyer, String date, String session, String term) {
         this.id = id;
         this.title = title;
         this.author = author;
@@ -24,11 +24,11 @@ public class BookHistoryResponse {
         this.term = term;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

@@ -38,7 +38,7 @@ public class SaveBook extends Thread {
         Gson gson=new Gson();
         String body=gson.toJson(book);
         System.out.println("[SaveBook]: "+body);
-        RequestBody requestBody=RequestBody.create(body, MediaType.parse("application/json"));
+        RequestBody requestBody=RequestBody.create(MediaType.parse("application/json"), body);
         if (Configuration.ipaddress!=null&&Configuration.port!=null){
             Request request=new Request.Builder()
                     .post(requestBody)

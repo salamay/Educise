@@ -3,19 +3,19 @@
     -fx-background-size:100%, 100%;
 }
 .bck{
-    -fx-background-image: url('image/santi-vedri-O5EMzfdxedg-unsplash.jpg');
+    -fx-background-image: url('Home_background.jpg');
     -fx-background-size:100%, 100%;
 }
 .bck2{
-    -fx-background-image: url('image/avel-chuklanov-5iseEuoW7mw-unsplash.jpg');
+    -fx-background-image: url('Home_background.jpg');
     -fx-background-size:100%, 100%;
 }
 .bck3{
-    -fx-background-image: url('image/ivan-aleksic-PDRFeeDniCk-unsplash.jpg');
+    -fx-background-image: url('Home_background.jpg');
     -fx-background-size:100%, 100%;
 }
 .admin{
-    -fx-background-image: url('image/kimberly-farmer-lUaaKCUANVI-unsplash.jpg');
+    -fx-background-image: url('Home_background.jpg');
     -fx-background-size:100%, 100%;
 }
 .top{
@@ -91,6 +91,15 @@
       -fx-background-radius: 20 20 20 20;
 
       }
+      .Attendance{
+      -fx-background-image: url('icon/checking-attendance.png');
+      -fx-background-size:100%, 100%;
+      -fx-background-radius: 20 20 20 20;
+      }
+      .Administrator{
+      -fx-background-image: url('icon/administrator.png');
+      -fx-background-size:100%, 100%;
+      }
    .Student_Background{
        -fx-background-image: url('image/Student_Background.jpeg');
        -fx-background-size:100%, 100%;
@@ -129,10 +138,7 @@
                                 -fx-background-image: url('image/ss2_classroom.jpg');
                                 -fx-background-size:100%, 100%;
           }
-           .splashscreen{
-                                          -fx-background-image: url('image/jess-bailey-l3N9Q27zULw-unsplash.jpg');
-                                          -fx-background-size:100%, 100%;
-                    } .pen{
+           .pen{
                                           -fx-background-image: url('image/pen.png');
                                           -fx-background-size:100%, 100%;
                     }

@@ -15,7 +15,6 @@ import sample.Configuration.Configuration;
 import sample.ConnectionError;
 import sample.LoginPage.DashBoard.SelectWindows.Registeration.LoadingWindow;
 import sample.LoginPage.LogInModel;
-import sun.security.krb5.Config;
 
 import java.io.IOException;
 import java.util.List;
@@ -53,11 +52,9 @@ public class getBookSoldHistory extends Thread{
                 Response response=client.newCall(request).execute();
                 System.out.println("[getBookSoldHistory]: Retrieving response ");
                 System.out.println("[getBookSoldHistory]:"+response);
-                System.out.println("[getBookSoldHistory]:"+response.body());
                 if (response.code()==200){
                     byte [] rawbytes = response.body().bytes();
                     String rawBody=new String(rawbytes,"UTF-8");
-                    System.out.println("[getBookSoldHistory]: "+rawBody);
                     System.out.println("[getBookSoldHistory]: Processing response Body");
                     GsonBuilder builder=new GsonBuilder();
                     builder.setPrettyPrinting();
@@ -79,7 +76,6 @@ public class getBookSoldHistory extends Thread{
                         totalamount.setText(String.valueOf(total));
                         if (!books.isEmpty()){
                             //getting document and setting
-                            System.out.println("[getBookSoldHistory]: Document: "+books.get(books.size()-1).getPdfdocumentbytes());
                             BookStoreWindowController.pdfdocumentbytes=books.get(books.size()-1).getPdfdocumentbytes();
                         }
                     });

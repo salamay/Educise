@@ -19,15 +19,11 @@ public class EditstudentInformationWindow {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Scene scene = new Scene(root);
-        StudentWindow.setMaximized(true);
         StudentWindow.initModality(Modality.APPLICATION_MODAL);
-        StudentWindow.setResizable(true);
+        Scene scene=new Scene(root,1360,750);
         StudentWindow.centerOnScreen();
-        StudentWindow.setMinHeight(700);
-        StudentWindow.setTitle("Edit student information");
+        StudentWindow.setMaximized(true);
         StudentWindow.getIcons().add(new Image("image/window_icon.png"));
-        StudentWindow.setMinWidth(1200);
         StudentWindow.setScene(scene);
         StudentWindow.show();
     }

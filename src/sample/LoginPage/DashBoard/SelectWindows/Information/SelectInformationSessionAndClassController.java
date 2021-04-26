@@ -21,6 +21,7 @@ import java.util.ResourceBundle;
 ///This serve as a controller for SelectClass.fxml ,it featches the class and session when loaded
 public class SelectInformationSessionAndClassController implements Initializable {
 
+
     public JFXComboBox<String> Clas;
     public JFXComboBox<String> SessionComBoBox;
     public JFXButton continueButtonPressed;
@@ -28,6 +29,8 @@ public class SelectInformationSessionAndClassController implements Initializable
     private String clas;
     private String session;
     public ProgressIndicator ProgressBar;
+
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         ////////////Starting to get sessions from server

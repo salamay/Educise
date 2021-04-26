@@ -44,8 +44,8 @@ public class RegisterStudentController implements Initializable {
     private String nextofkin;
     private String address;
     private String Gender;
-    private int PhoneNo;
-    private int parentPhoneNumber;
+    private String PhoneNo;
+    private String parentPhoneNumber;
     private String NickName;
     private String Hobbies;
     private String TurnOn;
@@ -261,7 +261,7 @@ public class RegisterStudentController implements Initializable {
         System.out.println("[RegButtonClick()]: Getting guardian name");
         guardianName=GuardianName.getText();
         if(GuardianName.getText().isEmpty()){
-            GuardianName.setText("Guardian's name field is empty");
+            guadianError.setText("Guardian's name field is empty");
             guadianError.setVisible(true);
         }else{
             gendererror.setVisible(false);
@@ -328,33 +328,38 @@ public class RegisterStudentController implements Initializable {
 
         System.out.println("[RegButtonClick()]: Getting PhoneNo");
 
-        try {
             System.out.println("[RegButtonClick()]: student phone number");
-            PhoneNo=Integer.parseInt(PhoneNumberTextField.getText());
+            PhoneNo=PhoneNumberTextField.getText();
             if(PhoneNumberTextField.getText().isEmpty()){
+                PhoneNoError.setText("no input");
                 PhoneNoError.setVisible(true);
             }else{
                 PhoneNoError.setVisible(false);
+                if (!PhoneNo.matches("\\d{11}")||!PhoneNo.matches("^[0-9]*$")){
+                    PhoneNoError.setText("invalid number");
+                    PhoneNoError.setVisible(true);
+                }else {
+                    PhoneNoError.setVisible(false);
+                }
             }
-        }catch(NumberFormatException e) {
-            System.out.println("[RegButtonClick]: student phone number input error");
-            PhoneNoError.setVisible(true);
-        }
 
-        try {
+
             System.out.println("[RegButtonClick()]: Parent phone number");
-            parentPhoneNumber=Integer.parseInt(parentPhoneNumberTextField.getText());
+            parentPhoneNumber=parentPhoneNumberTextField.getText();
             if(parentPhoneNumberTextField.getText().isEmpty()){
-                ParentPhoneNumberError.setText("Parent number field error");
+                ParentPhoneNumberError.setText("no input");
                 ParentPhoneNumberError.setVisible(true);
             }else{
                 ParentPhoneNumberError.setVisible(false);
+                if (!parentPhoneNumber.matches("\\d{11}")||!parentPhoneNumber.matches("^[0-9]*$")){
+                    ParentPhoneNumberError.setText("invalid number");
+                    ParentPhoneNumberError.setVisible(true);
+                }else {
+                    ParentPhoneNumberError.setVisible(false);
+                    ParentPhoneNumberError.setText("invalid number");
+                }
             }
-        }catch(NumberFormatException e){
-            System.out.println("[RegButtonClick]: parent phone number input error");
-            ParentPhoneNumberError.setText("Parent number contain error");
-            ParentPhoneNumberError.setVisible(true);
-        }
+
 
         System.out.println("[RegButtonClick]: Getting Nickname");
          NickName=NickNameTextField.getText();
@@ -430,12 +435,17 @@ public class RegisterStudentController implements Initializable {
                     !HobbiesTextField.getText().isEmpty() && !TurnOnTextField.getText().isEmpty()
                     && !TurnOffTextField.getText().isEmpty() && !ClubTextField.getText().isEmpty()
                     && !RoleModelTextField.getText().isEmpty() && !FutureAmbitionTextField.getText().isEmpty()&& clas!=null &&session!=null&&
-                    age!=0 &&  !PhoneNumberTextField.getText().matches("^[a-zA-Z]*$")&&  !parentPhoneNumberTextField.getText().matches("^[a-zA-Z]*$")&&studentname.matches("^[A-Z[ ]a-z]*$")
+                    age!=0 &&  PhoneNumberTextField.getText().matches("^[0-9]*$")
+                    &&  parentPhoneNumberTextField.getText().matches("^[0-9]*$")
+                    &&parentPhoneNumberTextField.getText().matches("\\d{11}")&&
+                    PhoneNumberTextField.getText().matches("\\d{11}")&&studentname.matches("^[A-Z[ ]a-z]*$")
                     && clas!=null&& file!=null &&tag!=null
             ){
                 if (Female.isSelected() || Male.isSelected()){
                     // Registration Thread
-                    new RegisterStudentThread(studentname,age,fathername,mothername,guardianName,nextofkin,address,PhoneNo,parentPhoneNumber,NickName,Hobbies,TurnOn,TurnOff,Club,RoleModel,FutureAmbition,Gender,session,file,FatherImageFile,MotherImageFile,OtherImageFile,clas,tag).start();
+                    new RegisterStudentThread(studentname,age,fathername,mothername,guardianName,nextofkin,address,PhoneNo,
+                            String.valueOf(parentPhoneNumber),NickName,Hobbies,TurnOn,TurnOff,Club,RoleModel,FutureAmbition,
+                            Gender,session,file,FatherImageFile,MotherImageFile,OtherImageFile,clas,tag).start();
                 }
             }
     }

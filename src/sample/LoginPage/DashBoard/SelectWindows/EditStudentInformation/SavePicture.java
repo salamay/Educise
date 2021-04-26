@@ -52,7 +52,7 @@ public class SavePicture extends Thread{
             try {
                 editInformationImageRequestEntity.setImage(Files.readAllBytes(file.toPath()));
                 String rawbody=gson.toJson(editInformationImageRequestEntity);
-                RequestBody requestBody=RequestBody.create(rawbody, MediaType.parse("application/json"));
+                RequestBody requestBody=RequestBody.create(MediaType.parse("application/json"), rawbody);
                 Request request=new Request.Builder()
                         .url("http://"+Configuration.ipaddress+":"+Configuration.port+"/editinformationimage")
                         .addHeader("Authorization","Bearer "+ LogInModel.token)

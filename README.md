@@ -1,4 +1,4 @@
-![Screenshot (3)](https://user-images.githubusercontent.com/67029408/116394570-010acb00-a81b-11eb-9f13-a59c3ad0b8b1.png
+https://user-images.githubusercontent.com/67029408/116394570-010acb00-a81b-11eb-9f13-a59c3ad0b8b1.png
 # Educise
 An Enterprise software  for  managing student affairs like student assessment record,managing of student school fees, book shoop management, keeping and retrieving student information and attendance management.
 The software can be used by multiple private schools,each schools used the same database but have different datas so as to lower cost and time. 

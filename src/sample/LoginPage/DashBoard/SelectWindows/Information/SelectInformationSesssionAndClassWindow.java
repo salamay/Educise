@@ -16,15 +16,12 @@ public class SelectInformationSesssionAndClassWindow {
 
        StudentWindow = new Stage();
        Parent root= FXMLLoader.load(getClass().getResource("SelectClass.fxml"));
-       Scene scene = new Scene(root);
-       StudentWindow.setMaximized(true);
-       StudentWindow.initModality(Modality.APPLICATION_MODAL);
-       StudentWindow.setResizable(true);
        StudentWindow.setTitle("Select session");
-       StudentWindow.getIcons().add(new Image("image/window_icon.png"));
+       StudentWindow.initModality(Modality.APPLICATION_MODAL);
+       Scene scene=new Scene(root,1360,750);
        StudentWindow.centerOnScreen();
-       StudentWindow.setMinHeight(700);
-       StudentWindow.setMinWidth(1200);
+       StudentWindow.setMaximized(true);
+       StudentWindow.getIcons().add(new Image("image/window_icon.png"));
        StudentWindow.setScene(scene);
        StudentWindow.show();
 

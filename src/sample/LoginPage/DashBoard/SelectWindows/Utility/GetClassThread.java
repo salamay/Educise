@@ -1,5 +1,8 @@
 package sample.LoginPage.DashBoard.SelectWindows.Utility;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.jfoenix.controls.JFXComboBox;
 import javafx.application.Platform;
 import javafx.scene.control.ProgressIndicator;
@@ -9,12 +12,17 @@ import okhttp3.Response;
 import okhttp3.ResponseBody;
 import sample.Configuration.Configuration;
 import sample.ConnectionError;
+import sample.LoginPage.DashBoard.SelectWindows.Information.ClassModel;
+import sample.LoginPage.DashBoard.SelectWindows.Information.ListViewNames;
 import sample.LoginPage.DashBoard.SelectWindows.Information.SelectInformationSesssionAndClassWindow;
 import sample.LoginPage.LogInModel;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -55,13 +63,18 @@ public class GetClassThread extends Thread {
                         byte[] bytes = body.bytes();
                         //removing bracket from response
                         String data = new String(bytes, "UTF-8");
-                        String data2 = data.replace(']', ' ');
-                        String data3 = data2.replace('[', ' ');
-                        String data4 = data3.replaceAll(" ", "");
-                        List<String> list = Arrays.stream(data4.split(",")).collect(Collectors.toList());
+                        System.out.println(data);
+                        GsonBuilder builder=new GsonBuilder();
+                        builder.serializeNulls();
+                        Gson gson=builder.create();
+                        List<ClassModel> classModel= gson.fromJson(data,new TypeToken<List<ClassModel>>(){}.getType());
+                        ArrayList<String> classes=new ArrayList<>();
 
+                        for(int i=0;i<classModel.size();i++){
+                            classes.add(classModel.get(i).getClasses());
+                        }
                         Platform.runLater(() -> {
-                            clas.getItems().addAll(list);
+                            clas.getItems().addAll(classes);
                         });
                         System.out.println(data);
                         response.close();
